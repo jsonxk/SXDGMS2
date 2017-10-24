@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
+
+	<!-- 引入jdbc配置文件 -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:config/jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+	<!-- 配置数据源 -->
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<!-- 不使用properties来配置 -->
+		<!-- <property name="driverClassName" value="com.mysql.jdbc.Driver" /> 
+			<property name="url" value="jdbc:mysql://localhost:3306/ssma" /> <property 
+			name="username" value="root" /> <property name="password" value="521wsxk2jj%#" 
+			/> -->
+		<!-- 使用properties来配置 -->
+		<property name="driverClassName">
+			<value>${ClassDriver}</value>
+		</property>
+		<property name="url">
+			<value>${url}</value>
+		</property>
+		<property name="username">
+			<value>${username}</value>
+		</property>
+		<property name="password">
+			<value>${password}</value>
+		</property>
+	</bean>
+	<!-- 配置数据源事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" /> <!-- 引用上面的数据源 -->
+	</bean>
+		<!-- 配置Mybatis的文件 ，mapperLocations配置**Mapper.xml文件位置，configLocation配置mybatis-config文件位置 -->
+	<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath*:com/xk/Mapper/**/*.xml" />
+		<property name="configLocation" value="classpath:config/mybatis-config.xml" />
+		<!-- <property name="typeAliasesPackage" value="com.tiantian.ckeditor.model" 
+			/> -->
+	</bean>
+	<!-- 自动扫描了所有的XxxxMapper.xml对应的mapper接口文件，这样就不用一个一个手动配置Mpper的映射了，只要Mapper接口类和Mapper映射文件对应起来就可以了。 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.xk.Dao" />
+		<property name="sqlSessionFactoryBeanName" value="sessionFactory" />
+	</bean>
+	<!-- 流程引擎配置 
+	StandaloneProcessEngineConfiguration: 单独运行的流程引擎
+	StandaloneInMemProcessEngineConfiguration: 单元测试时的辅助类
+	SpringProcessEngineConfiguration: 在Spring环境下使用流程引擎
+	JtaProcessEngineConfiguration: 单独运行流程引擎
+	-->
+	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+        <property name="dataSource" ref="dataSource" />  
+        <property name="transactionManager" ref="transactionManager" />  
+        <property name="databaseSchemaUpdate" value="true" />  
+        <property name="jobExecutorActivate" value="false" />  
+        <property name="activityFontName" value="宋体"/>  
+        <property name="labelFontName" value="宋体"/> 
+    	<property name="databaseType" value="mysql"></property>
+    	 <!-- 部署流程文件 -->
+    	<!-- <property name="deploymentResources" value=" "></property>
+    	邮件服务器配置
+    	<property name="mailServerDefaultFrom" value="163.smtp.com"></property>
+    	<property name="mailServerHost" value="25"></property> 
+    	<property name="mailServerUsername" value=""></property>
+    	<property name="mailServerPassword" value=""></property> -->
+    	
+    </bean>
+    <!-- 流程引擎 -->
+	<bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+        <property name="processEngineConfiguration" ref="processEngineConfiguration"/>
+    </bean>
+	<bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService"/>
+    <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService"/>
+    <bean id="formService" factory-bean="processEngine" factory-method="getFormService"/>
+    <bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService"/>
+    <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService"/>
+    <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService"/>
+    <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService"/> 
+    <!-- Activiti end -->    
+    <context:component-scan base-package="com.xk.Dao"></context:component-scan>
+    <context:component-scan base-package="com.xk.DaoImpl"></context:component-scan>
+    <!-- 自动扫描注解的bean -->
+	<context:component-scan base-package="com.xk.service" />
+	<context:component-scan base-package="com.xk.orm"></context:component-scan>
+    <!-- 配置公开的服务 -->
+    <import resource="webservice.xml"/>
+</beans>

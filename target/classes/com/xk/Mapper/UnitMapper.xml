@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xk.Dao.UnitMapper" >
+  <resultMap id="BaseResultMap" type="com.xk.orm.Unit" >
+    <id column="UnitId" property="unitid" jdbcType="INTEGER" />
+    <result column="UnitName" property="unitname" jdbcType="VARCHAR" />
+    <result column="Address" property="address" jdbcType="VARCHAR" />
+    <result column="MSPeople" property="mspeople" jdbcType="VARCHAR" />
+    <result column="MSPhone" property="msphone" jdbcType="VARCHAR" />
+    <result column="Status" property="status" jdbcType="SMALLINT" />
+    <result column="DicItemId" property="dicitemid" jdbcType="INTEGER" />
+    <result column="Memo" property="memo" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    UnitId, UnitName, Address, MSPeople, MSPhone, Status, DicItemId, Memo
+  </sql>
+  <select id="selectAllUnitName" resultMap="BaseResultMap">
+  	select * from unit
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from unit
+    where UnitId = #{unitid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from unit
+    where UnitId = #{unitid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xk.orm.Unit" >
+    insert into unit (UnitId, UnitName, Address, 
+      MSPeople, MSPhone, Status, 
+      DicItemId, Memo)
+    values (#{unitid,jdbcType=INTEGER}, #{unitname,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{mspeople,jdbcType=VARCHAR}, #{msphone,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT}, 
+      #{dicitemid,jdbcType=INTEGER}, #{memo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xk.orm.Unit" >
+    insert into unit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="unitid != null" >
+        UnitId,
+      </if>
+      <if test="unitname != null" >
+        UnitName,
+      </if>
+      <if test="address != null" >
+        Address,
+      </if>
+      <if test="mspeople != null" >
+        MSPeople,
+      </if>
+      <if test="msphone != null" >
+        MSPhone,
+      </if>
+      <if test="status != null" >
+        Status,
+      </if>
+      <if test="dicitemid != null" >
+        DicItemId,
+      </if>
+      <if test="memo != null" >
+        Memo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="unitid != null" >
+        #{unitid,jdbcType=INTEGER},
+      </if>
+      <if test="unitname != null" >
+        #{unitname,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="mspeople != null" >
+        #{mspeople,jdbcType=VARCHAR},
+      </if>
+      <if test="msphone != null" >
+        #{msphone,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="dicitemid != null" >
+        #{dicitemid,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xk.orm.Unit" >
+    update unit
+    <set >
+      <if test="unitname != null" >
+        UnitName = #{unitname,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        Address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="mspeople != null" >
+        MSPeople = #{mspeople,jdbcType=VARCHAR},
+      </if>
+      <if test="msphone != null" >
+        MSPhone = #{msphone,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="dicitemid != null" >
+        DicItemId = #{dicitemid,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null" >
+        Memo = #{memo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where UnitId = #{unitid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xk.orm.Unit" >
+    update unit
+    set UnitName = #{unitname,jdbcType=VARCHAR},
+      Address = #{address,jdbcType=VARCHAR},
+      MSPeople = #{mspeople,jdbcType=VARCHAR},
+      MSPhone = #{msphone,jdbcType=VARCHAR},
+      Status = #{status,jdbcType=SMALLINT},
+      DicItemId = #{dicitemid,jdbcType=INTEGER},
+      Memo = #{memo,jdbcType=VARCHAR}
+    where UnitId = #{unitid,jdbcType=INTEGER}
+  </update>
+</mapper>

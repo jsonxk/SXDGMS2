@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration >
+  <context id="SXDGMS2" >
+  <commentGenerator>
+	        <property name="suppressDate" value="true"/>
+	        <property name="suppressAllComments" value="true" />
+  </commentGenerator>
+   <!--数据库链接URL，用户名、密码 -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://localhost:3306/SXDG" userId="root"
+			password="521wsxk2jj%#" />
+		<!-- 生成实体类的包名及位置 -->
+		<javaModelGenerator targetPackage="com.xk.orm"
+			targetProject="SXDGMS2" />
+		<!-- 生成映射文件的包名及位置 -->
+		<sqlMapGenerator targetPackage="com.xk.Mapper"
+			targetProject="SXDGMS2" />
+		<!-- 生成Dao的包名及位置 -->
+		<javaClientGenerator targetPackage="com.xk.Dao"
+			targetProject="SXDGMS2" type="XMLMAPPER" />
+		<table schema="SXDG" tableName="Unit" domainObjectName="Unit"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+		</table>
+  </context>
+</generatorConfiguration>

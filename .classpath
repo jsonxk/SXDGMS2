@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry including="**/*.java" kind="src" output="target/classes" path="src">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Administrator/Desktop/cxf/cxf2.6.1服务器端/cxf-2.6.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Administrator/Desktop/cxf/cxf2.6.1服务器端/geronimo-annotation_1.0_spec-1.1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Administrator/Desktop/cxf/cxf2.6.1服务器端/geronimo-jaxws_2.2_spec-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Administrator/Desktop/cxf/cxf2.6.1服务器端/geronimo-ws-metadata_2.0_spec-1.1.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Administrator/Desktop/cxf/cxf2.6.1服务器端/jetty-continuation-7.5.4.v20111024.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Administrator/Desktop/cxf/cxf2.6.1服务器端/jetty-http-7.5.4.v20111024.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Administrator/Desktop/cxf/cxf2.6.1服务器端/jetty-io-7.5.4.v20111024.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Administrator/Desktop/cxf/cxf2.6.1服务器端/jetty-server-7.5.4.v20111024.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Administrator/Desktop/cxf/cxf2.6.1服务器端/jetty-util-7.5.4.v20111024.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Administrator/Desktop/cxf/cxf2.6.1服务器端/neethi-3.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Administrator/Desktop/cxf/cxf2.6.1服务器端/slf4j-api-1.6.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Administrator/Desktop/cxf/cxf2.6.1服务器端/wsdl4j-1.6.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Administrator/Desktop/cxf/cxf2.6.1服务器端/xmlschema-core-2.0.2.jar"/>
+	<classpathentry kind="lib" path="E:/包/jackson/jackson-annotations-2.2.3.jar"/>
+	<classpathentry kind="lib" path="E:/包/jackson/jackson-core-2.2.3.jar"/>
+	<classpathentry kind="lib" path="E:/包/jackson/jackson-databind-2.2.3.jar"/>
+	<classpathentry kind="lib" path="E:/包/mysql-connector-java-5.1.38-bin.jar"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>

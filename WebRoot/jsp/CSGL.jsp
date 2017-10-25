@@ -21,7 +21,6 @@
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 <!-- VENDOR CSS -->
-<link rel="stylesheet" href="./assets/css/bootstrap.min.css">
 <link rel="stylesheet"
 	href="./assets/vendor/font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="./assets/vendor/linearicons/style.css">
@@ -30,6 +29,9 @@
 <!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
 <link rel="stylesheet" href="./assets/css/demo.css">
 <!-- GOOGLE FONTS -->
+<link rel="stylesheet" type="text/css" href="./treeview/css/bootstrap-treeview.css">
+<!-- treeview -->
+<link rel="stylesheet" type="text/css" href="./treeview/css/bootstrap.min.css">
 <link
 	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700"
 	rel="stylesheet">
@@ -131,43 +133,11 @@
 				<div class="container-fluid">
 					<h3 class="page-title">用户信息表</h3>
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-md-12">
 							<!-- BASIC TABLE -->
 							<div class="panel">
-								<div class="panel-heading">
-									<h3 class="panel-title">Basic Table</h3>
-								</div>
-								<div class="panel-body">
-									<table class="table">
-										<thead>
-											<tr>
-												<th>#</th>
-												<th>First Name</th>
-												<th>Last Name</th>
-												<th>Username</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td>1</td>
-												<td>Steve</td>
-												<td>Jobs</td>
-												<td>@steve</td>
-											</tr>
-											<tr>
-												<td>2</td>
-												<td>Simon</td>
-												<td>Philips</td>
-												<td>@simon</td>
-											</tr>
-											<tr>
-												<td>3</td>
-												<td>Jane</td>
-												<td>Doe</td>
-												<td>@jane</td>
-											</tr>
-										</tbody>
-									</table>
+								<div style="width:40%">
+										
 								</div>
 							</div>
 							<!-- END BASIC TABLE -->
@@ -177,20 +147,10 @@
 				<!-- END MAIN CONTENT -->
 			</div>
 			<!-- END MAIN -->
-			<div class="userinfo">
+			<div class="userinfo" style="display:none">
 				<span><%=session.getAttribute("userid")%></span>
 			</div>
 			<div class="clearfix"></div>
-			<footer>
-			<div class="container-fluid">
-				<p class="copyright">
-					&copy; 2017 <a href="#" target="_blank">Theme I Need</a>. All
-					Rights Reserved. More Templates <a href="http://www.cssmoban.com/"
-						target="_blank" title="模板之家">模板之家</a> - Collect from <a
-						href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a>
-				</p>
-			</div>
-			</footer>
 		</div>
 	</div>
 	<!-- END WRAPPER -->
@@ -205,18 +165,69 @@
 		}
 	</script>
 	<script src="./js/pageInit.js"></script> -->
-	<script src="./assets/vendor/jquery/jquery.min.js"></script>
+	<script src="./treeview/js/jquery-2.2.3.min.js" type="text/javascript"></script>
 	<script src="./assets/vendor/bootstrap/js/bootstrap.min.js"></script>
 	<script
 		src="./assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 	<script src="./assets/scripts/klorofil-common.js"></script>
+	<script src="./treeview/js/bootstrap-treeview.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		function initIndex() {
 			$(".xtglchild .4xtgl0   a").addClass("active");
 		}
 	</script>
 	<script src="./js/pageInit.js"></script>
-	<script src="./js/table/table.js"></script>
+		<script type="text/javascript">
+		$(function() {
+			$('#treeview1').treeview({
+	          data: $("#treeviewVal").html(),
+	          showCheckbox : true,
+	          levels:1,
+	          onNodeChecked: function(event, data){
+	        	 //选中父节点，则自动选择子节点
+	        	if(data.nodes != null)
+	        	{
+	        		var arrayInfo = data.nodes;
+	        		for (var i = 0; i < arrayInfo.length; i++) {
+	        			// $('#treeview1').treeview('checkNode', [ arrayInfo[i].nodeId, { silent: true } ]);
+	        			$('#treeview1').treeview('toggleNodeChecked', [ arrayInfo[i].nodeId, { silent: true } ]);
+					}
+	        	}
+			  },
+			  onNodeUnchecked: function(event, data){
+		        	 //取消选中父节点，则自动取消选择子节点
+		        	if(data.nodes != null)
+		        	{
+		        		var arrayInfo = data.nodes;
+		        		for (var i = 0; i < arrayInfo.length; i++) {
+		        			// $('#treeview1').treeview('checkNode', [ arrayInfo[i].nodeId, { silent: true } ]);
+		        			$('#treeview1').treeview('toggleNodeChecked', [ arrayInfo[i].nodeId, { silent: true } ]);
+						}
+		        	}
+				  }
+
+	    		});
+
+		});
+
+		function dosome( num){
+			if(num == 1)
+			{
+				$('#treeview1').treeview('checkAll', { silent: true });//全选
+			}else if(num == 2){
+				$('#treeview1').treeview('uncheckAll', { silent: true });//取消全选
+			}else if(num == 3){
+				$('#treeview1').treeview('collapseAll', { silent: true });//折叠
+			}else if(num == 4){
+				$('#treeview1').treeview('expandAll', { levels: 2, silent: true });//展开所有二级节点
+			}
+		}
+		function getDisabled(){
+			var checkedArr = $('#treeview1').treeview('getChecked','');
+			alert(checkedArr.length);
+		}
+
+	</script>
 </body>
 
 </html>

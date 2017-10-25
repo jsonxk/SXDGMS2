@@ -2,6 +2,9 @@ package com.xk.Dao;
 
 import java.util.List;
 
+
+
+
 import org.apache.ibatis.annotations.Param;
 
 import com.xk.orm.Role;
@@ -20,8 +23,11 @@ public interface RoleMapper {
 	int updateByPrimaryKey(Role record);
 
     int insertSelective(Role record);
-
-    Role selectRoleid(@Param("userid")Integer userid);
+   
+   /* Role selectRoleid(@Param("userid")Integer userid);*/
+    /*
+     * 获取所有的角色信息
+     */
     List<Role> selectAllRole();
-
+    List<Role> selectRoleByRolename(@Param("rolename")String rolename);
 }

@@ -17,14 +17,18 @@ public class RoleMapperImpl {
 	private RoleMapper roleMapper;
 	@Autowired 
 	private UserRoleMapper userRoleMapper;
-	public Role selectRoleid(Integer userid)
+	/*public Role selectRoleid(Integer userid)
 	{
 		return roleMapper.selectRoleid(userid);
-	}
+	}*/
 	public List<UserRole> selectroleidByUserid(@Param("userid")Integer userid){
 		return userRoleMapper.selectroleidByUserid(userid);
 	}
 	public List<Role> selectAllRole(){
 		return roleMapper.selectAllRole();
+	}
+	public List<Role> selectAllRoleByRolename(String rolename)
+	{
+		return roleMapper.selectRoleByRolename(rolename);
 	}
 }

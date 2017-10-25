@@ -1,4 +1,5 @@
 $(function(){
+	//所有用户信息
 	$(function () {
 		$('#reportTable').bootstrapTable({
 			url:'SXDG/page.spring',
@@ -90,19 +91,15 @@ $(function(){
           },
           'click .RoleOfC': function (e, value, row, index) {
         	  $("#JSModel").modal("toggle"); 
-        	  SelectRole(row.userid);            
+        	  SelectRole(row.userid);
       }
      }
 })
-	//刷新表格
-     function Search() {
-    	 $('#reportTable').bootstrapTable('refresh');
-     }
 	//table搜索的参数设置
 	function queryParams(params)
 	{
 		var username=$(".username").val();
-		var unit=$("#unit").val();
+		var unit=$("#unitselect .unit").val();
 		var status=$("#status").val();
 		var temp={
 		 "username":username,
@@ -124,27 +121,38 @@ $(function(){
 			},
 			success:function(data){
 				alert("删除成功");
-				Search();
+				 $('#reportTable').bootstrapTable('refresh');
 			}
 		});
 	}
 	//获取所有角色信息
 	function SelectRole(userid)
 	{
-		$('#JSinfo').bootstrapTable({
+		//要多次请求只能通过destory这个表格
+		$(".JSinfo").bootstrapTable('destroy'); 
+		$('.JSinfo').bootstrapTable({
 			url:'role/selectrole.spring',
 			method: 'post',
 			cache: false,
 			striped: true,
-			queryParams: queryRole(userid),
+			queryParams:queryRole(userid),
 			clickToSelect: true,
         	contentType:"application/x-www-form-urlencoded; charset=UTF-8",
 			columns: [
 			{
+				//设置角色是否选中
 				checkbox:true,
-				title : "",
+				field:"check",
 				align : "center",
 				valign : "middle",
+				formatter:function(value, row, index){
+					if(value==true)
+						{
+						return {
+					            checked : true//设置选中
+							   };
+						}
+				}
 			},
 			{
 				field : "rolename",
@@ -156,20 +164,53 @@ $(function(){
 				title : "角色描述",
 				align : "center",
 				valign : "middle"
+			},{
+				field:"roleid",
+				title:"roleid",
+				align : "center",
+				valign : "middle",
 			}],
+			onCheck:function(row){
+				var flag=1;
+				JScheck(row.roleid,row.rolename,flag,row.userid);
+			},
+			onUncheck:function(row)
+			{
+				var flag=0;
+				JScheck(row.roleid,row.rolename,flag,row.userid);
+			},
 			onPageChange : function(size, number) {
 			},
 			formatNoMatches : function() {
 				return '没有找到信息';
 			}
 		});
-		$(window).resize(function() {
-			$('#JSinfo').bootstrapTable('resetView');
-		});
+		//不知道为什么roleid colum只能放在后面如果放在前面1位置会乱2产生莫名的object
+		$('.JSinfo').bootstrapTable('hideColumn', "roleid");
 	}
+	//查找角色参数
 	function queryRole(params)
 	{
 		var temp={
-		 "userid":params,};
+		 "userid":params};
 		return temp;
+	}
+	//用户角色设置方法
+	function JScheck(roleid,rolename,flag,userid){
+		$.ajax({
+			type : "Post",
+			url : "role/modifyrole.spring",
+			data :{
+				"roleid":roleid,
+				"flag":flag,
+				"userid":userid,
+			},
+			dataType : 'json',
+			error : function(data) {
+				alert("角色修改失败！！:");
+			},
+			success:function(data){
+				alert("角色修改成功");
+			}
+		});
 	}

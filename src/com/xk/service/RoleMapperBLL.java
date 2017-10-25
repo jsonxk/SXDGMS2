@@ -27,22 +27,42 @@ public JSONArray selectByUserid(Integer userid)
 	//userrole信息
 	List<UserRole> userrole=alldao.getRoleMapperImpl().selectroleidByUserid(userid);
 	List<Role> role=alldao.getRoleMapperImpl().selectAllRole();
+	for(UserRole ur:userrole)
+	{
+		System.out.println(ur.getUserid()+"ff"+ur.getRoleid());
+	}
 	for(Role r: role)
 	{
+		jo.put("check", false);
 		for(UserRole ur:userrole)
 		{
 			if(ur.getRoleid()==r.getRoleid())
 			{
-				jo.put("checked", true);
-			}
-			else{
-				jo.put("checked", false);
+				jo.put("check", true);
 			}
 		}
+		jo.put("userid", userid);
+		jo.put("roleid", r.getRoleid());
 		jo.put("rolename", r.getName());
 		jo.put("rolememo", r.getMemo());
 		ja.add(jo);
 	}
+	System.out.println(ja);
 	return ja;
 }
+/*
+ * 获取所有的角色信息
+ * 通过rolename
+ */
+	public List<Role> SelectAllRole(String rolename){
+		//所有角色信息
+		if(rolename.equals(""))
+		{
+			//无参
+			return alldao.getRoleMapperImpl().selectAllRole();
+		}
+		else
+			//带参
+			return alldao.getRoleMapperImpl().selectAllRoleByRolename(rolename);
+	}
 }

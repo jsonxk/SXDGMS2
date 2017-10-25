@@ -6,22 +6,18 @@
     <result column="UserId" property="userid" jdbcType="INTEGER" />
     <result column="RoleId" property="roleid" jdbcType="INTEGER" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    UserRoleId, UserId, RoleId
-  </sql>
   <select id="selectroleidByUserid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
   	select * from userrole where userrole.userid=#{userid,jdbcType=INTEGER}
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from userrole
-    where UserRoleId = #{userroleid,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from userrole
-    where UserRoleId = #{userroleid,jdbcType=INTEGER}
+  <delete id="deleteByuseridRoleid" parameterType="com.xk.orm.UserRole" >
+    delete from userrole where UserId =#{userid} and RoleId = #{roleid}
   </delete>
+  <insert id="insertRoleByUserid" parameterType="com.xk.orm.UserRole">
+  	insert into userrole (UserRoleId,UserId, RoleId
+      )
+    values (#{userroleid,jdbcType=INTEGER},#{userid,jdbcType=INTEGER},#{roleid,jdbcType=INTEGER}
+      )
+  </insert>
   <insert id="insert" parameterType="com.xk.orm.UserRole" >
     insert into userrole (UserRoleId, UserId, RoleId
       )

@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.xk.orm.UserInfo;
+import com.xk.orm.UserRole;
 import com.xk.service.AllService;
 
 public class test extends SpringCaseTest{
@@ -17,12 +18,11 @@ public class test extends SpringCaseTest{
 	public void test(){
 		//JSONArray fun=allService.getuserRoleFunctionBLL().SelectFunByUserid(1);
 		//User fun=allService.getuserMapperBLL().LoginJudgy("xk", "123");
-		UserInfo info=new UserInfo();
-		info.setType("管理者");
-		info.setUnitname("供电局");
-		info.setName("xk");
+		UserRole info=new UserRole();
+		info.setUserid(1);
+		info.setRoleid(3);
 		//JSONArray funlist=allService.getuserMapperBLL().selectallUser(info);
 		//JSONArray funlist=allService.getuniBll().selectAllUnitName();
-		System.out.println(allService.getroleMapperBLL().selectByUserid(1));
+		System.out.println(JSONArray.fromObject(allService.getroleMapperBLL().SelectAllRole("")));
 	}
 }

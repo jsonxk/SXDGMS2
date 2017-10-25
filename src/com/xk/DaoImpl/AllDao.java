@@ -13,6 +13,8 @@ public class AllDao {
 	private RoleMapperImpl roleMapperImpl;
 	@Autowired
 	private UnitMapperImpl unitMapperImpl;
+	@Autowired
+	private UserRoleMapperLmpl userRoleMapperLmpl;
 	public UserMapperImpl getuserMapperImpl()
 	{
 		return userMapperImpl;
@@ -25,5 +27,8 @@ public class AllDao {
 	}
 	public UnitMapperImpl getunitMapperImpl(){
 		return unitMapperImpl;
+	}
+	public UserRoleMapperLmpl getuserRoleMapperLmpl(){
+		return userRoleMapperLmpl;
 	}
 }

@@ -1,5 +1,6 @@
 package com.xk.orm;
 
+
 public class UserRole {
     private Integer userroleid;
 

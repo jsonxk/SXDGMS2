@@ -201,7 +201,7 @@
 											<option value="员工">员工</option>
 										</select>
 									</div>
-									<button class="btn btn-primary" type="button" onClick=Search()>查找</button>
+									<button class="btn btn-primary" type="button" onClick="Search()">查找</button>
 								</div>
 								<div class="panel-body content-body">
 									<div id="reportTableDiv" class="span10">
@@ -286,7 +286,7 @@
 						</div>
 						<div class="modal-body">
 							<div id="reportTableDiv" class="span10">
-										<table id="JSinfo">
+										<table class="JSinfo">
 										</table>
 									</div>
 				          </div>
@@ -312,6 +312,10 @@
 		function initIndex(){
 			$(".xtglchild .4xtgl2 a").addClass("active");
 		}
+		function Search(){
+		$('#reportTable').bootstrapTable("refresh");
+		
+	}
 	</script>
 	<script src="./js/unit.js"></script>
 	<script src="./js/pageInit.js"></script>

@@ -19,6 +19,13 @@ public interface UserRoleMapper {
      */
     List<UserRole> selectroleidByUserid(@Param("userid") Integer userid);
     int updateByPrimaryKeySelective(UserRole record);
-
+    /*
+     * 添加用户角色
+     */
+    int insertRoleByUserid(UserRole userrole);
+    /*
+     * 删除用户角色
+     */
+    int deleteByuseridRoleid(UserRole userRole);
     int updateByPrimaryKey(UserRole record);
 }

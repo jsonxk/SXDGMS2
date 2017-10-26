@@ -16,6 +16,11 @@ import com.xk.orm.FunctionList;
 public class FunctionBLL {
 	@Autowired
 	private AllDao allDao;
+	/*
+	 * @param userid
+	 * @param parentid=0;(父节点)
+	 * 返回list<FunctionList>
+	 */
 	public JSONArray selectOnUserid(Integer userid,Integer parentid)
 	{
 		List<FunctionList> funlist=allDao.getfunctionmapperimpl().selectOnUserid(userid, parentid);
@@ -42,5 +47,72 @@ public class FunctionBLL {
 			fun2.clear();
 		}
 		return fun1;
+	}
+	/*
+	 * 返回树节点所有功能
+	 */
+	public JSONArray selectFuncByRoleid(Integer roleid)
+	{
+		JSONArray ja=new JSONArray();
+		//所有功能信息
+		List<FunctionList> funclist;
+		funclist=allDao.getfunctionmapperimpl().selectallFunction();
+		//某个角色功能信息
+		List<Function> list=null;
+		if(roleid>0)
+		{
+			list=allDao.getfunctionmapperimpl().selectFuncByRoleid(roleid);
+			ja=FuncChange(funclist,list);
+		}
+		else{
+			ja=FuncChange(funclist,list);
+		}
+		return ja;
+	}
+	public JSONArray FuncChange(List<FunctionList> funclist,List<Function> list)
+	{
+		JSONArray ja=new JSONArray();
+		JSONObject jo=new JSONObject(); 
+		JSONArray finaldata=new JSONArray();
+		JSONObject finalobj=new JSONObject(); 
+		//父功能节点
+		for(FunctionList funcl:funclist)
+		{
+			//子功能节点
+			for(Function func:funcl.getFunList())
+			{
+				if(func.getParentid()==funcl.getFunctionid())
+				{
+					jo.put("id",func.getFunctionid());
+					jo.put("text", func.getName());
+					jo.put("level", 0);
+					jo.put("tag", 0);
+					jo.put("state", "{checked:false}");
+					if(list!=null)
+					{
+						for(Function f:list)
+						{
+							if(f.getFunctionid()==func.getFunctionid())
+							{
+								jo.put("state", "{checked:true}");
+							}
+						}
+					}
+					else{
+						//待定
+					}
+				}
+				ja.add(jo);
+				
+			}
+			finalobj.put("id", funcl.getFunctionid());
+			finalobj.put("text", funcl.getName());
+			finalobj.put("level",0);
+			finalobj.put("tag", 0);
+			finalobj.put("nodes", ja);
+			finaldata.add(finalobj);
+			ja.clear();
+		}
+		return finaldata;
 	}
 }

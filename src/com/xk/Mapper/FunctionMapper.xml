@@ -18,9 +18,7 @@
 			<result column="childmemo" property="memo" jdbcType="VARCHAR" />
 		</collection>
 	</resultMap>
-	<sql id="Base_Column_List">
-		FunctionId, Name, index, ParentId, URL, Memo
-	</sql>
+	<!-- 根据用户获取所有信息 -->
 	<select id="selectOnUserid" resultMap="BaseResultMap"
 		parameterType="java.lang.Integer">
 		SELECT f.*,f2.FunctionId AS childid,f2.`Name` as childname,f2.`index` as
@@ -29,8 +27,18 @@
 		LEFT JOIN role ON ur.RoleId=role.RoleId
 		LEFT JOIN rolefunction rf on role.RoleId=rf.RoleId
 		LEFT JOIN `function` f on rf.FunctionId=f.FunctionId
-		LEFT JOIN `function` f2 ON f.FunctionId=f2.ParentId WHERE u.UserId=1 and
-		f.ParentId=0
+		LEFT JOIN `function` f2 ON f.FunctionId=f2.ParentId WHERE u.UserId=#{userid} and
+		f.ParentId=#{parentid}
+	</select>
+	<!-- 根据角色获取该用户功能 -->
+	<select id="selectFuncByRoleid" resultType="com.xk.orm.Function" parameterType="java.lang.Integer">
+		select f1.* from rolefunction rf,function f1 where rf.FunctionId= f1.functionid and rf.roleid=#{roleid}
+	</select>
+	<!-- 获取所有的信息 -->
+	<select id="selectallFunction" resultMap="BaseResultMap">
+		SELECT f1.*,f2.FunctionId AS childid,f2.`Name` as childname,f2.`index` as
+		childindex,f2.ParentId as childparent,f2.URL AS childurl,f2.Memo as
+		childmemo from `function` f1,`function` f2 where f2.ParentId=f1.FunctionId
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from function

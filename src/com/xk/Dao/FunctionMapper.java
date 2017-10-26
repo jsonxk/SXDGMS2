@@ -9,24 +9,19 @@ import com.xk.orm.FunctionList;
 
 public interface FunctionMapper {
 
-	int insert(Function record);
-
-	int insertSelective(Function record);
-
-	Function selectByPrimaryKey(Integer functionid);
-
-	int updateByPrimaryKey(Function record);
-
-	int deleteByPrimaryKey(Integer functionid);
-
 	/*
 	 * @param userid
-	 * 
 	 * @param parentid
 	 */
 	List<FunctionList> selectOnUserid(@Param("userid") Integer userid,
 			@Param("parentid") Integer parentid);
 
-	int updateByPrimaryKeySelective(Function record);
-
+	/*
+	 * 获取某个人角色所有功能
+	 */
+	List<Function> selectFuncByRoleid(@Param("roleid")Integer roleid);
+	/*
+	 * 获取所有功能
+	 */
+	List<FunctionList> selectallFunction();
 }

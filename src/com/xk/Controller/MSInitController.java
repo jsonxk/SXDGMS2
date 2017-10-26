@@ -41,7 +41,6 @@ public class MSInitController {
 		info.setName(username);
 		info.setType(type);
 		info.setUnitname(unit);
-		System.out.println(username+type+"防守打法"+unit);
 		JSONArray ja=allService.getuserMapperBLL().selectallUser(info);
 		return ja;
 	}

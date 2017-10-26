@@ -23,6 +23,7 @@ public class test extends SpringCaseTest{
 		info.setRoleid(3);
 		//JSONArray funlist=allService.getuserMapperBLL().selectallUser(info);
 		//JSONArray funlist=allService.getuniBll().selectAllUnitName();
-		System.out.println(JSONArray.fromObject(allService.getroleMapperBLL().SelectAllRole("")));
+		//System.out.println(JSONArray.fromObject(allService.getroleMapperBLL().SelectAllRole("")));
+		System.out.println(allService.getfunctionBLL().selectFuncByRoleid(1));
 	}
 }

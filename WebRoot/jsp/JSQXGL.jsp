@@ -37,11 +37,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   <style type="text/css">
 .fixed-table-body {
-	height: 45%;
+	height: 40%;
 }
-
 #search {
-	margin: 2% 0 2% 2%;
+	margin: 1% 0 2% 1%;
 	height: 5%;
 }
 
@@ -213,8 +212,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 	</script>
 	<script src="./js/pageInit.js"></script>
+	<!-- table信息和tree信息 -->
 	<script src="./js/table/JSQX.js"></script>
-	<script src="./js/treeview.js"></script>
 </body>
 
 </html>

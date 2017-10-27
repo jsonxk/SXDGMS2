@@ -8,7 +8,12 @@ $(function() {
 		pageSize : 10,
 		pageNumber : 1,
 		pageList : [ 10, 20, 40 ],
-		sidePagination : 'client',
+		sidePagination : 'server',
+		/*
+		 * 服务器端分页
+		 * 返回json格式
+		 * {total:number,row:jsonarray}
+		 */
 		queryParams : queryParams,
 		clickToSelect : true,
 		paginationPreText : "上一页",
@@ -120,37 +125,38 @@ function treeview(treedata,roleid) {
 									} ]);
 						}
 					else{
-						// 选中父节点，则自动选择子节点
+						// 选中父节点
 						if (data.nodes != null) {
 							/*
 							 * 父节点信息不为空，获取所有子节点信息 轮流发送信息 发送信息id roleid
 							 */
 							var arrayInfo = data.nodes;
+							var par=null;
 							for (var i = 0; i < arrayInfo.length; i++) {
 								// $('#treeview1').treeview('checkNode', [
 								// arrayInfo[i].nodeId, { silent: true } ]);
+								//遍历选中子节点
 								$('#treeview1').treeview('checkNode',
 										[ arrayInfo[i].nodeId, {
 											silent : true
 										} ]);
+								//发送添加功能请求
+								modifyRoleFunction(roleid,arrayInfo[i].id,data.id,1);
 							}
-							var par=null;
-							var arrayInfo = data.nodes;
-							alert(2);
-							if(arrayInfo!=null)
+							/*if(arrayInfo!=null)
 								{
 									for (var i = 0; i < arrayInfo.length; i++)
 										{
 										//父节点
-											modifyRoleFunction(roleid,data.id,arrayInfo[i].id,1);
+										
 										}
-								}
-							else{
-								//子节点
-								par=$('#treeview1').treeview('getParent', data);
-								modifyRoleFunction(roleid,par.id,data.id,1);
-								alert(par.text+data.text);
-							}
+								}*/
+						}
+						else{
+							//子节点
+							par=$('#treeview1').treeview('getParent', data);
+							//发送添加功能请求
+							modifyRoleFunction(roleid,data.id,par.id,1);
 						}
 					}
 				},
@@ -165,9 +171,14 @@ function treeview(treedata,roleid) {
 									[ arrayInfo[i].nodeId, {
 										silent : true
 									} ]);
+							modifyRoleFunction(roleid,arrayInfo[i].id,data.id,0);
 						}
 					}
-					
+					else{
+						//子节点
+						par=$('#treeview1').treeview('getParent', data);
+						modifyRoleFunction(roleid,data.id,par.id,0);
+					}
 				}
 			});
 	/*$('#treeview1').on('nodeChecked', function(event, data) {
@@ -206,10 +217,16 @@ function treeview(treedata,roleid) {
 	});*/
 }
 //修改角色功能
+/*
+ * @param roleid 角色id
+ * @param childid 子功能id
+ * @param parentid 父功能id
+ * @param flag 标记（添加还是删除功能） 
+ */
 function modifyRoleFunction(roleid,childid,parentid,flag){
 	//alert(childid+"fg"+parentid+"dd"+flag);
 	var rolefunc=new Array();
-	rolefunc.push({"roleid":roleid,"functionid":childid,"parentid":parentid});
+	rolefunc.push({"roleid":roleid,"functionid":childid,"parentid":parentid,"flag":flag});
 	$.ajax({
 		type:"post",
 		url:"func/modifyFunc.spring",
@@ -220,7 +237,12 @@ function modifyRoleFunction(roleid,childid,parentid,flag){
 			alert("修改失败");
 		},
 		success:function(data){
-			
+			if(data)
+				{
+					alert("修改信息成功");
+				}
+			else
+				alert("修改失败");
 		}
 	});
 }

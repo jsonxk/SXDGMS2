@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.xk.DaoImpl.AllDao;
 import com.xk.orm.Function;
 import com.xk.orm.FunctionList;
+import com.xk.orm.RoleFunction;
 
 @Service
 public class FunctionBLL {
@@ -75,12 +76,14 @@ public class FunctionBLL {
 		JSONObject jo=new JSONObject(); 
 		JSONArray finaldata=new JSONArray();
 		JSONObject finalobj=new JSONObject(); 
-		//父功能节点
+		//所有父功能节点
 		for(FunctionList funcl:funclist)
 		{
+			int count=0;
 			//子功能节点
 			for(Function func:funcl.getFunList())
 			{
+				//子功能加入父功能
 				if(func.getParentid()==funcl.getFunctionid())
 				{
 					jo.put("id",func.getFunctionid());
@@ -88,6 +91,7 @@ public class FunctionBLL {
 					jo.put("level", 0);
 					jo.put("tag", 0);
 					jo.put("state", "{checked:false}");
+					//判断roleid的功能是不是为空
 					if(list!=null)
 					{
 						for(Function f:list)
@@ -95,6 +99,8 @@ public class FunctionBLL {
 							if(f.getFunctionid()==func.getFunctionid())
 							{
 								jo.put("state", "{checked:true}");
+								//某个父功能下的子功能有几个
+								count++;
 							}
 						}
 					}
@@ -105,6 +111,13 @@ public class FunctionBLL {
 				ja.add(jo);
 				
 			}
+			if(count==funcl.getFunList().size())
+			{
+				finalobj.put("state", "{checked:true}");
+			}
+			else{
+				finalobj.put("state", "{checked:false}");
+			}
 			finalobj.put("id", funcl.getFunctionid());
 			finalobj.put("text", funcl.getName());
 			finalobj.put("level",0);
@@ -114,5 +127,45 @@ public class FunctionBLL {
 			ja.clear();
 		}
 		return finaldata;
+	}
+	//修改功能
+	public boolean modifyFunc(List<Object> list)
+	{
+		JSONArray ja=JSONArray.fromObject(list);
+		RoleFunction rf=new RoleFunction();
+		int roleid=0;
+		int functionid=0;
+		int parentid=0;
+		int flag=0;
+		//数据执行结果
+		int rel=0;
+		JSONObject job=new JSONObject();
+		for(int i=0;i<ja.size();i++)
+		{
+			  job= ja.getJSONObject(i);
+			  roleid=(Integer) job.get("roleid");
+			  functionid=(Integer) job.get("functionid");
+			  parentid=(Integer) job.get("parentid");
+			  flag=(Integer) job.get("flag");
+			  rf.setRoleid(roleid);
+			  rf.setFunctionid(functionid);
+			  rf.setParentid(parentid);
+			  if(flag==1)
+			  {
+				  //添加功能
+				  rel=allDao.getRolefunctionMapeerImpl().insertFunc(rf);
+			  }
+			  else if(flag==0)
+			  {
+				  //删除功能
+				  rel=allDao.getRolefunctionMapeerImpl().deleteFunc(rf);
+			  }
+		}
+		if(rel>0)
+		{
+			return true;
+		}
+		else 
+			return false;
 	}
 }

@@ -1,6 +1,8 @@
 $(function(){
 	var userid=$(".userinfo span").text();
 	//var username=$(".userinfo p").text();
+	$(".slimScrollDiv").removeAttr("style");
+	$(".slimScrollDiv").css("position","relative").css("overflow","hidden").css("width","auto").css("height","100%");
 	$.ajax({
 			type : "POST",
 			url : "SXDG/init.spring",

@@ -4,6 +4,8 @@ package com.xk.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.xk.DaoImpl.dictypeMapperImpl;
+
 @Service
 public class AllService {
 	@Autowired
@@ -16,6 +18,8 @@ public class AllService {
 	private UnitBLL uniBll;
 	@Autowired
 	private RoleMapperBLL roleMapperBLL;
+	@Autowired
+	private DicTypeBLL dicTypeBLL;
 	public UserMapperBLL getuserMapperBLL(){
 		return userMapperBLL;
 	}
@@ -30,5 +34,8 @@ public class AllService {
 	}
 	public RoleMapperBLL getroleMapperBLL(){
 		return roleMapperBLL;
+	}
+	public DicTypeBLL getdicTypeBLL(){
+		return dicTypeBLL;
 	}
 }

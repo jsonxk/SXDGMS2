@@ -21,25 +21,19 @@
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 <!-- VENDOR CSS -->
-<link rel="stylesheet"
-	href="./assets/vendor/font-awesome/css/font-awesome.min.css">
-<link rel="stylesheet" href="./assets/vendor/linearicons/style.css">
-<!-- MAIN CSS -->
-<link rel="stylesheet" href="./assets/css/main.css">
-<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
-<link rel="stylesheet" href="./assets/css/demo.css">
-<!-- GOOGLE FONTS -->
-<link rel="stylesheet" type="text/css" href="./treeview/css/bootstrap-treeview.css">
-<!-- treeview -->
-<link rel="stylesheet" type="text/css" href="./treeview/css/bootstrap.min.css">
-<link
-	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700"
-	rel="stylesheet">
-<!-- ICONS -->
-<link rel="apple-touch-icon" sizes="76x76"
-	href="./assets/img/apple-icon.png">
-<link rel="icon" type="image/png" sizes="96x96"
-	href="./assets/img/favicon.png">
+<link rel="stylesheet" href="./assets/vendor/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="./assets/vendor/linearicons/style.css">
+	<!-- MAIN CSS -->
+	<link rel="stylesheet" href="./assets/css/main.css">
+	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+	<link rel="stylesheet" href="./assets/css/demo.css">
+	<!-- ICONS -->
+	<link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="./assets/img/favicon.png">
+	<link rel="stylesheet" href="./js/table/bootstrap-table.css" />
+	<link rel="stylesheet" href="./js/table/bootstrap.css" />
+	<!-- treeview -->
+	<link rel="stylesheet" type="text/css" href="./treeview/css/bootstrap.min.css">
 <body>
 	<!-- WRAPPER -->
 	<div id="wrapper">
@@ -154,80 +148,22 @@
 		</div>
 	</div>
 	<!-- END WRAPPER -->
-	<!-- 
 	<script src="./assets/vendor/jquery/jquery.min.js"></script>
-	<script src="./assets/vendor/bootstrap/js/bootstrap.min.js"></script>
-	<script src="./assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-	<script src="./assets/scripts/klorofil-common.js"></script>
-	<script type="text/javascript">
-		function initIndex(){
-			$(".xtglchild .4xtgl0   a").addClass("active");
-		}
-	</script>
-	<script src="./js/pageInit.js"></script> -->
-	<script src="./treeview/js/jquery-2.2.3.min.js" type="text/javascript"></script>
 	<script src="./assets/vendor/bootstrap/js/bootstrap.min.js"></script>
 	<script
 		src="./assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 	<script src="./assets/scripts/klorofil-common.js"></script>
-	<script src="./treeview/js/bootstrap-treeview.js" type="text/javascript"></script>
+	<script src="./assets/vendor/bootstrap/js/bootstrap.js"></script>
+	<script src="./js/table/bootstrap-table.js"></script>
+	<script src="./js/table/bootstrap-table-export.js"></script>
+	<script src="./js/table/jquery.base64.js"></script>
+	<script src="./js/table/tableExport.js"></script>
 	<script type="text/javascript">
 		function initIndex() {
 			$(".xtglchild .4xtgl0   a").addClass("active");
 		}
 	</script>
 	<script src="./js/pageInit.js"></script>
-		<script type="text/javascript">
-		$(function() {
-			$('#treeview1').treeview({
-	          data: $("#treeviewVal").html(),
-	          showCheckbox : true,
-	          levels:1,
-	          onNodeChecked: function(event, data){
-	        	 //选中父节点，则自动选择子节点
-	        	if(data.nodes != null)
-	        	{
-	        		var arrayInfo = data.nodes;
-	        		for (var i = 0; i < arrayInfo.length; i++) {
-	        			// $('#treeview1').treeview('checkNode', [ arrayInfo[i].nodeId, { silent: true } ]);
-	        			$('#treeview1').treeview('toggleNodeChecked', [ arrayInfo[i].nodeId, { silent: true } ]);
-					}
-	        	}
-			  },
-			  onNodeUnchecked: function(event, data){
-		        	 //取消选中父节点，则自动取消选择子节点
-		        	if(data.nodes != null)
-		        	{
-		        		var arrayInfo = data.nodes;
-		        		for (var i = 0; i < arrayInfo.length; i++) {
-		        			// $('#treeview1').treeview('checkNode', [ arrayInfo[i].nodeId, { silent: true } ]);
-		        			$('#treeview1').treeview('toggleNodeChecked', [ arrayInfo[i].nodeId, { silent: true } ]);
-						}
-		        	}
-				  }
-
-	    		});
-
-		});
-
-		function dosome( num){
-			if(num == 1)
-			{
-				$('#treeview1').treeview('checkAll', { silent: true });//全选
-			}else if(num == 2){
-				$('#treeview1').treeview('uncheckAll', { silent: true });//取消全选
-			}else if(num == 3){
-				$('#treeview1').treeview('collapseAll', { silent: true });//折叠
-			}else if(num == 4){
-				$('#treeview1').treeview('expandAll', { levels: 2, silent: true });//展开所有二级节点
-			}
-		}
-		function getDisabled(){
-			var checkedArr = $('#treeview1').treeview('getChecked','');
-			alert(checkedArr.length);
-		}
-
-	</script>
 </body>
 
 </html>

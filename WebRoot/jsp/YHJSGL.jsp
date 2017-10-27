@@ -184,6 +184,7 @@
 								<div class="panel-heading">
 									<h3 class="panel-title">用户信息表</h3>
 								</div>
+								<!-- 表格查找 -->
 								<div id="search">
 									<button class="btn btn-primary btnsearch" type="button">姓名</button>
 									<input type="text" class="form-control username"
@@ -203,6 +204,7 @@
 									</div>
 									<button class="btn btn-primary" type="button" onClick="Search()">查找</button>
 								</div>
+								<!-- 表格信息主体 -->
 								<div class="panel-body content-body">
 									<div id="reportTableDiv" class="span10">
 										<table id="reportTable">
@@ -221,7 +223,7 @@
 				<span><%=session.getAttribute("userid")%></span>
 			</div>
 			<div class="clearfix"></div>
-			<!-- tanchu -->
+			<!-- 用户信息修改 -->
 			<div class="modal" id="mymodal">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -274,7 +276,7 @@
 			</div>
 		</div>
 	</div>
-	
+	<!-- 角色设置 -->
 	<div class="modal" id="JSModel">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -288,7 +290,7 @@
 							<div id="reportTableDiv" class="span10">
 										<table class="JSinfo">
 										</table>
-									</div>
+							</div>
 				          </div>
 						</div>
 					</div>

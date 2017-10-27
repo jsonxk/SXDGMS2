@@ -1,10 +1,12 @@
 package com.xk.Controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.text.StyledEditorKit.BoldAction;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.xk.Dao.RoleFunction;
 import com.xk.service.AllService;
 
 @Controller
@@ -31,9 +32,9 @@ public class FunctionController {
 	}
 	//修改或者删除某角色功能信息
 	@RequestMapping(value="/modifyFunc",method=RequestMethod.POST)
-	public @ResponseBody boolean modifyFunc(@RequestBody List<RoleFunction> list){
-		System.out.println("请求"+list.get(0).getFunctionid());
-		return true;
+	public @ResponseBody boolean modifyFunc(@RequestBody List<Object> list){
+		System.out.println("修改功能");
+		return allService.getfunctionBLL().modifyFunc(list);
 	}
 	
 }

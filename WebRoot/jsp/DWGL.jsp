@@ -11,8 +11,7 @@
 <head>
 <base href="<%=basePath%>">
 
-<title>单位管理</title>
-
+<title>线路/线杆管理管理</title>
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
@@ -21,141 +20,150 @@
 <!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-
-<link href="./css/style.css" rel="stylesheet">
-<link href="./css/style-responsive.css" rel="stylesheet">
-</head>
-<body class="sticky-header">
-	<section> <!-- left side start-->
-	<div class="left-side sticky-left-side">
-
-		<!--logo and iconic logo start-->
-		<div class="logo">
-			<a href="index.html"><img src="images/logo.png" alt=""></a>
+<!-- VENDOR CSS -->
+<link rel="stylesheet" href="./assets/vendor/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="./assets/vendor/linearicons/style.css">
+	<!-- MAIN CSS -->
+	<link rel="stylesheet" href="./assets/css/main.css">
+	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+	<link rel="stylesheet" href="./assets/css/demo.css">
+	<!-- ICONS -->
+	<link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="./assets/img/favicon.png">
+	<link rel="stylesheet" href="./js/table/bootstrap-table.css" />
+	<link rel="stylesheet" href="./js/table/bootstrap.css" />
+	<!-- treeview -->
+	<link rel="stylesheet" type="text/css" href="./treeview/css/bootstrap.min.css">
+<body>
+	<!-- WRAPPER -->
+	<div id="wrapper">
+		<!-- NAVBAR -->
+		<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="brand">
+			<a href="index.html"><img src="assets/img/logo-dark.png"
+				alt="Klorofil Logo" class="img-responsive logo"></a>
 		</div>
-
-		<div class="logo-icon text-center">
-			<a href="index.html"><img src="images/logo_icon.png" alt=""></a>
-		</div>
-		<!--logo and iconic logo end-->
-
-
-		<div class="left-side-inner">
-			<!--sidebar nav start-->
-			<ul class="nav nav-pills nav-stacked custom-nav">
-				<li class="sy"><a href="jsp/index.jsp"><i class="fa fa-home"></i> <span>首页</span></a></li>
-				<li class="menu-list sqgl"><a href=""><i class="fa fa-laptop"></i>
-						<span></span></a>
-					<ul class="sub-menu-list">
-						
-
-					</ul>
-				</li>
-				<li class="menu-list tzgl"><a href=""><i class="fa fa-list-alt"></i>
-						<span></span></a>
-					<ul class="sub-menu-list">
-						
-					</ul>
-				</li>
-				<li class="menu-list qxgl"><a href=""><i class="fa fa-tasks"></i>
-						<span></span></a>
-					<ul class="sub-menu-list">
-						
-					</ul>
-				</li>
-				<li class="menu-list dtgl"><a href=""><i class="fa fa-suitcase"></i>
-						<span></span></a>
-					<ul class="sub-menu-list">
-					
-
-					</ul>
-				</li>
-				<li class="menu-list xtgl"><a href=""><i class="fa fa-cogs"></i>
-						<span></span></a>
-					<ul class="sub-menu-list">
-						
-
-					</ul>
-				</li>
-				<li class="menu-list rcgl"><a href=""><i class="fa fa-book"></i>
-						<span></span></a>
-					<ul class="sub-menu-list">
-						
-
-					</ul>
-				</li>
-			</ul>
-			<!--sidebar nav end-->
-		</div>
-	</div>
-	<!-- left side end--> <!-- main content start-->
-	<div class="main-content">
-
-		<!-- header section start-->
-		<div class="header-section">
-
-			<!--toggle button start-->
-			<a class="toggle-btn"><i class="fa fa-bars"></i></a>
-			<!--toggle button end-->
-
-			<!--search start-->
-			<form class="searchform" action="index.html" method="post">
-				<input type="text" class="form-control" name="keyword"
-					placeholder="Search here..." />
-			</form>
-			<!--search end-->
-
-			<!--头像 -->
-			<div class="menu-right">
-				<ul class="notification-menu">
-					<li><a href="#" class="btn btn-default dropdown-toggle"
-						data-toggle="dropdown"> <img
-							src="images/photos/user-avatar.png" alt="" /><%=session.getAttribute("name").toString() %><span
-							class="caret"></span>
-					</a>
-						<ul class="dropdown-menu dropdown-menu-usermenu pull-right">
-							<li><a href="#"><i class="fa fa-user"></i> Profile</a></li>
-							<li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
-							<li><a href="#"><i class="fa fa-sign-out"></i> Log Out</a></li>
-						</ul></li>
-
-				</ul>
+		<div class="container-fluid">
+			<div class="navbar-btn">
+				<button type="button" class="btn-toggle-fullwidth">
+					<i class="lnr lnr-arrow-left-circle"></i>
+				</button>
 			</div>
-			<!--notification menu end -->
-
+			<form class="navbar-form navbar-left">
+				<div class="input-group">
+					<input type="text" value="" class="form-control"
+						placeholder="Search dashboard..."> <span
+						class="input-group-btn"><button type="button"
+							class="btn btn-primary">Go</button></span>
+				</div>
+			</form>
+			<div class="navbar-btn navbar-btn-right">
+				<a class="btn btn-success update-pro"
+					href="#downloads/klorofil-pro-bootstrap-admin-dashboard-template/?utm_source=klorofil&utm_medium=template&utm_campaign=KlorofilPro"
+					title="Upgrade to Pro" target="_blank"><i class="fa fa-rocket"></i>
+					<span>UPGRADE TO PRO</span></a>
+			</div>
+			<div id="navbar-menu"></div>
 		</div>
-		<!-- header section end-->
-
-		<!--body wrapper end-->
-
-		<!--footer section start-->
-		<footer> 2014 &copy; AdminEx by ThemeBucket </footer>
-		<!--footer section end-->
-		<div class="userinfo" style="display:none">
-			<span><%=session.getAttribute("userid")%></span>
+		</nav>
+		<!-- END NAVBAR -->
+		<!-- LEFT SIDEBAR -->
+		<div id="sidebar-nav" class="sidebar">
+			<div class="sidebar-scroll">
+				<nav>
+				<ul class="nav">
+					<li><a href="jsp/index.jsp"><i class="lnr lnr-home"></i> <span>首页</span></a></li>
+					<li class="sqgl"><a href="#subPages" data-toggle="collapse"
+						class="collapsed"><i class="lnr lnr-file-empty"></i> <span></span>
+							<i class="icon-submenu lnr lnr-chevron-left"></i></a>
+						<div id="subPages" class="collapse">
+							<ul class="nav sqglchild">
+							</ul>
+						</div></li>
+					<li class="tzgl"><a href="#subPages1" data-toggle="collapse"
+						class="collapsed"><i class="lnr lnr-file-empty"></i> <span></span>
+							<i class="icon-submenu lnr lnr-chevron-left"></i></a>
+						<div id="subPages1" class="collapse">
+							<ul class="nav tzglchild">
+							</ul>
+						</div></li>
+					<li class="qxgl"><a href="#subPages2" data-toggle="collapse"
+						class="collapsed"><i class="lnr lnr-file-empty"></i> <span></span>
+							<i class="icon-submenu lnr lnr-chevron-left"></i></a>
+						<div id="subPages2" class="collapse">
+							<ul class="nav qxglchild">
+							</ul>
+						</div></li>
+					<li class="dtgl"><a href="#subPages3" data-toggle="collapse"
+						class="collapsed"><i class="lnr lnr-file-empty"></i> <span></span>
+							<i class="icon-submenu lnr lnr-chevron-left"></i></a>
+						<div id="subPages3" class="collapse ">
+							<ul class="nav dtglchild">
+							</ul>
+						</div></li>
+					<li class="xtgl"><a href="#subPages4" data-toggle="collapse"
+						class="active"><i class="lnr lnr-file-empty"></i> <span></span>
+							<i class="icon-submenu lnr lnr-chevron-left"></i></a>
+						<div id="subPages4" class="collapse in">
+							<ul class="nav xtglchild">
+							</ul>
+						</div></li>
+					<li class="rcgl"><a href="#subPages5" data-toggle="collapse"
+						class="collapsed"><i class="lnr lnr-file-empty"></i> <span></span>
+							<i class="icon-submenu lnr lnr-chevron-left"></i></a>
+						<div id="subPages5" class="collapse">
+							<ul class="nav rcglchild">
+							</ul>
+						</div></li>
+				</ul>
+				</nav>
+			</div>
 		</div>
-
+		<!-- END LEFT SIDEBAR -->
+		<!-- MAIN -->
+		<div class="main">
+			<!-- MAIN CONTENT -->
+			<div class="main-content">
+				<div class="container-fluid">
+					<h3 class="page-title">用户信息表</h3>
+					<div class="row">
+						<div class="col-md-12">
+							<!-- BASIC TABLE -->
+							<div class="panel">
+								<div style="width:40%">
+										
+								</div>
+							</div>
+							<!-- END BASIC TABLE -->
+						</div>
+					</div>
+				</div>
+				<!-- END MAIN CONTENT -->
+			</div>
+			<!-- END MAIN -->
+			<div class="userinfo" style="display:none">
+				<span><%=session.getAttribute("userid")%></span>
+			</div>
+			<div class="clearfix"></div>
+		</div>
 	</div>
-	<!-- main content end--> </section>
-	<!-- Placed js at the end of the document so the pages load faster -->
-	<script src="./js/jquery-1.10.2.min.js"></script>
-	<script src="./js/jquery-ui-1.9.2.custom.min.js"></script>
-	<script src="./js/jquery-migrate-1.2.1.min.js"></script>
-	<script src="./js/bootstrap.min.js"></script>
-	<script src="./js/modernizr.min.js"></script>
-	<script src="./js/jquery.nicescroll.js"></script>
-
-	<!--common scripts for all pages-->
-	<script src="./js/scripts.js"></script>
+	<!-- END WRAPPER -->
+	<script src="./assets/vendor/jquery/jquery.min.js"></script>
+	<script src="./assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script
+		src="./assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+	<script src="./assets/scripts/klorofil-common.js"></script>
+	<script src="./assets/vendor/bootstrap/js/bootstrap.js"></script>
+	<script src="./js/table/bootstrap-table.js"></script>
+	<script src="./js/table/bootstrap-table-export.js"></script>
+	<script src="./js/table/jquery.base64.js"></script>
+	<script src="./js/table/tableExport.js"></script>
 	<script type="text/javascript">
-  	function initIndex(){
-  		$(".menu-list").removeClass("nav-active");
-		$(".xtgl").addClass("nav-active");
-		$(".sub-menu-list li").removeClass("active");
-		$(".4xtgl4").addClass("active");
-  	}
-  </script>
-  <script src="./js/page/pageInit.js"></script>
+		function initIndex() {
+			$(".xtglchild .4xtgl4   a").addClass("active");
+		}
+	</script>
+	<script src="./js/pageInit.js"></script>
 </body>
 
 </html>

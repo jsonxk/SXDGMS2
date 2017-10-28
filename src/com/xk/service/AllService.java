@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xk.DaoImpl.dictypeMapperImpl;
+import com.xk.orm.dicitem;
 
 @Service
 public class AllService {
@@ -20,7 +21,9 @@ public class AllService {
 	private RoleMapperBLL roleMapperBLL;
 	@Autowired
 	private DicTypeBLL dicTypeBLL;
-	public UserMapperBLL getuserMapperBLL(){
+	@Autowired
+	private DicitemBLL dicitemBLL;
+ 	public UserMapperBLL getuserMapperBLL(){
 		return userMapperBLL;
 	}
 	public UserRoleFunctionBLL getuserRoleFunctionBLL(){
@@ -37,5 +40,8 @@ public class AllService {
 	}
 	public DicTypeBLL getdicTypeBLL(){
 		return dicTypeBLL;
+	}
+	public DicitemBLL getdicitemBll(){
+		return dicitemBLL;
 	}
 }

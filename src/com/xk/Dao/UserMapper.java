@@ -7,7 +7,9 @@ import org.apache.ibatis.annotations.Param;
 
 import com.xk.orm.User;
 import com.xk.orm.UserInfo;
-
+/*
+ * 用户
+ */
 public interface UserMapper {
     int insert(User record);
 

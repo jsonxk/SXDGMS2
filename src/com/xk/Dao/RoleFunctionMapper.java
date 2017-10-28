@@ -2,7 +2,9 @@ package com.xk.Dao;
 
 import com.xk.orm.RoleFunction;
 
-
+/*
+ * 角色
+ */
 public interface RoleFunctionMapper {
     int deleteByPrimaryKey(Integer rolefunctionid);
 	int insert(RoleFunction record);

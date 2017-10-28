@@ -32,20 +32,32 @@ public class DicTypeBLL {
 		{
 			//初始化加载信息
 			dicList=alldao.getdictypeMapperImpl().selectAlltype(offset, pagesize);
-			for(dictype dic:dicList)
-			{
-				jobj.put("dicname", dic.getDicname());
-				jobj.put("dicmemo", dic.getMemo()+"");
-				data.add(jobj);
-			}
-			total=alldao.getdictypeMapperImpl().selectTotalCount();
-			jobjtotal.put("total", total);
-			jobjtotal.put("rows", data);
-			datatotal.add(jobjtotal);
 		}
 		else{
 			//查询信息
+			dicList=alldao.getdictypeMapperImpl().selectTypeByInfo(typename);
 		}
+		for(dictype dic:dicList)
+		{
+			jobj.put("dictypeid", dic.getDictypeid());
+			jobj.put("dicname", dic.getDicname());
+			jobj.put("dicmemo", dic.getMemo());
+			data.add(jobj);
+		}
+		total=alldao.getdictypeMapperImpl().selectTotalCount();
+		jobjtotal.put("total", total);
+		jobjtotal.put("rows", data);
+		datatotal.add(jobjtotal);
 		return datatotal;
+	}
+	//删除dictype信息
+	public boolean DelDictype(Integer dictypeid){
+		int i=alldao.getdictypeMapperImpl().DelDictype(dictypeid);
+		if(i>0)
+		{
+			return true;
+		}
+		else 
+			return false;
 	}
 }

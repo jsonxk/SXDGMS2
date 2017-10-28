@@ -13,7 +13,11 @@
   <select id="selectTotalCount" resultType="java.lang.Integer">
   	SELECT count(*) from dictype
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <!-- 查找信息 -->
+  <select id="selectTypeByInfo" parameterType="java.lang.String" resultMap="BaseResultMap">
+  	select * from dictype where DicName like "%"#{typename}"%"
+  </select>
+  <delete id="DelDictype" parameterType="java.lang.Integer" >
     delete from dictype
     where DicTypeId = #{dictypeid,jdbcType=INTEGER}
   </delete>

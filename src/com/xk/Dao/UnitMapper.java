@@ -3,7 +3,9 @@ package com.xk.Dao;
 import java.util.List;
 
 import com.xk.orm.Unit;
-
+/*
+ * 公司单位
+ */
 public interface UnitMapper {
     int deleteByPrimaryKey(Integer unitid);
 

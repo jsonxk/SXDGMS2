@@ -8,12 +8,7 @@ $(function() {
 		pageSize : 10,
 		pageNumber : 1,
 		pageList : [ 10, 20, 40 ],
-		sidePagination : 'server',
-		/*
-		 * 服务器端分页
-		 * 返回json格式
-		 * {total:number,row:jsonarray}
-		 */
+		sidePagination : 'client',
 		queryParams : queryParams,
 		clickToSelect : true,
 		paginationPreText : "上一页",
@@ -59,7 +54,7 @@ $(function() {
 		
 	});
 	$(window).resize(function() {
-		$('#reportTable').bootstrapTable('resetView');
+		$('#JSQXinfo').bootstrapTable('resetView');
 	});
 });
 // 自定义按钮
@@ -246,21 +241,4 @@ function modifyRoleFunction(roleid,childid,parentid,flag){
 		}
 	});
 }
-//删除信息
-function DelUser(userid) {
-	$.ajax({
-		type : "Post",
-		url : "user/deluser.spring",
-		data : {
-			"userid" : userid,
-		},
-		dataType : 'json',
-		error : function(data) {
-			alert("删除失败！！:");
-		},
-		success : function(data) {
-			alert("删除成功");
-			$('#reportTable').bootstrapTable('refresh');
-		}
-	});
-}
+

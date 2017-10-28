@@ -5,7 +5,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.xk.orm.UserRole;
-
+/*
+ * 用户角色
+ */
 public interface UserRoleMapper {
     int deleteByPrimaryKey(Integer userroleid);
 

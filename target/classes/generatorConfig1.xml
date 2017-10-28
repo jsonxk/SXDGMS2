@@ -19,7 +19,7 @@
 		<!-- 生成Dao的包名及位置 -->
 		<javaClientGenerator targetPackage="com.xk.Dao"
 			targetProject="SXDGMS2" type="XMLMAPPER" />
-		<table schema="SXDG" tableName="dictype" domainObjectName="dictype"
+		<table schema="SXDG" tableName="dicitem" domainObjectName="dicitem"
 			enableCountByExample="false" enableUpdateByExample="false"
 			enableDeleteByExample="false" enableSelectByExample="false"
 			selectByExampleQueryId="false">

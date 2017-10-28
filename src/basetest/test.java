@@ -24,6 +24,6 @@ public class test extends SpringCaseTest{
 		//JSONArray funlist=allService.getuserMapperBLL().selectallUser(info);
 		//JSONArray funlist=allService.getuniBll().selectAllUnitName();
 		//System.out.println(JSONArray.fromObject(allService.getroleMapperBLL().SelectAllRole("")));
-		System.out.println(allService.getdicTypeBLL().selectAlltype(0,10, ""));
+		System.out.println(allService.getdicTypeBLL().selectAlltype(0, 10, "申请"));
 	}
 }

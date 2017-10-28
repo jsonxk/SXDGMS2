@@ -1,6 +1,9 @@
 $(function(){
 	typeInit({"typename":""});
+	ItemInit(0);
 });
+var fset=0;
+//左边字典类型表格
 function typeInit(serarchInfo){
 	$('#TypeTable').bootstrapTable("destroy");
 	$('#TypeTable').bootstrapTable({
@@ -9,21 +12,30 @@ function typeInit(serarchInfo){
 		cache : false,
 		striped : true,
 		pagination : true,
-		pageSize : 2,
+		pageSize : 10,
 		pageNumber : 1,
+		dataField:"rows",
 		pageList : [ 10, 20, 40 ],
-		sidePagination : 'server',
-		queryParamsType:'',
+		sidePagination:"server",
 		queryParams : function queryParams(params) {  
             var param = {  
-                    pageNumber: params.pageNumber,    
-                    pageSize: params.pageSize
+                    pageSize: params.limit,    
+                    offset: params.offset,
                 }; 
                 for(var key in serarchInfo){
                     param[key]=serarchInfo[key]
-                }  
+                } 
+                //偏移量
+                fset=params.offset;
                 return param;                   
               },
+        responseHandler:function responseHandler(result){
+            //如果没有错误则返回数据，渲染表格
+        	return {
+                total : result[0].total, //总页数,前面的key必须为"total"
+                rows : result[0].rows //行数据，前面的key要与之前设置的dataField的值一致.
+            };
+        },
 		clickToSelect : true,
 		paginationPreText : "上一页",
 		paginationNextText : "下一页",
@@ -33,16 +45,16 @@ function typeInit(serarchInfo){
 			align : "center",
 			valign : "middle",
 			formatter : function(value, row, index) {
-				return index + 1;
+				return index + fset+1;
 			}
 		}, {
-			field : "name",
-			title : "单位名称",
+			field : "dicname",
+			title : "字典名字",
 			align : "center",
 			valign : "middle",
 		}, {
-			field : "memo",
-			title : "单位描述",
+			field : "dicmemo",
+			title : "字典描述",
 			align : "center",
 			valign : "middle",
 		}, {
@@ -59,8 +71,8 @@ function typeInit(serarchInfo){
 		},
 		onClickCell : function(field, value, row, $element) {
 			//点击加载某角色的功能
-			FunctionTree(row.roleid);
 			//td父节点的兄弟节点的子节点颜色
+			ItemInit(row.dictypeid);
 			$($element).parent().siblings().children().css("background-color","inherit");
 			//设置本节点和兄弟节点颜色
 			$($element).css("background-color","#cdd3dc").siblings().css("background-color","#cdd3dc");
@@ -74,10 +86,8 @@ function typeInit(serarchInfo){
 $("#searchBtn").click(function(){
 	var searchInfo={
 			"typename":$("input[name='searchname']").val(),
-	}
-	
+	};
 	typeInit(searchInfo);
-	alert(1);
 });
 function operateFormatter(value, row, index) {
 	return [
@@ -88,18 +98,112 @@ function operateFormatter(value, row, index) {
 // 表格操作的按钮事件
 window.operateEvents = {
 	'click .RoleOfA' : function(e, value, row, index) {
+		alert(row.dictypeid);
+	},
+	'click .RoleOfB' : function(e, value, row, index) {
+		DelTypeInfo(row.dictypeid);
+		$('#TypeTable').bootstrapTable("refresh");
+	},
+};
+// table字典类型搜索的参数设置
+function queryParams(params) {
+	var temp = {
+		pageNumber: params.pageNumber,    
+        pageSize: params.pageSize,
+	};
+	return temp;
+}
+function DelTypeInfo(dictypeid){
+	$.ajax({
+		url:"ZDGL/DelDictype.spring",
+		method:"post",
+		data:{
+			"dictypeid":dictypeid
+		},
+		datatype:"json",
+		error:function(data){},
+		success:function(data){}
+	});
+}
+//右边字典类型详细情况表
+function ItemInit(dictypeid){
+	$('#ItemTable').bootstrapTable("destroy");
+	$('#ItemTable').bootstrapTable({
+		url : 'ZDGL/SelectItemByTypeId.spring',
+		method : 'post',
+		cache : false,
+		striped : true,
+		pagination : true,
+		pageSize : 10,
+		pageNumber : 1,
+		pageList : [ 10, 20, 40 ],
+		sidePagination:"client",
+		queryParams : function queryParams(params) {  
+            var param = {  
+                    pageSize: params.limit,    
+                    offset: params.offset,
+                    "dictypeid":dictypeid,
+                }; 
+                return param;                   
+              },
+		clickToSelect : true,
+		paginationPreText : "上一页",
+		paginationNextText : "下一页",
+		contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+		columns : [ {
+			title : "序号",
+			align : "center",
+			valign : "middle",
+			formatter : function(value, row, index) {
+				return index + 1;
+			}
+		}, {
+			field : "item",
+			title : "项目名字",
+			align : "center",
+			valign : "middle",
+		}/*, {
+			field : "dicmemo",
+			title : "字典描述",
+			align : "center",
+			valign : "middle",
+		},*/, {
+			title : "操作",
+			align : "center",
+			valign : "middle",
+			events : operateEventsItem,
+			formatter : operateFormatterItem
+		} ],
+		onPageChange : function(size, number) {
+		},
+		formatNoMatches : function() {
+			return '没有找到信息';
+		},
+		onClickCell : function(field, value, row, $element) {
+			//点击加载某角色的功能
+			//td父节点的兄弟节点的子节点颜色
+			$($element).parent().siblings().children().css("background-color","inherit");
+			//设置本节点和兄弟节点颜色
+			$($element).css("background-color","#cdd3dc").siblings().css("background-color","#cdd3dc");
+		},
+		
+	});
+	$(window).resize(function() {
+		$('#ItemTable').bootstrapTable('resetView');
+	});
+}
+function operateFormatterItem(value, row, index) {
+	return [
+			'<button type="button" class="RoleOfA btn btn-default  btn-sm" style="margin-right:15px;">修改</button>',
+			'<button type="button" class="RoleOfB btn btn-default  btn-sm" style="margin-right:15px;">删除</button>', ]
+			.join('');
+}
+// 表格操作的按钮事件
+window.operateEventsItem = {
+	'click .RoleOfA' : function(e, value, row, index) {
 		alert(1);
 	},
 	'click .RoleOfB' : function(e, value, row, index) {
 		alert(2);
 	},
 };
-// table角色搜索的参数设置
-function queryParams(params) {
-	var temp = {
-		pageNumber: params.pageNumber,    
-        pageSize: params.pageSize,
-	};
-	alert(params.offset);
-	return temp;
-}

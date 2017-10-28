@@ -19,6 +19,8 @@ public class AllDao {
 	private RoleFunctionMapperImpl roleFunctionMapperImpl;
 	@Autowired
 	private dictypeMapperImpl dictypeMapperImpl;
+	@Autowired
+	private DicitemMapperImpl dicitemMapperImpl; 
 	public UserMapperImpl getuserMapperImpl()
 	{
 		return userMapperImpl;
@@ -40,5 +42,8 @@ public class AllDao {
 	}
 	public dictypeMapperImpl getdictypeMapperImpl(){
 		return dictypeMapperImpl;
+	}
+	public DicitemMapperImpl getdicitemMapperImpl(){
+		return dicitemMapperImpl;
 	}
 }

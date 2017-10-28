@@ -6,7 +6,9 @@ import org.apache.ibatis.annotations.Param;
 
 import com.xk.orm.Function;
 import com.xk.orm.FunctionList;
-
+/*
+ * 功能
+ */
 public interface FunctionMapper {
 
 	/*

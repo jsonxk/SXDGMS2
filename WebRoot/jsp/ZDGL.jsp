@@ -34,6 +34,50 @@
 	<link rel="stylesheet" href="./js/table/bootstrap.css" />
 	<!-- treeview -->
 	<link rel="stylesheet" type="text/css" href="./treeview/css/bootstrap.min.css">
+	<style type="text/css">
+		#search{
+			width:100%;
+			height:5%;
+			float:left;
+			margin-top: 2%;
+		}
+		.btntypename{
+			float:left;
+			margin-left: 2%;
+		}
+		.typename{
+			width:15%;
+			float:left;
+			margin-right:2%;
+		}
+		#searchBtn{
+			float:left;
+			margin: 3%；
+		}
+		.btntypename,#searchBtn,.addbtn,.addItem
+		{
+			background-color: #2B333E;		
+		}
+		.typeleft{
+			width:50%;
+			float:left;
+			height:100%;
+		}
+		.addbtn,.addItem{
+			margin-left:79%;
+		}
+		.itemright
+		{
+			width:50%;
+			float:left;
+			height:100%;
+		}
+		#ZDtype,#ZDitem
+		{
+			height:100%;
+		}
+		
+	</style>
 <body>
 	<!-- WRAPPER -->
 	<div id="wrapper">
@@ -129,22 +173,26 @@
 					<div class="row">
 						<div class="col-md-12">
 							<!-- BASIC TABLE -->
-							<div class="panel" style="height:68%;">
+							<div class="panel" style="height:100%;">
 								<div id="search">
-									<button class="btn btn-primary btnsearch" type="button">姓名</button>
-									<input type="text" class="form-control Rolename"
-										placeholder="输入姓名" name="searchname">
+									<button class="btn btn-primary btntypename" type="button">字典类型</button>
+									<input type="text" class="form-control typename"
+										placeholder="输入类型名称" name="searchname">
 									<button class="btn btn-primary" type="button" id="searchBtn">查找</button>
 								</div>
 								<!-- 表格信息主体 -->
-								<div class="panel-body" style="width:50%;float:left">
-									<div id="ZDtype" class="span10"  style="height:100px;background-color:red">
-										<table id="TypeTable">
+								<div class="panel-body typeleft">
+									<h4>字典类型表</h4>
+									<button class="btn btn-primary addbtn" type="button"><i class="fa fa-plus-square"></i>&nbsp;添加类型</button>
+									<div id="ZDtype" class="span10">
+										<table id="TypeTable" data-side-pagination="server">
 										</table>
 									</div>
 								</div>
-								<div class="panel-body" style="width:50%;float:left">
-									<div id="ZDitem" class="span10"  style="height:100px;background-color:red">
+								<div class="panel-body itemright" >
+									<h4>类型项目表</h4>
+									<button class="btn btn-primary addItem" type="button"><i class="fa fa-plus-square"></i>&nbsp;添加项目</button>
+									<div id="ZDitem" class="span10">
 										<table id="ItemTable">
 										</table>
 									</div>

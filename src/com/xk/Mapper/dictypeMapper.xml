@@ -17,6 +17,26 @@
   <select id="selectTypeByInfo" parameterType="java.lang.String" resultMap="BaseResultMap">
   	select * from dictype where DicName like "%"#{typename}"%"
   </select>
+  <!-- 添加信息 -->
+  <insert id="InsertDictype" parameterType="com.xk.orm.dictype" >
+    insert into dictype
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="dicname != null" >
+        DicName,
+      </if>
+      <if test="memo != null" >
+        Memo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="dicname != null" >
+        #{dicname,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
   <delete id="DelDictype" parameterType="java.lang.Integer" >
     delete from dictype
     where DicTypeId = #{dictypeid,jdbcType=INTEGER}

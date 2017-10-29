@@ -46,4 +46,8 @@ public class dictypeMapperImpl {
 	public int DelDictype(Integer dictypeid){
 		return dictypeMapper.DelDictype(dictypeid);
 	}
+	public int InsertDictype(dictype dictype) {
+		// TODO Auto-generated method stub
+		return dictypeMapper.InsertDictype(dictype);
+	}
 }

@@ -25,4 +25,5 @@ public interface dicitemMapper {
      * 根绝字典类型获取详细项目
      */
     List<dicitem> selectItemByTypeid(@Param("dictypeid") Integer dictypeid);
+    List<dicitem> selectAllItem();
 }

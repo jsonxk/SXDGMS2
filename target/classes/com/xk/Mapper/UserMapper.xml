@@ -18,12 +18,19 @@
 		where UserName = #{username,jdbcType=VARCHAR} and
 		Password=#{password,jdbcType=VARCHAR}
 	</select>
-	<select id="selectallUser" resultType="com.xk.orm.UserInfo">
+	<!-- <select id="selectallUser" resultType="com.xk.orm.UserInfo">
 		select
 		`user`.*,dicitem.Item as type,unit.UnitName as unitname FROM
 		`user`,dicitem,unit WHERE `user`.UserType=dicitem.DicItemId and
 		`user`.UnitId=unit.UnitId
+	</select> -->
+	<select id="selectallUser" resultType="com.xk.orm.UserInfo">
+		select `user`.*,unit.UnitName as unitname FROM
+		`user`,unit WHERE `user`.UnitId=unit.UnitId
 	</select>
+	<!-- <select id="selectUsertype">
+		select * from dicitem
+	</select> -->
 	<select id="selectUserByInfo" resultType="com.xk.orm.UserInfo" parameterType="com.xk.orm.UserInfo">
 		select
 		`user`.*,dicitem.Item as type,unit.UnitName as unitname FROM

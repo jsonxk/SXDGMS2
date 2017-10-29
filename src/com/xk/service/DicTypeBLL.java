@@ -60,4 +60,14 @@ public class DicTypeBLL {
 		else 
 			return false;
 	}
+	public boolean InsertDictype(dictype dictype){
+		int i=alldao.getdictypeMapperImpl().InsertDictype(dictype);
+		if(i>0)
+		{
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 }

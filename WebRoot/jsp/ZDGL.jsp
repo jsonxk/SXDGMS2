@@ -21,63 +21,73 @@
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 <!-- VENDOR CSS -->
-<link rel="stylesheet" href="./assets/vendor/font-awesome/css/font-awesome.min.css">
-	<link rel="stylesheet" href="./assets/vendor/linearicons/style.css">
-	<!-- MAIN CSS -->
-	<link rel="stylesheet" href="./assets/css/main.css">
-	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
-	<link rel="stylesheet" href="./assets/css/demo.css">
-	<!-- ICONS -->
-	<link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
-	<link rel="icon" type="image/png" sizes="96x96" href="./assets/img/favicon.png">
-	<link rel="stylesheet" href="./js/table/bootstrap-table.css" />
-	<link rel="stylesheet" href="./js/table/bootstrap.css" />
-	<!-- treeview -->
-	<link rel="stylesheet" type="text/css" href="./treeview/css/bootstrap.min.css">
-	<style type="text/css">
-		#search{
-			width:100%;
-			height:5%;
-			float:left;
-			margin-top: 2%;
-		}
-		.btntypename{
-			float:left;
-			margin-left: 2%;
-		}
-		.typename{
-			width:15%;
-			float:left;
-			margin-right:2%;
-		}
-		#searchBtn{
-			float:left;
-			margin: 3%；
-		}
-		.btntypename,#searchBtn,.addbtn,.addItem
-		{
-			background-color: #2B333E;		
-		}
-		.typeleft{
-			width:50%;
-			float:left;
-			height:100%;
-		}
-		.addbtn,.addItem{
-			margin-left:79%;
-		}
-		.itemright
-		{
-			width:50%;
-			float:left;
-			height:100%;
-		}
-		#ZDtype,#ZDitem
-		{
-			height:100%;
-		}
-		
-	</style>
+<link rel="stylesheet"
+	href="./assets/vendor/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="./assets/vendor/linearicons/style.css">
+<!-- MAIN CSS -->
+<link rel="stylesheet" href="./assets/css/main.css">
+<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+<link rel="stylesheet" href="./assets/css/demo.css">
+<!-- ICONS -->
+<link rel="apple-touch-icon" sizes="76x76"
+	href="./assets/img/apple-icon.png">
+<link rel="icon" type="image/png" sizes="96x96"
+	href="./assets/img/favicon.png">
+<link rel="stylesheet" href="./js/table/bootstrap-table.css" />
+<link rel="stylesheet" href="./js/table/bootstrap.css" />
+<!-- treeview -->
+<link rel="stylesheet" type="text/css"
+	href="./treeview/css/bootstrap.min.css">
+<style type="text/css">
+#search {
+	width: 100%;
+	height: 5%;
+	float: left;
+	margin-top: 2%;
+}
+
+.btntypename {
+	float: left;
+	margin-left: 2%;
+}
+
+.typename {
+	width: 15%;
+	float: left;
+	margin-right: 2%;
+}
+
+#searchBtn {
+	float: left;
+	margin: 3% ；
+}
+
+.btntypename, #searchBtn, .addbtn, .addItem {
+	background-color: #2B333E;
+}
+.modal-content{
+	width:65%;
+	margin: 0 auto;
+}
+.typeleft {
+	width: 50%;
+	float: left;
+	height: 100%;
+}
+.addbtn, .addItem {
+	margin-left: 79%;
+}
+
+.itemright {
+	width: 50%;
+	float: left;
+	height: 100%;
+}
+.input-group {
+	width: 80%;
+	margin: 4% auto;
+}
+</style>
 <body>
 	<!-- WRAPPER -->
 	<div id="wrapper">
@@ -183,15 +193,19 @@
 								<!-- 表格信息主体 -->
 								<div class="panel-body typeleft">
 									<h4>字典类型表</h4>
-									<button class="btn btn-primary addbtn" type="button"><i class="fa fa-plus-square"></i>&nbsp;添加类型</button>
+									<button class="btn btn-primary addbtn" type="button">
+										<i class="fa fa-plus-square"></i>&nbsp;添加类型
+									</button>
 									<div id="ZDtype" class="span10">
 										<table id="TypeTable" data-side-pagination="server">
 										</table>
 									</div>
 								</div>
-								<div class="panel-body itemright" >
+								<div class="panel-body itemright">
 									<h4>类型项目表</h4>
-									<button class="btn btn-primary addItem" type="button"><i class="fa fa-plus-square"></i>&nbsp;添加项目</button>
+									<button class="btn btn-primary addItem" type="button">
+										<i class="fa fa-plus-square"></i>&nbsp;添加项目
+									</button>
 									<div id="ZDitem" class="span10">
 										<table id="ItemTable">
 										</table>
@@ -211,6 +225,70 @@
 			<div class="clearfix"></div>
 		</div>
 	</div>
+	<!-- modal添加类型弹出框 -->
+	<div class="modal fade " id="TypeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	    <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+	
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+	                        aria-hidden="true">&times;</span></button>
+	                <h4 class="modal-title" id="exampleModalLabel">标题</h4>
+	            </div>
+	
+	            <div class="modal-body">
+	                <form id="updateform">
+	                    <div class="form-group">
+                        	<label for="ZDtypename" class="control-label">类型名称</label>
+                        	<input type="text" id="ZDtypename" name="ZDtypename" class="form-control"/>
+                   		</div>
+	                    <div class="form-group">
+	                        <label for="ZDmemo" class="control-label">类型描述</label>
+							<textarea class="form-control textarea1" rows="3" placeholder="字典描述" id="ZDmemo" name="ZDmemo"></textarea>
+	                    </div>
+	                    <div class="text-right">
+	                        <span id="returnMessage" class="glyphicon"> </span>
+	                        <button type="button" class="btn btn-default right" data-dismiss="modal">取消</button>
+	                        <button id="submitBtn" type="button" class="btn btn-primary">保存</button>
+	
+	                    </div>
+	                </form>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+		<!-- modal添加项目弹出框 -->
+	<div class="modal fade " id="ItemModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabelItem">
+	    <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+	
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+	                        aria-hidden="true">&times;</span></button>
+	                <h4 class="modal-title" id="ModalLabelItem">标题</h4>
+	            </div>
+	
+	            <div class="modal-body">
+	                <form id="ItemForm">
+	                    <div class="form-group">
+                        	<label for="ZDItemname" class="control-label">类型名称</label>
+                        	<input type="text" id="ZDItemname" name="ZDItemname" class="form-control"/>
+                   		</div>
+	                    <div class="form-group">
+	                        <label for="ZDItemmemo" class="control-label">类型描述</label>
+							<textarea class="form-control textarea1" rows="3" placeholder="字典描述" id="ZDItemmemo" name="ZDItemmemo"></textarea>
+	                    </div>
+	                    <div class="text-right">
+	                        <span id="returnMessage" class="glyphicon"> </span>
+	                        <button type="button" class="btn btn-default right" data-dismiss="modal">取消</button>
+	                        <button id="ItemSubmit" type="button" class="btn btn-primary">保存</button>
+	
+	                    </div>
+	                </form>
+	            </div>
+	        </div>
+	    </div>
+	</div>
 	<!-- END WRAPPER -->
 	<script src="./assets/vendor/jquery/jquery.min.js"></script>
 	<script src="./assets/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -222,6 +300,7 @@
 	<script src="./js/table/bootstrap-table-export.js"></script>
 	<script src="./js/table/jquery.base64.js"></script>
 	<script src="./js/table/tableExport.js"></script>
+	<script src="https://cdn.bootcss.com/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
 	<script type="text/javascript">
 		function initIndex() {
 			$(".xtglchild .4xtgl1   a").addClass("active");

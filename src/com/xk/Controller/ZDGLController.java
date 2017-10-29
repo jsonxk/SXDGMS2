@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.xk.orm.dictype;
 import com.xk.service.AllService;
 
 /**
@@ -39,4 +40,14 @@ public class ZDGLController {
 	public @ResponseBody  boolean DelDictype(@RequestParam("dictypeid") String dictypeid){
 		return allservice.getdicTypeBLL().DelDictype(Integer.parseInt(dictypeid));
 	}
+	//添加字典类型
+	@RequestMapping(value="/InsertDictype",method=RequestMethod.POST)
+	public @ResponseBody boolean InsertDictype(@RequestParam("typename") String typename,@RequestParam("memo")String memo){
+		System.out.println(typename+memo);
+		dictype dic=new dictype();
+		dic.setDicname(typename);
+		dic.setMemo(memo);
+		allservice.getdicTypeBLL().InsertDictype(dic);
+		return true;
+	}	
 }

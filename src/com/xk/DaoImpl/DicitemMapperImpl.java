@@ -25,4 +25,9 @@ public class DicitemMapperImpl {
 	public List<dicitem> selectItemByTypeid(int dictypeid){
 		return dicitemMapper.selectItemByTypeid(dictypeid);
 	}
+	//获取所有的项目信息
+	public List<dicitem> selectAllItem()
+	{
+		return dicitemMapper.selectAllItem();
+	}
 }

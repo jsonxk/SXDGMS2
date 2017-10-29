@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import com.xk.DaoImpl.AllDao;
 import com.xk.orm.User;
 import com.xk.orm.UserInfo;
+import com.xk.orm.dicitem;
+import com.xk.orm.dictype;
 @Service
 public class UserMapperBLL {
 @Autowired 
@@ -33,6 +35,9 @@ private AllDao allDao;
 		JSONObject jo=new JSONObject();
 		String status=null;
 		List<UserInfo> user=new ArrayList<UserInfo>();
+		//所有项目信息
+		List<dicitem> dic=new ArrayList<dicitem>();
+		dic=allDao.getdicitemMapperImpl().selectAllItem();
 		if(info.getName().equals(""))
 		{
 			user=allDao.getuserMapperImpl().selectallUser();
@@ -50,13 +55,20 @@ private AllDao allDao;
 			else{
 				status="离职";
 			}
+			jo.put("type","");
+			for(dicitem item:dic)
+			{
+				if(u.getUsertype()==item.getDicitemid())
+				{
+					jo.put("type",item.getItem());
+				}
+			}
 			jo.put("userid", u.getUserid());
 			jo.put("index", ++i);
 			jo.put("name",u.getName());
 			jo.put("unit", u.getUnitname());
 			jo.put("phone", u.getPhone());
 			jo.put("status", status);
-			jo.put("type",u.getType());
 			jo.put("memo", u.getMemo());
 			ja.add(jo);
 		}

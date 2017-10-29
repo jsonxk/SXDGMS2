@@ -207,3 +207,166 @@ window.operateEventsItem = {
 		alert(2);
 	},
 };
+
+
+
+//左边添加字典类型
+var form = $('#updateform');
+//bootstrap表单验证	
+function modalZDtype() {
+
+    form.bootstrapValidator({
+        message: '输入值不合法',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            ZDtypename: {
+                message: '用户名不合法',
+                validators: {
+                    notEmpty: {
+                        message: '不能为空'
+                    },
+                    stringLength: {
+                        min: 3,
+                        max: 30,
+                        message: '请输入3到30个字符'
+                    },
+                    regexp: {
+                        regexp: /^[a-zA-Z0-9_\. \u4e00-\u9fa5 ]+$/,
+                        message: '用户名只能由字母、数字、点、下划线和汉字组成 '
+                    }
+                }
+            },ZDmemo: {
+                validators: {
+                    notEmpty: {
+                        message: '地址不能为空'
+                    }, stringLength: {
+                        min: 8,
+                        max: 60,
+                        message: '请输入5到60个字符'
+                    }
+                }
+            }
+        }
+    });
+}
+$("#submitBtn").click(function () {
+    var bv = form.data('bootstrapValidator');
+    bv.validate();
+    if (bv.isValid()) {
+        console.log(form.serialize());
+      //添加信息请求
+        var typename=$("#ZDtypename").val();
+        var memo=$("#ZDmemo").val();
+        $.ajax({
+			type : "Post",
+			url : "ZDGL/InsertDictype.spring",
+			data :{
+				"typename":typename,
+				"memo":memo,
+			},
+			dataType : 'json',
+			error : function(data) {
+				alert("角色修改失败！！:");
+			},
+			success:function(data){
+				$("#TypeModal").modal("hide");
+				alert("角色修改成功");
+			}
+		});
+    }
+});
+$(".addbtn").click(function(){
+	$("#TypeModal").modal("show");
+	modalZDtype(); 
+})
+$('#TypeModal').on('hidden.bs.modal', function() {
+    $("#updateform").data('bootstrapValidator').destroy();
+    $('#updateform').data('bootstrapValidator', null);
+    $("#updateform input").val("");
+    $("#updateform textarea").val("");
+});
+
+
+//右边添加项目
+var form = $('#ItemForm');
+//bootstrap表单验证	
+function modalZDtype() {
+
+  form.bootstrapValidator({
+      message: '输入值不合法',
+      feedbackIcons: {
+          valid: 'glyphicon glyphicon-ok',
+          invalid: 'glyphicon glyphicon-remove',
+          validating: 'glyphicon glyphicon-refresh'
+      },
+      fields: {
+          ZDItemname: {
+              message: '用户名不合法',
+              validators: {
+                  notEmpty: {
+                      message: '不能为空'
+                  },
+                  stringLength: {
+                      min: 3,
+                      max: 30,
+                      message: '请输入3到30个字符'
+                  },
+                  regexp: {
+                      regexp: /^[a-zA-Z0-9_\. \u4e00-\u9fa5 ]+$/,
+                      message: '用户名只能由字母、数字、点、下划线和汉字组成 '
+                  }
+              }
+          },ZDItemmemo: {
+              validators: {
+                  notEmpty: {
+                      message: '地址不能为空'
+                  }, stringLength: {
+                      min: 8,
+                      max: 60,
+                      message: '请输入5到60个字符'
+                  }
+              }
+          }
+      }
+  });
+}
+$("#Itemsubmit").click(function () {
+  var bv = form.data('bootstrapValidator');
+  bv.validate();
+  if (bv.isValid()) {
+      console.log(form.serialize());
+    //添加信息请求
+//      var typename=$("#ZDtypename").val();
+//      var memo=$("#ZDmemo").val();
+//      $.ajax({
+//			type : "Post",
+//			url : "ZDGL/InsertDictype.spring",
+//			data :{
+//				"typename":typename,
+//				"memo":memo,
+//			},
+//			dataType : 'json',
+//			error : function(data) {
+//				alert("角色修改失败！！:");
+//			},
+//			success:function(data){
+//				$("#TypeModal").modal("hide");
+//				alert("角色修改成功");
+//			}
+//		});
+  }
+});
+$(".addItem").click(function(){
+	$("#ItemModal").modal("show");
+	modalZDtype(); 
+})
+$('#ItemModal').on('hidden.bs.modal', function() {
+  $("#ItemForm").data('bootstrapValidator').destroy();
+  $('#ItemForm').data('bootstrapValidator', null);
+  $("#ItemForm input").val("");
+  $("#ItemForm textarea").val("");
+});

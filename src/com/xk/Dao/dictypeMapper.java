@@ -34,4 +34,6 @@ public interface dictypeMapper {
     List<dictype> selectTypeByInfo(@Param("typename") String typename);
 
 	int DelDictype(@Param("dictypeid")Integer dictypeid);
+
+	int InsertDictype(dictype dictype);
 }

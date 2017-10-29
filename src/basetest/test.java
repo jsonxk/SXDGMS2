@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.xk.DaoImpl.AllDao;
 import com.xk.orm.UserInfo;
 import com.xk.orm.UserRole;
 import com.xk.service.AllService;
@@ -13,6 +14,8 @@ import com.xk.service.AllService;
 public class test extends SpringCaseTest{
 	@Autowired
 	private AllService allService;
+	@Autowired
+	private AllDao alldao;
 	Logger logger=Logger.getLogger(test.class);
 	@Test
 	public void test(){
@@ -24,6 +27,6 @@ public class test extends SpringCaseTest{
 		//JSONArray funlist=allService.getuserMapperBLL().selectallUser(info);
 		//JSONArray funlist=allService.getuniBll().selectAllUnitName();
 		//System.out.println(JSONArray.fromObject(allService.getroleMapperBLL().SelectAllRole("")));
-		System.out.println(allService.getdicTypeBLL().selectAlltype(0, 10, "申请"));
+		System.out.println(alldao.getuserMapperImpl().selectallUser());
 	}
 }

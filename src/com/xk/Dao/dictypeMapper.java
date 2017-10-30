@@ -26,6 +26,8 @@ public interface dictypeMapper {
      * @param pagesize 页大小
      */
     List<dictype> selectAlltype(@Param("offset") Integer offset,@Param("pagesize")Integer pagesize);
+    
+    List<dictype> selectAllTypeNoParam();
     //获取总个数
     int selectTotalCount();
     /*

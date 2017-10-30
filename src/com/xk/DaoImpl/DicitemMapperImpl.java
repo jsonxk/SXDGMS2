@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.xk.Dao.dicitemMapper;
 import com.xk.orm.dicitem;
+import com.xk.orm.dictype;
 
 /**
  * @author: xk
@@ -25,9 +26,16 @@ public class DicitemMapperImpl {
 	public List<dicitem> selectItemByTypeid(int dictypeid){
 		return dicitemMapper.selectItemByTypeid(dictypeid);
 	}
-	//获取所有的项目信息
+	/*
+	 * 获取所有的项目信息
+	 * 用于用户比较是否存在该用户类型
+	 */
 	public List<dicitem> selectAllItem()
 	{
 		return dicitemMapper.selectAllItem();
+	}
+	//添加项目信息
+	public int  InsertDicItem(dicitem item) {
+		return dicitemMapper.InsertDicItem(item);
 	}
 }

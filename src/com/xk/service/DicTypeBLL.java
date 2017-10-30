@@ -21,6 +21,7 @@ import com.xk.orm.dictype;
 public class DicTypeBLL {
 	@Autowired
 	private AllDao alldao;
+	//左边字典类型表分页查找信息
 	public JSONArray selectAlltype(Integer offset,Integer pagesize,String typename){
 		JSONArray data=new JSONArray();
 		JSONArray datatotal=new JSONArray();
@@ -49,6 +50,10 @@ public class DicTypeBLL {
 		jobjtotal.put("rows", data);
 		datatotal.add(jobjtotal);
 		return datatotal;
+	}
+	//获取所有的dictype信息
+	public List<dictype> selectAllTypeNoParam(){
+		return alldao.getdictypeMapperImpl().selectAllTypeNoParam();
 	}
 	//删除dictype信息
 	public boolean DelDictype(Integer dictypeid){

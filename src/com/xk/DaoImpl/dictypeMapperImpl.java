@@ -26,6 +26,10 @@ public class dictypeMapperImpl {
 	public List<dictype> selectAlltype(Integer offset, Integer pagesize) {
 		return dictypeMapper.selectAlltype(offset, pagesize);
 	}
+	//获取字典类型所有数据
+	public List<dictype> selectAllTypeNoParam(){
+		return dictypeMapper.selectAllTypeNoParam();
+	}
 	//获取字典总数
 	public int selectTotalCount() {
 		return dictypeMapper.selectTotalCount();
@@ -35,13 +39,6 @@ public class dictypeMapperImpl {
 	 */
 	public List<dictype> selectTypeByInfo(String typename){
 		return dictypeMapper.selectTypeByInfo(typename);
-	}
-	/*
-	 * 根据 dictypeid获取类型详细信息
-	 */
-	public List<dicitem> selectItemByTypeid(int dictypeid)
-	{
-		return dicitemMapper.selectItemByTypeid(dictypeid);
 	}
 	public int DelDictype(Integer dictypeid){
 		return dictypeMapper.DelDictype(dictypeid);

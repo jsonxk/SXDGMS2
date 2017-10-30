@@ -2,6 +2,7 @@ $(function(){
 	typeInit({"typename":""});
 	ItemInit(0);
 });
+//分页偏移量参数
 var fset=0;
 //左边字典类型表格
 function typeInit(serarchInfo){
@@ -31,6 +32,7 @@ function typeInit(serarchInfo){
               },
         responseHandler:function responseHandler(result){
             //如果没有错误则返回数据，渲染表格
+        	
         	return {
                 total : result[0].total, //总页数,前面的key必须为"total"
                 rows : result[0].rows //行数据，前面的key要与之前设置的dataField的值一致.
@@ -125,6 +127,87 @@ function DelTypeInfo(dictypeid){
 		success:function(data){}
 	});
 }
+//左边添加字典类型
+var form = $('#updateform');
+//bootstrap表单验证	
+function modalZDtype() {
+
+    form.bootstrapValidator({
+        message: '输入值不合法',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            ZDtypename: {
+                message: '用户名不合法',
+                validators: {
+                    notEmpty: {
+                        message: '不能为空'
+                    },
+                    stringLength: {
+                        min: 3,
+                        max: 10,
+                        message: '请输入3到10个字符'
+                    },
+                    regexp: {
+                        regexp: /^[a-zA-Z0-9_\. \u4e00-\u9fa5 ]+$/,
+                        message: '用户名只能由字母、数字、点、下划线和汉字组成 '
+                    }
+                }
+            },ZDmemo: {
+                validators: {
+                    notEmpty: {
+                        message: '地址不能为空'
+                    }, stringLength: {
+                        min: 3,
+                        max: 60,
+                        message: '请输入3到60个字符'
+                    }
+                }
+            }
+        }
+    });
+}
+$("#submitBtn").click(function () {
+    var bv = form.data('bootstrapValidator');
+    bv.validate();
+    if (bv.isValid()) {
+        console.log(form.serialize());
+      //添加信息请求
+        var typename=$("#ZDtypename").val();
+        var memo=$("#ZDmemo").val();
+        $.ajax({
+			type : "Post",
+			url : "ZDGL/InsertDictype.spring",
+			data :{
+				"typename":typename,
+				"memo":memo,
+			},
+			dataType : 'json',
+			error : function(data) {
+				alert("角色修改失败！！:");
+			},
+			success:function(data){
+				$("#TypeModal").modal("hide");
+				alert("角色修改成功");
+			}
+		});
+    }
+});
+$(".addbtn").click(function(){
+	$("#TypeModal").modal("show");
+	modalZDtype(); 
+})
+$('#TypeModal').on('hidden.bs.modal', function() {
+    $("#updateform").data('bootstrapValidator').destroy();
+    $('#updateform').data('bootstrapValidator', null);
+    $("#updateform input").val("");
+    $("#updateform textarea").val("");
+});
+
+
 //右边字典类型详细情况表
 function ItemInit(dictypeid){
 	$('#ItemTable').bootstrapTable("destroy");
@@ -204,99 +287,18 @@ window.operateEventsItem = {
 		alert(1);
 	},
 	'click .RoleOfB' : function(e, value, row, index) {
-		alert(2);
+		DelItem(row.dicitemid);
 	},
 };
 
+//表单
+var item = $('#ItemForm');
 
-
-//左边添加字典类型
-var form = $('#updateform');
-//bootstrap表单验证	
-function modalZDtype() {
-
-    form.bootstrapValidator({
-        message: '输入值不合法',
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        fields: {
-            ZDtypename: {
-                message: '用户名不合法',
-                validators: {
-                    notEmpty: {
-                        message: '不能为空'
-                    },
-                    stringLength: {
-                        min: 3,
-                        max: 30,
-                        message: '请输入3到30个字符'
-                    },
-                    regexp: {
-                        regexp: /^[a-zA-Z0-9_\. \u4e00-\u9fa5 ]+$/,
-                        message: '用户名只能由字母、数字、点、下划线和汉字组成 '
-                    }
-                }
-            },ZDmemo: {
-                validators: {
-                    notEmpty: {
-                        message: '地址不能为空'
-                    }, stringLength: {
-                        min: 8,
-                        max: 60,
-                        message: '请输入5到60个字符'
-                    }
-                }
-            }
-        }
-    });
-}
-$("#submitBtn").click(function () {
-    var bv = form.data('bootstrapValidator');
-    bv.validate();
-    if (bv.isValid()) {
-        console.log(form.serialize());
-      //添加信息请求
-        var typename=$("#ZDtypename").val();
-        var memo=$("#ZDmemo").val();
-        $.ajax({
-			type : "Post",
-			url : "ZDGL/InsertDictype.spring",
-			data :{
-				"typename":typename,
-				"memo":memo,
-			},
-			dataType : 'json',
-			error : function(data) {
-				alert("角色修改失败！！:");
-			},
-			success:function(data){
-				$("#TypeModal").modal("hide");
-				alert("角色修改成功");
-			}
-		});
-    }
-});
-$(".addbtn").click(function(){
-	$("#TypeModal").modal("show");
-	modalZDtype(); 
-})
-$('#TypeModal').on('hidden.bs.modal', function() {
-    $("#updateform").data('bootstrapValidator').destroy();
-    $('#updateform').data('bootstrapValidator', null);
-    $("#updateform input").val("");
-    $("#updateform textarea").val("");
-});
-
-
-//右边添加项目
-var form = $('#ItemForm');
-//bootstrap表单验证	
-function modalZDtype() {
-
-  form.bootstrapValidator({
+/*
+ * 表单验证
+ */
+function modalZDItem() {
+  item.bootstrapValidator({
       message: '输入值不合法',
       feedbackIcons: {
           valid: 'glyphicon glyphicon-ok',
@@ -312,57 +314,107 @@ function modalZDtype() {
                   },
                   stringLength: {
                       min: 3,
-                      max: 30,
-                      message: '请输入3到30个字符'
+                      max: 10,
+                      message: '请输入3到10个字符'
                   },
                   regexp: {
                       regexp: /^[a-zA-Z0-9_\. \u4e00-\u9fa5 ]+$/,
                       message: '用户名只能由字母、数字、点、下划线和汉字组成 '
                   }
               }
+          },
+          ZDItemCode: {
+              message: '编号只能为数字',
+              validators: {
+                  notEmpty: {
+                      message: '不能为空'
+                  },
+                  stringLength: {
+                      min: 2,
+                      max: 10,
+                      message: '请输入2到10数字'
+                  },
+                  regexp: {
+                      regexp: /^[1-9]\d*|0$/,
+                      message: '请输入数字 '
+                  }
+              }
           },ZDItemmemo: {
               validators: {
                   notEmpty: {
-                      message: '地址不能为空'
+                      message: '描述不能为空'
                   }, stringLength: {
-                      min: 8,
+                      min: 3,
                       max: 60,
-                      message: '请输入5到60个字符'
+                      message: '请输入3到60个字符'
                   }
               }
           }
       }
   });
 }
-$("#Itemsubmit").click(function () {
-  var bv = form.data('bootstrapValidator');
+//所有类型信息
+function ALLType(){
+	var typeinfo=$("#ZDtypeInfo");
+	$.ajax({
+		type : "POST",
+		url : "ZDGL/selectAllTypeNoParam.spring",
+		data :{},
+		dataType : 'json',
+		error : function(data) {
+			alert("出错了！！:");
+		},
+		success:function(data){
+			for(var i=0;i<data.length;i++)
+				{
+					if(i==0)
+					{
+						typeinfo.append("<option class='select' value='"+data[i].dictypeid+"'>"+data[i].dicname+"</option>");
+					}
+					else
+						typeinfo.append("<option  value='"+data[i].dictypeid+"'>"+data[i].dicname+"</option>");;	
+				}
+			//alert(typeinfo.val());
+		}
+  	});
+}
+//添加项目
+$("#ItemSubmit").click(function(){
+  var bv = item.data('bootstrapValidator');
   bv.validate();
   if (bv.isValid()) {
-      console.log(form.serialize());
-    //添加信息请求
-//      var typename=$("#ZDtypename").val();
-//      var memo=$("#ZDmemo").val();
-//      $.ajax({
-//			type : "Post",
-//			url : "ZDGL/InsertDictype.spring",
-//			data :{
-//				"typename":typename,
-//				"memo":memo,
-//			},
-//			dataType : 'json',
-//			error : function(data) {
-//				alert("角色修改失败！！:");
-//			},
-//			success:function(data){
-//				$("#TypeModal").modal("hide");
-//				alert("角色修改成功");
-//			}
-//		});
+      console.log(item.serialize());
+    //添加项目请求
+      var itemname=$("#ZDItemname").val();
+      var typeid=$("#ZDtypeInfo").val();
+      var itemmemo=$("#ZDItemmemo").val();
+      var itemcode=$("#ZDItemCode").val();
+      $.ajax({
+			type : "Post",
+			url : "ZDGL/InsertDicItem.spring",
+			data :{
+				"itemname":itemname,
+				"itemmemo":itemmemo,
+				"typeid":typeid,
+				"itemcode":itemcode,
+			},
+			dataType : 'json',
+			error : function(data) {
+				alert("角色修改失败！！:");
+			},
+			success:function(data){
+				$("#ItemModal").modal("hide");
+				alert("角色修改成功");
+			}
+		});
   }
 });
 $(".addItem").click(function(){
 	$("#ItemModal").modal("show");
-	modalZDtype(); 
+	//加载表单
+	modalZDItem(); 
+	//发送字典类型查找请求
+	ALLType();
 })
 $('#ItemModal').on('hidden.bs.modal', function() {
   $("#ItemForm").data('bootstrapValidator').destroy();
@@ -370,3 +422,7 @@ $('#ItemModal').on('hidden.bs.modal', function() {
   $("#ItemForm input").val("");
   $("#ItemForm textarea").val("");
 });
+//删除项目
+function DelItem(itemid){
+	
+}

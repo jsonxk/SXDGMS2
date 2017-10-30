@@ -26,4 +26,14 @@ public class DicitemBLL {
 		datalist=alldao.getdicitemMapperImpl().selectItemByTypeid(dictypeid);
 		return JSONArray.fromObject(datalist);
 	}
+	//添加字典项目
+	public boolean InsertDicItem(dicitem item){
+		int i=alldao.getdicitemMapperImpl().InsertDicItem(item);
+		if(i>0)
+		{
+			return true;
+		}
+		else 
+			return false; 
+	}
 }

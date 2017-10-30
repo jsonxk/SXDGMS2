@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.xk.orm.dicitem;
 import com.xk.orm.dictype;
 import com.xk.service.AllService;
 
@@ -30,6 +31,13 @@ public class ZDGLController {
 		//return allservice.getdicTypeBLL().selectAlltype(Integer.parseInt(pageNumber), Integer.parseInt(pageSize), typename);
 		return allservice.getdicTypeBLL().selectAlltype(Integer.parseInt(offset),Integer.parseInt(pageSize), typename);
 	}
+	//查找所有字典类型信息（无参）
+	@RequestMapping(value="/selectAllTypeNoParam",method=RequestMethod.POST)
+	public  @ResponseBody JSONArray selectAllTypeNoParam()
+	{
+		//return allservice.getdicTypeBLL().selectAlltype(Integer.parseInt(pageNumber), Integer.parseInt(pageSize), typename);
+		return JSONArray.fromObject(allservice.getdicTypeBLL().selectAllTypeNoParam());
+	}
 	//查找字典详细信息
 	@RequestMapping(value="/SelectItemByTypeId",method=RequestMethod.POST)
 	public @ResponseBody  JSONArray SelectItemByTypeId(@RequestParam("dictypeid") String dictypeid){
@@ -47,7 +55,17 @@ public class ZDGLController {
 		dictype dic=new dictype();
 		dic.setDicname(typename);
 		dic.setMemo(memo);
-		allservice.getdicTypeBLL().InsertDictype(dic);
-		return true;
-	}	
+		return allservice.getdicTypeBLL().InsertDictype(dic);
+	}
+	//添加类型项目
+	@RequestMapping(value="/InsertDicItem",method=RequestMethod.POST)
+	public @ResponseBody boolean InsertDicItem(@RequestParam("itemname") String itemname,@RequestParam("itemmemo")String itemmemo,@RequestParam("typeid")String typeid,@RequestParam("itemcode")String itemcode){
+		//System.out.println(typename+memo);
+		dicitem item=new dicitem();
+		item.setDictypeid(Integer.parseInt(typeid));
+		item.setItem(itemname);
+		item.setMemo(itemmemo);
+		item.setCode(itemcode);
+		return allservice.getdicitemBll().InsertDicItem(item);
+	}
 }

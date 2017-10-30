@@ -271,12 +271,22 @@
 	            <div class="modal-body">
 	                <form id="ItemForm">
 	                    <div class="form-group">
-                        	<label for="ZDItemname" class="control-label">类型名称</label>
+                        	<label for="ZDItemname" class="control-label">项目名称</label>
                         	<input type="text" id="ZDItemname" name="ZDItemname" class="form-control"/>
                    		</div>
+                   		<div class="form-group">
+                        	<label for="ZDItemname" class="control-label">所属类型</label>
+							</br>
+							<select id="ZDtypeInfo" class="form-control">
+                       		</select>		
+                   		</div>
+                   		<div class="form-group">
+                        	<label for="ZDItemCode" class="control-label">项目编号</label>
+                        	<input type="text" id="ZDItemCode" name="ZDItemCode" class="form-control"/>
+                   		</div>
 	                    <div class="form-group">
-	                        <label for="ZDItemmemo" class="control-label">类型描述</label>
-							<textarea class="form-control textarea1" rows="3" placeholder="字典描述" id="ZDItemmemo" name="ZDItemmemo"></textarea>
+	                        <label for="ZDItemmemo" class="control-label">项目描述</label>
+							<textarea class="form-control textarea1" rows="3" placeholder="项目描述" id="ZDItemmemo" name="ZDItemmemo"></textarea>
 	                    </div>
 	                    <div class="text-right">
 	                        <span id="returnMessage" class="glyphicon"> </span>

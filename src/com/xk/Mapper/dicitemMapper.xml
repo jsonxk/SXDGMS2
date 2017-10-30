@@ -8,13 +8,21 @@
     <result column="DicTypeId" property="dictypeid" jdbcType="INTEGER" />
     <result column="Memo" property="memo" jdbcType="VARCHAR" />
   </resultMap>
-  <!--  -->
+  <!-- 查找某个类型项目 -->
 	<select id="selectItemByTypeid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
  		select * from dicitem where dicitem.DicTypeId=#{dictypeid}
  	</select>
+ 	<!-- 查找所有项目 -->
  	<select id="selectAllItem" resultMap="BaseResultMap">
  		select * from dicitem
  	</select>	
+ 	<!-- 添加项目 -->
+ 	<insert id="InsertDicItem" parameterType="com.xk.orm.dicitem">
+ 		 insert into dicitem (Item, Code, 
+      DicTypeId, Memo)
+    values (#{item,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{dictypeid,jdbcType=INTEGER}, #{memo,jdbcType=VARCHAR})
+ 	</insert>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from dicitem
     where DicItemId = #{dicitemid,jdbcType=INTEGER}

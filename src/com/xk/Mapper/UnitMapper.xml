@@ -7,21 +7,25 @@
     <result column="Address" property="address" jdbcType="VARCHAR" />
     <result column="MSPeople" property="mspeople" jdbcType="VARCHAR" />
     <result column="MSPhone" property="msphone" jdbcType="VARCHAR" />
-    <result column="Status" property="status" jdbcType="SMALLINT" />
+    <result column="Status" property="status" jdbcType="INTEGER" />
     <result column="DicItemId" property="dicitemid" jdbcType="INTEGER" />
     <result column="Memo" property="memo" jdbcType="VARCHAR" />
   </resultMap>
-  <sql id="Base_Column_List" >
-    UnitId, UnitName, Address, MSPeople, MSPhone, Status, DicItemId, Memo
-  </sql>
+  <!-- 所有信息 -->
   <select id="selectAllUnitName" resultMap="BaseResultMap">
   	select * from unit
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from unit
-    where UnitId = #{unitid,jdbcType=INTEGER}
+  <!-- 根据名字查询单位所有信息 -->
+  <select id="selectUnitByname" resultMap="BaseResultMap" parameterType="java.lang.String"> 
+  	select * from unit where UnitName like "%"#{unitname}"%"
+  </select>
+  <!-- 分页查找信息 -->
+  <select id="selectAllUnitpage" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	select unit.* from unit limit #{offset},#{pagesize}
+  </select>
+  <!-- 查找总数 -->
+  <select id="selectCount" resultType="java.lang.Integer">
+	select count(*) from unit  
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from unit

@@ -107,14 +107,14 @@ window.operateEvents = {
 		$('#TypeTable').bootstrapTable("refresh");
 	},
 };
-// table字典类型搜索的参数设置
+/*// table字典类型搜索的参数设置
 function queryParams(params) {
 	var temp = {
 		pageNumber: params.pageNumber,    
         pageSize: params.pageSize,
 	};
 	return temp;
-}
+}*/
 function DelTypeInfo(dictypeid){
 	$.ajax({
 		url:"ZDGL/DelDictype.spring",
@@ -265,9 +265,9 @@ function ItemInit(dictypeid){
 		onClickCell : function(field, value, row, $element) {
 			//点击加载某角色的功能
 			//td父节点的兄弟节点的子节点颜色
-			$($element).parent().siblings().children().css("background-color","inherit");
+			/*$($element).parent().siblings().children().css("background-color","inherit");
 			//设置本节点和兄弟节点颜色
-			$($element).css("background-color","#cdd3dc").siblings().css("background-color","#cdd3dc");
+			$($element).css("background-color","#cdd3dc").siblings().css("background-color","#cdd3dc");*/
 		},
 		
 	});
@@ -405,6 +405,7 @@ $("#ItemSubmit").click(function(){
 			success:function(data){
 				$("#ItemModal").modal("hide");
 				alert("角色修改成功");
+				$('#ItemTable').bootstrapTable("refresh");
 			}
 		});
   }
@@ -424,5 +425,20 @@ $('#ItemModal').on('hidden.bs.modal', function() {
 });
 //删除项目
 function DelItem(itemid){
-	
+	$.ajax({
+		type:"post",
+		url:"ZDGL/DelDicItem.spring",
+		data:{
+			"itemid":itemid,
+		},
+		datatype:"json",
+		success:function(data){
+			if(data)
+				{
+					alert("删除成功");
+					$('#ItemTable').bootstrapTable("refresh");
+				}
+		},
+		error:function(data){}
+	});
 }

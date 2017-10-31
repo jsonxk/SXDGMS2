@@ -68,4 +68,9 @@ public class ZDGLController {
 		item.setCode(itemcode);
 		return allservice.getdicitemBll().InsertDicItem(item);
 	}
+	//删除字典项目
+		@RequestMapping(value="/DelDicItem",method=RequestMethod.POST)
+		public @ResponseBody boolean DelDicItem(@RequestParam("itemid")String itemid){
+			return allservice.getdicitemBll().DelDicItem(Integer.parseInt(itemid));
+		}
 }

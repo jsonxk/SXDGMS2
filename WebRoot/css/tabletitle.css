@@ -1,0 +1,71 @@
+#search {
+	width: 100%;
+	height: 5%;
+	float: left;
+	margin-top: 2%;
+}
+
+.btntypename {
+	float: left;
+	margin-left: 2%;
+}
+
+.typename {
+	width: 15%;
+	float: left;
+	margin-right: 2%;
+}
+
+#searchBtn {
+	float: left;
+	margin: 3% £»
+}
+
+.btntypename, #searchBtn, .addbtn, .addItem {
+	background-color: #2B333E;
+}
+.modal-content{
+	width:65%;
+	margin: 0 auto;
+}
+.typeleft {
+	width: 50%;
+	float: left;
+	height: 100%;
+}
+.addbtn, .addItem {
+	margin-left: 79%;
+}
+
+.itemright {
+	width: 50%;
+	float: left;
+	height: 100%;
+}
+.input-group {
+	width: 80%;
+	margin: 4% auto;
+}
+/* µ¥Î»css */
+.unitlabel,.addUnit,#Unitbtn{
+	background-color: #2B333E;
+}
+.unitlabel
+{
+	float: left;
+}
+.unitname
+{
+	width: 15%;
+	float: left;
+	margin-right: 2%;
+}
+.Unitbtn {
+	float: left;
+	margin: 3%£»
+}
+
+.addUnit {
+	margin:2% 0;
+	float:right;
+}

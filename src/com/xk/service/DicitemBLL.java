@@ -36,4 +36,13 @@ public class DicitemBLL {
 		else 
 			return false; 
 	}
+	public boolean DelDicItem(int itemid) {
+		int i=alldao.getdicitemMapperImpl().DelDicItem(itemid);
+		if(i>0)
+		{
+			return true;
+		}
+		else
+			return false;
+	}
 }

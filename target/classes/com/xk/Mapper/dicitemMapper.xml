@@ -23,9 +23,9 @@
     values (#{item,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
       #{dictypeid,jdbcType=INTEGER}, #{memo,jdbcType=VARCHAR})
  	</insert>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="DelDicItem" parameterType="java.lang.Integer" >
     delete from dicitem
-    where DicItemId = #{dicitemid,jdbcType=INTEGER}
+    where DicItemId = #{itemid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.xk.orm.dicitem" >
     insert into dicitem (DicItemId, Item, Code, 

@@ -38,56 +38,8 @@
 <!-- treeview -->
 <link rel="stylesheet" type="text/css"
 	href="./treeview/css/bootstrap.min.css">
-<style type="text/css">
-#search {
-	width: 100%;
-	height: 5%;
-	float: left;
-	margin-top: 2%;
-}
-
-.btntypename {
-	float: left;
-	margin-left: 2%;
-}
-
-.typename {
-	width: 15%;
-	float: left;
-	margin-right: 2%;
-}
-
-#searchBtn {
-	float: left;
-	margin: 3% ；
-}
-
-.btntypename, #searchBtn, .addbtn, .addItem {
-	background-color: #2B333E;
-}
-.modal-content{
-	width:65%;
-	margin: 0 auto;
-}
-.typeleft {
-	width: 50%;
-	float: left;
-	height: 100%;
-}
-.addbtn, .addItem {
-	margin-left: 79%;
-}
-
-.itemright {
-	width: 50%;
-	float: left;
-	height: 100%;
-}
-.input-group {
-	width: 80%;
-	margin: 4% auto;
-}
-</style>
+<link rel="stylesheet" type="text/css" href="./css/tabletitle.css">
+</head>
 <body>
 	<!-- WRAPPER -->
 	<div id="wrapper">
@@ -233,7 +185,7 @@
 	            <div class="modal-header">
 	                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
 	                        aria-hidden="true">&times;</span></button>
-	                <h4 class="modal-title" id="exampleModalLabel">标题</h4>
+	                <h4 class="modal-title" id="exampleModalLabel">添加字典类型</h4>
 	            </div>
 	
 	            <div class="modal-body">
@@ -265,7 +217,7 @@
 	            <div class="modal-header">
 	                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
 	                        aria-hidden="true">&times;</span></button>
-	                <h4 class="modal-title" id="ModalLabelItem">标题</h4>
+	                <h4 class="modal-title" id="ModalLabelItem">添加字典项目</h4>
 	            </div>
 	
 	            <div class="modal-body">

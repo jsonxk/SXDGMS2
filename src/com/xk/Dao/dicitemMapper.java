@@ -28,4 +28,6 @@ public interface dicitemMapper {
     List<dicitem> selectAllItem();
     //添加项目
 	int InsertDicItem(dicitem item);
+
+	int DelDicItem(@Param("itemid")int itemid);
 }

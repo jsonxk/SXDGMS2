@@ -40,10 +40,6 @@
 <link rel="stylesheet" href="./js/table/bootstrap.css" />
  
 <style type="text/css">
-.fixed-table-body {
-	height: 68%;
-}
-
 #search {
 	margin: 2% 0 2% 2%;
 	height: 5%;

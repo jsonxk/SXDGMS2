@@ -38,4 +38,7 @@ public class DicitemMapperImpl {
 	public int  InsertDicItem(dicitem item) {
 		return dicitemMapper.InsertDicItem(item);
 	}
+	public int DelDicItem(int itemid) {
+		return dicitemMapper.DelDicItem(itemid);
+	}
 }

@@ -11,7 +11,7 @@ public class Unit {
 
     private String msphone;
 
-    private Short status;
+    private Integer status;
 
     private Integer dicitemid;
 
@@ -57,11 +57,11 @@ public class Unit {
         this.msphone = msphone;
     }
 
-    public Short getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Short status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

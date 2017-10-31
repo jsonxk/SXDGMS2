@@ -36,9 +36,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="./treeview/css/bootstrap.min.css">
   </head>
   <style type="text/css">
-.fixed-table-body {
-	height: 40%;
-}
 #search {
 	margin: 1% 0 2% 1%;
 	height: 5%;

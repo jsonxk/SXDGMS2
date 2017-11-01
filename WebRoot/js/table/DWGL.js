@@ -1,11 +1,12 @@
 /*
  * 单位管理
  */
-$(function(){
-	UnitInfoInit({"unitname":""});
-})
 //偏移量用于分页查找是列序号
 var fset=0;
+$(function(){
+	UnitInfoInit({"unitname":"","unitstatus":$("#unitstatus").val()});
+})
+//单位表格信息
 function UnitInfoInit(serarchInfo){
 	//alert(1);
 	$('#unittable').bootstrapTable("destroy");
@@ -72,11 +73,6 @@ function UnitInfoInit(serarchInfo){
 			align : "center",
 			valign : "middle",
 		}, {
-			field : "status",
-			title : "状态",
-			align : "center",
-			valign : "middle",
-		}, {
 			field : "dicitem",
 			title : "所属类型",
 			align : "center",
@@ -87,6 +83,27 @@ function UnitInfoInit(serarchInfo){
 			align : "center",
 			valign : "middle",
 		}, {
+			field : "status",
+			title : "状态",
+			align : "center",
+			valign : "middle",
+			formatter:function(value,row,index){
+				var change="";
+				if(value=="正常")
+					{
+						change= '<span style="color:#18fc24;font-weight:700">'+value+'</span>';
+					}
+				else if(value=="已删除")
+					{
+						change= '<span style="color:#ff4242;font-weight:700">'+value+'</span>';
+					}
+				else if(value=="")
+					{
+						change= '<span>'+value+'</span>';
+					}
+				return change;
+			},
+		},{
 			title : "操作",
 			align : "center",
 			valign : "middle",
@@ -99,12 +116,10 @@ function UnitInfoInit(serarchInfo){
 			return '没有找到信息';
 		},
 		onClickCell : function(field, value, row, $element) {
-			/*//点击加载某角色的功能
 			//td父节点的兄弟节点的子节点颜色
-			ItemInit(row.dictypeid);
 			$($element).parent().siblings().children().css("background-color","inherit");
 			//设置本节点和兄弟节点颜色
-			$($element).css("background-color","#cdd3dc").siblings().css("background-color","#cdd3dc");*/
+			$($element).css("background-color","#cdd3dc").siblings().css("background-color","#cdd3dc");
 		},
 		
 	});
@@ -112,9 +127,11 @@ function UnitInfoInit(serarchInfo){
 		$('#unittable').bootstrapTable('resetView');
 	});
 }
-$("#searchBtn").click(function(){
+//查找
+$("#Unitbtn").click(function(){
 	var searchInfo={
 			"unitname":$("input[name='searchname']").val(),
+			"unitstatus":$("#unitstatus").val(),
 	};
 	UnitInfoInit(searchInfo);
 });
@@ -124,14 +141,24 @@ function operateFormatter(value, row, index) {
 			'<button type="button" class="RoleOfB btn btn-default  btn-sm" style="margin-right:15px;">删除</button>', ]
 			.join('');
 }
+var unitid;
 // 表格操作的按钮事件
 window.operateEvents = {
 	'click .RoleOfA' : function(e, value, row, index) {
-		alert(row.dictypeid);
+		//点击修改信息
+		$("#UnitModifyModal").modal("show");
+		DicItemInfo("单位类别");
+		DicStatus("单位状态")
+		$(".Unitmodifyname").val(row.unitname);
+		$(".UnitAddress").val(row.unitaddress);
+		$(".people").val(row.MSpeople);
+		$(".phone").val(row.MSphone);
+		$(".Umemo").val(row.unitmemo);
+		unitid=row.unitid;
 	},
 	'click .RoleOfB' : function(e, value, row, index) {
-		//DelTypeInfo(row.dictypeid);
-		$('#unittable').bootstrapTable("refresh");
+		//删除信息
+		DelUnit(row.unitid);
 	},
 };
 
@@ -139,13 +166,39 @@ window.operateEvents = {
 $(".addUnit").click(function(){
 	$("#UnitModal").modal("show");
 	modalUnitAdd();
+	//获取单位类型信息
+	DicItemInfo("单位类别");
 });
+//删除单位
+function DelUnit(unitid){
+	 $.ajax({
+			type : "Post",
+			url : "Unit/DelUnit.spring",
+			data :{
+				"unitid":unitid
+			},
+			dataType : 'json',
+			error : function(data) {
+				alert("角色添加失败！！:");
+			},
+			success:function(data){
+				if(data)
+					{
+						$('#unittable').bootstrapTable('refresh');
+					}
+			}
+		});
+}
 //modal隐藏触发
 $('#UnitModal').on('hidden.bs.modal', function() {
     $("#unitform").data('bootstrapValidator').destroy();
     $('#unitform').data('bootstrapValidator', null);
     $("#unitform input").val("");
     $("#unitform textarea").val("");
+});
+$('#UnitModifyModal').on('hidden.bs.modal', function() {
+    $("#unitModifyform input").val("");
+    $("#unitModifyform textarea").val("");
 });
 //添加表单验证
 var unitform = $('#unitform');
@@ -166,9 +219,9 @@ function modalUnitAdd() {
                       message: '不能为空'
                   },
                   stringLength: {
-                      min: 3,
+                      min: 2,
                       max: 10,
-                      message: '请输入3到10个字符'
+                      message: '请输入2到10个字符'
                   },
                   regexp: {
                       regexp: /^[a-zA-Z0-9_\. \u4e00-\u9fa5 ]+$/,
@@ -188,21 +241,22 @@ function modalUnitAdd() {
           },MSpeople: {
               validators: {
                   notEmpty: {
-                      message: '地址不能为空'
+                      message: '主管人不能为空'
                   }, stringLength: {
-                      min: 3,
-                      max: 60,
-                      message: '请输入3到60个字符'
+                      min: 2,
+                      max: 10,
+                      message: '请输入2到10个字符'
                   }
               }
           },MSphone: {
               validators: {
-                  notEmpty: {
-                      message: '地址不能为空'
-                  }, stringLength: {
-                      min: 3,
-                      max: 60,
-                      message: '请输入3到60个字符'
+                  stringLength: {
+                      min: 6,
+                      max: 11,
+                      message: '请输入6到11个字符'
+                  },regexp: {
+                      regexp: /(010\d{8})|(0[2-9]\d{9})|(13\d{9})|(14[57]\d{8})|(15[0-35-9]\d{8})|(18[0-35-9]\d{8})|(17[0-35-9]\d{8})/,
+                      message: '输入正确电话号码'
                   }
               }
           },Umemo: {
@@ -219,29 +273,132 @@ function modalUnitAdd() {
       }
   });
 }
+//提交添加信息
 $("#submitBtn").click(function () {
-  var bv = form.data('bootstrapValidator');
-  bv.validate();
-  if (bv.isValid()) {
+	var form=$("#unitform");
+	var uname=$('input[name=Uname]').val();
+	var uaddress=$('input[name=UAddress]').val();
+	var MSpeople=$('input[name=MSpeople]').val();
+	var MSphone=$('input[name=MSphone]').val();
+	var uType=$('.unittype').val();
+	var Umemo=$('#Umemo').val();
+	//var dataarray=$("#unitform").serializeArray();
+	/*for(var i=0;i<dataarray.length;i++)
+		{
+			var paramname=dataarray[i].name;
+			var value=dataarray[i].value;
+			array.push({paramname:value});
+		}*/
+	var dataarray=[];
+	var array={"unitname":uname,"dicitemid":uType,"address":uaddress,"mspeople":MSpeople,"msphone":MSphone+"","memo":Umemo};
+	dataarray.push(array);
+	var bv = form.data('bootstrapValidator');
+	bv.validate();
+	if (bv.isValid()) {
       console.log(form.serialize());
-    /*//添加信息请求
-      var typename=$("#ZDtypename").val();
-      var memo=$("#ZDmemo").val();
-      $.ajax({
+    //添加单位信息请求
+     $.ajax({
 			type : "Post",
-			url : "ZDGL/InsertDictype.spring",
-			data :{
-				"typename":typename,
-				"memo":memo,
-			},
+			url : "Unit/InsertUnit.spring",
+			data :JSON.stringify(dataarray),
 			dataType : 'json',
+			contentType:'application/json',
 			error : function(data) {
-				alert("角色修改失败！！:");
+				alert("角色添加失败！！:");
 			},
 			success:function(data){
-				$("#TypeModal").modal("hide");
-				alert("角色修改成功");
+				$("#UnitModal").modal("hide");
+				//刷新表格
+				$('#unittable').bootstrapTable("refresh");
+				alert("角色添加成功");
 			}
-		});*/
+		});
   }
 });
+/*
+ * 查找单位类型
+ */
+function DicItemInfo(param){
+	$.ajax({
+		type:"post",
+		url:"Unit/SelectUnitType.spring",
+		data:{
+			"unittype":param,
+		},
+		datatype:"json",
+		error:function(data){},
+		success:function(data){
+			for(var i=0;i<data.length;i++)
+			{
+				if(i==0)
+				{
+					//添加modal
+					$(".unittype").append("<option class='select' value='"+data[i].dicitemid+"'>"+data[i].item+"</option>");
+					//修改modal
+					$(".unittypeModify").append("<option class='select' value='"+data[i].dicitemid+"'>"+data[i].item+"</option>");
+				}
+				else
+					$(".unittype").append("<option value='"+data[i].dicitemid+"'>"+data[i].item+"</option>");
+					$(".unittypeModify").append("<option value='"+data[i].dicitemid+"'>"+data[i].item+"</option>");
+			}
+		}
+	});
+}
+/*
+ * 查找单位状态
+ */
+function DicStatus(param){
+	$.ajax({
+		type:"post",
+		url:"Unit/SelectUnitType.spring",
+		data:{
+			"unittype":param,
+		},
+		datatype:"json",
+		error:function(data){},
+		success:function(data){
+			for(var i=0;i<data.length;i++)
+			{
+				if(i==0)
+				{
+					$(".unitstatus").append("<option class='select' value='"+data[i].dicitemid+"'>"+data[i].item+"</option>");
+				}
+				else
+					$(".unitstatus").append("<option value='"+data[i].dicitemid+"'>"+data[i].item+"</option>");	
+			}
+		}
+	});
+}
+/*
+ * 修改单位信息
+ */
+$("#ModifyBtn").click(function(){
+	var unitname=$(".Unitmodifyname").val();
+	var address=$(".UnitAddress").val();
+	var people=$(".people").val();
+	var phone=$(".phone").val();
+	var memo=$(".Umemo").val();
+	var modifyparam=[unitname,address,people,phone,memo,unitid];
+	ModifyUnitInfo(modifyparam);
+});
+function ModifyUnitInfo(array){
+	var dicitemid=$(".unittype").val();
+	var status=$(".unitstatus").val();
+	var dataarray=[{unitid:array[5],unitname:array[0],dicitemid:dicitemid,address:array[1],mspeople:array[2],msphone:array[3],memo:array[4],status:status}];
+	$.ajax({
+		type:"post",
+		url:"Unit/ModifyUnit.spring",
+		data:JSON.stringify(dataarray),
+		datatype:"json",
+		contentType:'application/json',
+		error:function(data){},
+		success:function(data){
+			if(data)
+				{
+					$("#UnitModifyModal").modal("hide");
+					alert("信息修改成功");
+					$('#unittable').bootstrapTable("refresh");
+				}
+		}
+	});
+}

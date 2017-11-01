@@ -25,7 +25,14 @@ private UnitMapper unitMapper;
 		// TODO Auto-generated method stub
 		return unitMapper.selectAllUnitpage(pagesize, offset);
 	}
-	public int selectCount(){
-		return unitMapper.selectCount();
+	public int  InsertUnit(List<Unit> dataunit) {
+		// TODO Auto-generated method stub
+		return unitMapper.InsertUnit(dataunit);
+	}
+	public int DelUnit(int unitid, int status) {
+		return unitMapper.DelUnit(unitid,status);
+	}
+	public int unittypeModify(List<Unit> unitlist) {
+		return unitMapper.unittypeModify(unitlist);
 	}
 }

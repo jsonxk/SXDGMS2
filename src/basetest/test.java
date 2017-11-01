@@ -27,6 +27,6 @@ public class test extends SpringCaseTest{
 		//JSONArray funlist=allService.getuserMapperBLL().selectallUser(info);
 		//JSONArray funlist=allService.getuniBll().selectAllUnitName();
 		//System.out.println(JSONArray.fromObject(allService.getroleMapperBLL().SelectAllRole("")));
-		System.out.println(alldao.getunitMapperImpl().selectAllUnitPage(10, 0));
+		System.out.println(allService.getuniBll().SelectUnitType("单位类别"));
 	}
 }

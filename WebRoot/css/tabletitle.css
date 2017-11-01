@@ -47,7 +47,7 @@
 	margin: 4% auto;
 }
 /* µ¥Î»css */
-.unitlabel,.addUnit,#Unitbtn{
+.unitlabel,.addUnit,#Unitbtn,#submitBtn,#ModifyBtn{
 	background-color: #2B333E;
 }
 .unitlabel
@@ -60,12 +60,18 @@
 	float: left;
 	margin-right: 2%;
 }
-.Unitbtn {
+#Unitbtn {
 	float: left;
-	margin: 3%£»
+	margin-left: 1%;
 }
 
 .addUnit {
 	margin:2% 0;
 	float:right;
+}
+#unitstatus,#unitstatus option{
+	height:5%;
+	width:10%;
+	border-radius:4px;
+	float:left;
 }

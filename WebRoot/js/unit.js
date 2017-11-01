@@ -1,3 +1,4 @@
+//添加用户时选择单位信息
 $(function(){
 	var unitname=$(".unit");
 	$.ajax({

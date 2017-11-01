@@ -27,6 +27,10 @@ public interface UnitMapper {
 	List<Unit> selectUnitByname(@Param("unitname")String unitname);
 	//分页查找信息
 	List<Unit> selectAllUnitpage(@Param("pagesize")int pagesize,@Param("offset") int offset);
-	//单位总数
-	int selectCount();
+	//添加单位信息
+	int InsertUnit(List<Unit> dataunit);
+	//删除信息
+	int DelUnit(@Param("unitid")int unitid, @Param("status")int status);
+
+	int unittypeModify(List<Unit> unitlist);
 }

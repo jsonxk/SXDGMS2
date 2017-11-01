@@ -23,6 +23,7 @@
     values (#{item,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
       #{dictypeid,jdbcType=INTEGER}, #{memo,jdbcType=VARCHAR})
  	</insert>
+ 	<!-- 删除项目 -->
   <delete id="DelDicItem" parameterType="java.lang.Integer" >
     delete from dicitem
     where DicItemId = #{itemid,jdbcType=INTEGER}

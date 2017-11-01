@@ -23,12 +23,12 @@ $(function() {
 			}
 		}, {
 			field : "name",
-			title : "单位名称",
+			title : "角色名称",
 			align : "center",
 			valign : "middle",
 		}, {
 			field : "memo",
-			title : "单位描述",
+			title : "角色描述",
 			align : "center",
 			valign : "middle",
 		}, {

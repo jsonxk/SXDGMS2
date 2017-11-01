@@ -139,6 +139,11 @@
 										<button class="btn btn-primary unitlabel" type="button">单位名称</button>
 										<input type="text" class="form-control unitname"
 											placeholder="输入单位名称" name="searchname">
+										<select id="unitstatus">
+											<option value="正常"  selected>正常</option>
+											<option value="已删除" class="delunit">已删除</option>
+											<option value="" >待完善</option>
+										</select>
 										<button class="btn btn-primary" type="button" id="Unitbtn">查找</button>
 										<button class="btn btn-primary addUnit" type="button">
 											<i class="fa fa-plus-square"></i>&nbsp;添加单位
@@ -194,9 +199,8 @@
 	                    </div>
 	                    <div class="form-group">
 	                        <label class="control-label">所属类型</label>
-							<select class="form-control">
-								<option class="select" value="39">电力部门</option>
-								<option value="40">弱点产权</option>
+							<select class="form-control unittype">
+								
 							</select>	
 	                    </div>
 	                    <div class="form-group">
@@ -207,6 +211,62 @@
 	                        <span id="returnMessage" class="glyphicon"> </span>
 	                        <button type="button" class="btn btn-default right" data-dismiss="modal">取消</button>
 	                        <button id="submitBtn" type="button" class="btn btn-primary">保存</button>
+	
+	                    </div>
+	                </form>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	<!-- modal修改单位弹出框 -->
+	<div class="modal fade " id="UnitModifyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	    <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+	
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+	                        aria-hidden="true">&times;</span></button>
+	                <h4 class="modal-title" id="exampleModalLabel">修改单位信息</h4>
+	            </div>
+	
+	            <div class="modal-body">
+	                <form id="unitModifyform">
+	                    <div class="form-group">
+	                        <label for="Unitmodifyname" class="control-label">单位名称</label>
+							<input type="text" name="Unitmodifyname" class="form-control Unitmodifyname"/>
+	                    </div>
+	                    <div class="form-group">
+	                        <label for="UnitAddress" class="control-label">单位地址</label>
+							<input type="text" name="UnitAddress" class="form-control UnitAddress"/>
+	                    </div>
+	                    <div class="form-group">
+	                        <label for="people" class="control-label">主管人</label>
+							<input type="text" name="people" class="form-control people"/>
+	                    </div>
+	                     <div class="form-group">
+	                        <label for="phone" class="control-label">主管电话</label>
+							<input type="text" name="phone" class="form-control phone"/>
+	                    </div>
+	                    <div class="form-group">
+	                        <label class="control-label">状态</label>
+							<select class="form-control unitstatus">
+								
+							</select>	
+	                    </div>
+	                    <div class="form-group">
+	                        <label class="control-label">所属类型</label>
+							<select class="form-control unittypeModify">
+								
+							</select>	
+	                    </div>
+	                    <div class="form-group">
+	                        <label for="Umemo" class="control-label">项目描述</label>
+							<textarea class="form-control textarea1 Umemo" rows="3" placeholder="项目描述"  name="Umemo"></textarea>
+	                    </div>
+	                    <div class="text-right">
+	                        <span id="returnMessage" class="glyphicon"> </span>
+	                        <button type="button" class="btn btn-default right" data-dismiss="modal">取消</button>
+	                        <button id="ModifyBtn" type="button" class="btn btn-primary">修改</button>
 	
 	                    </div>
 	                </form>

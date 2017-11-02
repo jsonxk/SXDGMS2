@@ -75,3 +75,33 @@
 	border-radius:4px;
 	float:left;
 }
+
+/* 参数管理css */
+.Paramlabel,.addParam,#Parambtn{
+	background-color: #2B333E;
+}
+.Paramlabel
+{
+	float: left;
+}
+.Paramname
+{
+	width: 15%;
+	float: left;
+	margin-right: 2%;
+}
+#Parambtn {
+	float: left;
+	margin-left: 1%;
+}
+
+.addParam {
+	margin:2% 0;
+	float:right;
+}
+#Paramstatus,#Paramstatus option{
+	height:5%;
+	width:10%;
+	border-radius:4px;
+	float:left;
+}

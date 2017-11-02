@@ -34,6 +34,7 @@
 	<link rel="stylesheet" href="./js/table/bootstrap.css" />
 	<!-- treeview -->
 	<link rel="stylesheet" type="text/css" href="./treeview/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/tabletitle.css">
 <body>
 	<!-- WRAPPER -->
 	<div id="wrapper">
@@ -125,13 +126,30 @@
 			<!-- MAIN CONTENT -->
 			<div class="main-content">
 				<div class="container-fluid">
-					<h3 class="page-title">用户信息表</h3>
+					<h3 class="page-title">系统参数管理</h3>
 					<div class="row">
 						<div class="col-md-12">
 							<!-- BASIC TABLE -->
-							<div class="panel">
-								<div style="width:40%">
-										
+								<div class="panel"  style="height:100%;">
+								<!-- 表格信息主体 -->
+								<div class="panel-body unitbody">
+									<h4>参数信息表</h4>
+									<div id="searchParam">
+										<button class="btn btn-primary Paramlabel" type="button">参数名称</button>
+										<input type="text" class="form-control Paramname"
+											placeholder="输入参数名称" name="Paramname">
+										<select id="Paramstatus">
+											
+										</select>
+										<button class="btn btn-primary" type="button" id="Parambtn">查找</button>
+										<button class="btn btn-primary addParam" type="button">
+											<i class="fa fa-plus-square"></i>&nbsp;添加参数
+										</button>
+									</div>
+									<div id="ParamTable" class="span10">
+										<table id="paramtable">
+										</table>
+									</div>
 								</div>
 							</div>
 							<!-- END BASIC TABLE -->
@@ -146,6 +164,55 @@
 			</div>
 			<div class="clearfix"></div>
 		</div>
+	</div>
+	<!-- modal添加参数弹出框 -->
+	<div class="modal fade " id="ParamModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	    <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+	
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+	                        aria-hidden="true">&times;</span></button>
+	                <h4 class="modal-title" id="exampleModalLabel">添加系统参数</h4>
+	            </div>
+	
+	            <div class="modal-body">
+	                <form id="unitform">
+	                    <div class="form-group">
+                        	<label for="Uname" class="control-label">单位名称</label>
+                        	<input type="text" id="Uname" name="Uname" class="form-control"/>
+                   		</div>
+	                    <div class="form-group">
+	                        <label for="UAddress" class="control-label">单位地址</label>
+							<input type="text" id="UAddress" name="UAddress" class="form-control"/>
+	                    </div>
+	                    <div class="form-group">
+	                        <label for="MSpeople" class="control-label">主管人</label>
+							<input type="text" id="MSpeople" name="MSpeople" class="form-control"/>
+	                    </div>
+	                     <div class="form-group">
+	                        <label for="MSphone" class="control-label">主管电话</label>
+							<input type="text" id="MSphone" name="MSphone" class="form-control"/>
+	                    </div>
+	                    <div class="form-group">
+	                        <label class="control-label">所属类型</label>
+							<select class="form-control unittype">
+								
+							</select>	
+	                    </div>
+	                    <div class="form-group">
+	                        <label for="Umemo" class="control-label">项目描述</label>
+							<textarea class="form-control textarea1" rows="3" placeholder="项目描述" id="Umemo" name="Umemo"></textarea>
+	                    </div>
+	                    <div class="text-right">
+	                        <span id="returnMessage" class="glyphicon"> </span>
+	                        <button type="button" class="btn btn-default right" data-dismiss="modal">取消</button>
+	                        <button id="submitBtn" type="button" class="btn btn-primary">保存</button>
+	                    </div>
+	                </form>
+	            </div>
+	        </div>
+	    </div>
 	</div>
 	<!-- END WRAPPER -->
 	<script src="./assets/vendor/jquery/jquery.min.js"></script>
@@ -164,6 +231,7 @@
 		}
 	</script>
 	<script src="./js/pageInit.js"></script>
+	<script src="./js/table/CSGL.js"></script>
 </body>
 
 </html>

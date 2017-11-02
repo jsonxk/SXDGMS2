@@ -21,6 +21,8 @@ public class AllDao {
 	private dictypeMapperImpl dictypeMapperImpl;
 	@Autowired
 	private DicitemMapperImpl dicitemMapperImpl; 
+	@Autowired
+	private SysParamMapperImpl sysParamMapperImpl;
 	public UserMapperImpl getuserMapperImpl()
 	{
 		return userMapperImpl;
@@ -45,5 +47,8 @@ public class AllDao {
 	}
 	public DicitemMapperImpl getdicitemMapperImpl(){
 		return dicitemMapperImpl;
+	}
+	public SysParamMapperImpl getsysParamMapperImpl(){
+		return sysParamMapperImpl;
 	}
 }

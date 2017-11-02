@@ -21,14 +21,14 @@ public class DicitemMapperImpl {
 	private dicitemMapper dicitemMapper;
 	/*
      * @param dictypeId
-     * 根绝字典类型获取详细项目
+     *根据字典类型获取详细项目
      */
 	public List<dicitem> selectItemByTypeid(int dictypeid){
 		return dicitemMapper.selectItemByTypeid(dictypeid);
 	}
 	/*
 	 * 获取所有的项目信息
-	 * 用于用户比较是否存在该用户类型
+	 * 用于比较是否存在该类型
 	 */
 	public List<dicitem> selectAllItem()
 	{

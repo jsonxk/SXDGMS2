@@ -23,6 +23,8 @@ public class AllService {
 	private DicTypeBLL dicTypeBLL;
 	@Autowired
 	private DicitemBLL dicitemBLL;
+	@Autowired
+	private SysParamBLL sysparambll;
  	public UserMapperBLL getuserMapperBLL(){
 		return userMapperBLL;
 	}
@@ -43,5 +45,8 @@ public class AllService {
 	}
 	public DicitemBLL getdicitemBll(){
 		return dicitemBLL;
+	}
+	public SysParamBLL getsysparambll(){
+		return sysparambll;
 	}
 }

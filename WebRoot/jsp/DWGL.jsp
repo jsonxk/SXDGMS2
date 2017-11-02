@@ -130,11 +130,11 @@
 					<h3 class="page-title">单位管理</h3>
 					<div class="row">
 						<div class="col-md-12">
-							<!-- BASIC TABLE -->
+							<!--单位 TABLE -->
 							<div class="panel"  style="height:100%;">
 								<!-- 表格信息主体 -->
 								<div class="panel-body unitbody">
-									<h4>字典类型表</h4>
+									<h4>单位信息表</h4>
 									<div id="searchUnit">
 										<button class="btn btn-primary unitlabel" type="button">单位名称</button>
 										<input type="text" class="form-control unitname"
@@ -211,7 +211,6 @@
 	                        <span id="returnMessage" class="glyphicon"> </span>
 	                        <button type="button" class="btn btn-default right" data-dismiss="modal">取消</button>
 	                        <button id="submitBtn" type="button" class="btn btn-primary">保存</button>
-	
 	                    </div>
 	                </form>
 	            </div>
@@ -255,7 +254,7 @@
 	                    </div>
 	                    <div class="form-group">
 	                        <label class="control-label">所属类型</label>
-							<select class="form-control unittypeModify">
+							<select class="form-control ModifyUnit">
 								
 							</select>	
 	                    </div>

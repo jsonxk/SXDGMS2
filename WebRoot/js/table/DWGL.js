@@ -5,6 +5,8 @@
 var fset=0;
 $(function(){
 	UnitInfoInit({"unitname":"","unitstatus":$("#unitstatus").val()});
+	DicStatus("单位状态");
+	DicItemInfo("单位类别");
 })
 //单位表格信息
 function UnitInfoInit(serarchInfo){
@@ -127,7 +129,7 @@ function UnitInfoInit(serarchInfo){
 		$('#unittable').bootstrapTable('resetView');
 	});
 }
-//查找
+//查找单位信息
 $("#Unitbtn").click(function(){
 	var searchInfo={
 			"unitname":$("input[name='searchname']").val(),
@@ -147,8 +149,6 @@ window.operateEvents = {
 	'click .RoleOfA' : function(e, value, row, index) {
 		//点击修改信息
 		$("#UnitModifyModal").modal("show");
-		DicItemInfo("单位类别");
-		DicStatus("单位状态")
 		$(".Unitmodifyname").val(row.unitname);
 		$(".UnitAddress").val(row.unitaddress);
 		$(".people").val(row.MSpeople);
@@ -166,8 +166,6 @@ window.operateEvents = {
 $(".addUnit").click(function(){
 	$("#UnitModal").modal("show");
 	modalUnitAdd();
-	//获取单位类型信息
-	DicItemInfo("单位类别");
 });
 //删除单位
 function DelUnit(unitid){
@@ -330,16 +328,10 @@ function DicItemInfo(param){
 		success:function(data){
 			for(var i=0;i<data.length;i++)
 			{
-				if(i==0)
-				{
-					//添加modal
-					$(".unittype").append("<option class='select' value='"+data[i].dicitemid+"'>"+data[i].item+"</option>");
-					//修改modal
-					$(".unittypeModify").append("<option class='select' value='"+data[i].dicitemid+"'>"+data[i].item+"</option>");
-				}
-				else
-					$(".unittype").append("<option value='"+data[i].dicitemid+"'>"+data[i].item+"</option>");
-					$(".unittypeModify").append("<option value='"+data[i].dicitemid+"'>"+data[i].item+"</option>");
+				//添加
+				$(".unittype").append("<option value='"+data[i].dicitemid+"'>"+data[i].item+"</option>");
+				//修改
+				$(".ModifyUnit").append("<option value='"+data[i].dicitemid+"'>"+data[i].item+"</option>");
 			}
 		}
 	});
@@ -382,7 +374,7 @@ $("#ModifyBtn").click(function(){
 	ModifyUnitInfo(modifyparam);
 });
 function ModifyUnitInfo(array){
-	var dicitemid=$(".unittype").val();
+	var dicitemid=$(".ModifyUnit").val();
 	var status=$(".unitstatus").val();
 	var dataarray=[{unitid:array[5],unitname:array[0],dicitemid:dicitemid,address:array[1],mspeople:array[2],msphone:array[3],memo:array[4],status:status}];
 	$.ajax({

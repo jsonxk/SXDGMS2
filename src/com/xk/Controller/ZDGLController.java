@@ -24,14 +24,16 @@ import com.xk.service.AllService;
 public class ZDGLController {
 	@Autowired
 	private AllService allservice;
-	//查找所有字典信息
+	/*
+	 *查找所有字典信息
+	 */	
 	@RequestMapping(value="/selectAllType",method=RequestMethod.POST)
 	public  @ResponseBody JSONArray selectAllType(@RequestParam("typename")String typename,@RequestParam("pageSize")String pageSize,@RequestParam("offset")String offset)
 	{
 		//return allservice.getdicTypeBLL().selectAlltype(Integer.parseInt(pageNumber), Integer.parseInt(pageSize), typename);
 		return allservice.getdicTypeBLL().selectAlltype(Integer.parseInt(offset),Integer.parseInt(pageSize), typename);
 	}
-	//查找所有字典类型信息（无参）
+	//查找所有字典类型信息（无参）作文select 里option
 	@RequestMapping(value="/selectAllTypeNoParam",method=RequestMethod.POST)
 	public  @ResponseBody JSONArray selectAllTypeNoParam()
 	{

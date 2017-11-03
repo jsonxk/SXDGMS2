@@ -94,14 +94,20 @@
 	float: left;
 	margin-left: 1%;
 }
-
+#Returnbtn{
+	float: left;
+	margin-left:2%;
+	background: white;
+	color:#2B333E;
+	border-color:#2B333E;
+}
 .addParam {
 	margin:2% 0;
 	float:right;
 }
 #Paramstatus,#Paramstatus option{
 	height:5%;
-	width:10%;
+	width:11%;
 	border-radius:4px;
 	float:left;
 }

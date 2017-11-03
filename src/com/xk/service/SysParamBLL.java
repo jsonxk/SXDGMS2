@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import com.xk.DaoImpl.AllDao;
 import com.xk.orm.SysParam;
+import com.xk.orm.SysParamInfo;
+import com.xk.orm.dicitem;
 
 /**
  * @author: xk
@@ -29,7 +31,8 @@ public class SysParamBLL {
 	 * 获取参数信息
 	 */
 	public JSONArray SearchSysParam(String paramname, String paramtype) {
-		List<SysParam> dataparam=null;
+		List<SysParamInfo> dataparam=null;
+		List<dicitem> item=alldao.getdicitemMapperImpl().selectAllItem();
 		Map<String, Object> map=new HashMap<String, Object>();
 		if(paramname.equals("")&&paramtype.equals(""))
 		{
@@ -44,7 +47,48 @@ public class SysParamBLL {
 			map.put("paramtype", Integer.parseInt(paramtype));
 			dataparam=alldao.getsysParamMapperImpl().SearchByType(map);
 		}
+		for(SysParamInfo paraminfo:dataparam)
+		{
+			for(dicitem dic:item)
+			{
+				if(paraminfo.getType()==dic.getDicitemid())
+				{
+					paraminfo.setTypeinfo(dic.getItem());
+				}
+			}
+		}
 		return JSONArray.fromObject(dataparam);
+	}
+	//添加参数信息
+	public boolean InsertParam(SysParam param) {
+		int i=alldao.getsysParamMapperImpl().InsertParam(param);
+		if(i>0)
+		{
+			return true;
+		}
+		else
+			return false;
+	}
+	/*
+	 * 修改参数
+	 */
+	public boolean ModifyParam(SysParam param) {
+		int i=alldao.getsysParamMapperImpl().ModifyParam(param);
+		if(i>0)
+		{
+			return true;
+		}
+		else
+			return false;
+	}
+	public boolean DelParam(int sysparamid) {
+		int i=alldao.getsysParamMapperImpl().DelParam(sysparamid);
+		if(i>0)
+		{
+			return true;
+		}
+		else
+			return false;
 	}
 
 }

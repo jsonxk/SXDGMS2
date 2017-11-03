@@ -200,7 +200,7 @@ $('#UnitModifyModal').on('hidden.bs.modal', function() {
 });
 //添加表单验证
 var unitform = $('#unitform');
-//bootstrap表单验证	
+//modal表单验证	
 function modalUnitAdd() {
   unitform.bootstrapValidator({
       message: '输入值不合法',
@@ -373,6 +373,7 @@ $("#ModifyBtn").click(function(){
 	var modifyparam=[unitname,address,people,phone,memo,unitid];
 	ModifyUnitInfo(modifyparam);
 });
+//修改单位信息
 function ModifyUnitInfo(array){
 	var dicitemid=$(".ModifyUnit").val();
 	var status=$(".unitstatus").val();

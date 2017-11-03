@@ -284,7 +284,7 @@
 	<script src="./js/table/bootstrap-table-export.js"></script>
 	<script src="./js/table/jquery.base64.js"></script>
 	<script src="./js/table/tableExport.js"></script>
-	<script src="https://cdn.bootcss.com/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
+	<script src="./js/validate/bootstrapValidator.js"></script>
 	<script type="text/javascript">
 		function initIndex() {
 			$(".xtglchild .4xtgl4   a").addClass("active");

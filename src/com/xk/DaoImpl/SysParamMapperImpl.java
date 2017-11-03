@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.xk.Dao.SysParamMapper;
 import com.xk.orm.SysParam;
+import com.xk.orm.SysParamInfo;
 
 /**
  * @author: xk
@@ -24,18 +25,26 @@ public class SysParamMapperImpl {
 	/*
 	 * 查找系统参数信息
 	 */
-	public List<SysParam> SearchSysParam(Map<String, Object> map) {
+	public List<SysParamInfo> SearchSysParam(Map<String, Object> map) {
 		return sysParamMapper.SearchSysParam(map);
 	}
 	/*
 	 * 所有参数信息
 	 */
-	public List<SysParam> selectAllParam(){
+	public List<SysParamInfo> selectAllParam(){
 		return sysParamMapper.selectAllParam();
 	}
-	public List<SysParam> SearchByType(Map<String, Object> map) {
-		// TODO Auto-generated method stub
+	public List<SysParamInfo> SearchByType(Map<String, Object> map) {
 		return sysParamMapper.SearchByType(map);
+	}
+	public int InsertParam(SysParam param) {
+		return sysParamMapper.InsertParam(param);
+	}
+	public int ModifyParam(SysParam param) {
+		return sysParamMapper.ModifyParam(param);
+	}
+	public int DelParam(int sysparamid) {
+		return sysParamMapper.DelParam(sysparamid);
 	}
 	
 }

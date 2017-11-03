@@ -129,11 +129,9 @@
 					<div class="row">
 						<div class="col-md-12">
 							<!-- BASIC TABLE -->
-							<div class="panel">
-								<div style="width:40%">
-										
+								<div class="panel"  style="height:100%;">
+								
 								</div>
-							</div>
 							<!-- END BASIC TABLE -->
 						</div>
 					</div>

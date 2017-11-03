@@ -7,6 +7,6 @@
 	http://www.springframework.org/schema/beans 
 	http://www.springframework.org/schema/beans/spring-beans.xsd">
 	
-	<jaxws:endpoint id="Myservice" implementor="com.xk.Util.WebServiceImpl" address="/WebPublish"/>
+	<jaxws:endpoint id="Myservice" implementor="com.xk.ActivitiUtil.WebServiceImpl" address="/WebPublish"/>
 	
 </beans>

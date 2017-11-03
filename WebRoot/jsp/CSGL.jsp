@@ -129,7 +129,7 @@
 					<h3 class="page-title">系统参数管理</h3>
 					<div class="row">
 						<div class="col-md-12">
-							<!-- BASIC TABLE -->
+							<!-- 信息表 -->
 								<div class="panel"  style="height:100%;">
 								<!-- 表格信息主体 -->
 								<div class="panel-body unitbody">
@@ -138,13 +138,14 @@
 										<button class="btn btn-primary Paramlabel" type="button">参数名称</button>
 										<input type="text" class="form-control Paramname"
 											placeholder="输入参数名称" name="Paramname">
-										<select id="Paramstatus">
+										<select id="Paramstatus" class="form-control">
 											
 										</select>
 										<button class="btn btn-primary" type="button" id="Parambtn">查找</button>
 										<button class="btn btn-primary addParam" type="button">
 											<i class="fa fa-plus-square"></i>&nbsp;添加参数
 										</button>
+										<button class="btn btn-primary" type="button" id="Returnbtn">刷新<span class="glyphicon glyphicon-repeat"></span></button>
 									</div>
 									<div id="ParamTable" class="span10">
 										<table id="paramtable">
@@ -177,37 +178,70 @@
 	            </div>
 	
 	            <div class="modal-body">
-	                <form id="unitform">
+	                <form id="Paramform">
 	                    <div class="form-group">
-                        	<label for="Uname" class="control-label">单位名称</label>
-                        	<input type="text" id="Uname" name="Uname" class="form-control"/>
+                        	<label for="Paramname" class="control-label">参数名称</label>
+                        	<input type="text" id="Paramname" name="Paramname" class="form-control"/>
                    		</div>
 	                    <div class="form-group">
-	                        <label for="UAddress" class="control-label">单位地址</label>
-							<input type="text" id="UAddress" name="UAddress" class="form-control"/>
-	                    </div>
-	                    <div class="form-group">
-	                        <label for="MSpeople" class="control-label">主管人</label>
-							<input type="text" id="MSpeople" name="MSpeople" class="form-control"/>
-	                    </div>
-	                     <div class="form-group">
-	                        <label for="MSphone" class="control-label">主管电话</label>
-							<input type="text" id="MSphone" name="MSphone" class="form-control"/>
+	                        <label for="ParamValue" class="control-label">参数要求</label>
+							<input type="text" id="ParamValue" name="ParamValue" class="form-control"/>
 	                    </div>
 	                    <div class="form-group">
 	                        <label class="control-label">所属类型</label>
-							<select class="form-control unittype">
+							<select class="form-control Paramstatus" >
 								
 							</select>	
 	                    </div>
 	                    <div class="form-group">
-	                        <label for="Umemo" class="control-label">项目描述</label>
-							<textarea class="form-control textarea1" rows="3" placeholder="项目描述" id="Umemo" name="Umemo"></textarea>
+	                        <label for="Parammemo" class="control-label">参数描述</label>
+							<textarea class="form-control textarea1" rows="3" placeholder="参数描述" id="Parammemo" name="Parammemo"></textarea>
 	                    </div>
 	                    <div class="text-right">
 	                        <span id="returnMessage" class="glyphicon"> </span>
 	                        <button type="button" class="btn btn-default right" data-dismiss="modal">取消</button>
-	                        <button id="submitBtn" type="button" class="btn btn-primary">保存</button>
+	                        <button id="submitBtn" type="button" class="btn btn-primary">提交</button>
+	                    </div>
+	                </form>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	<!-- modal修改参数弹出框 -->
+	<div class="modal fade " id="ModifyParamModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+	    <div class="modal-dialog" role="document">
+	        <div class="modal-content">
+	
+	            <div class="modal-header">
+	                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+	                        aria-hidden="true">&times;</span></button>
+	                <h4 class="modal-title" id="exampleModalLabel">修改系统参数</h4>
+	            </div>
+	
+	            <div class="modal-body">
+	                <form id="ModifyParamform">
+	                    <div class="form-group">
+                        	<label for="ModifyParamname" class="control-label">参数名称</label>
+                        	<input type="text" id="ModifyParamname" name="ModifyParamname" class="form-control"/>
+                   		</div>
+	                    <div class="form-group">
+	                        <label for="ModifyParamValue" class="control-label">参数要求</label>
+							<input type="text" id="ModifyParamValue" name="ModifyParamValue" class="form-control"/>
+	                    </div>
+	                    <div class="form-group">
+	                        <label class="control-label">所属类型</label>
+							<select class="form-control ModifyParamstatus" >
+								
+							</select>	
+	                    </div>
+	                    <div class="form-group">
+	                        <label for="ModifyParammemo" class="control-label">参数描述</label>
+							<textarea class="form-control textarea1" rows="3" placeholder="参数描述" id="ModifyParammemo" name="ModifyParammemo"></textarea>
+	                    </div>
+	                    <div class="text-right">
+	                        <span id="returnMessage" class="glyphicon"> </span>
+	                        <button type="button" class="btn btn-default right" data-dismiss="modal">取消</button>
+	                        <button id="ModifyBtn" type="button" class="btn btn-primary">修改</button>
 	                    </div>
 	                </form>
 	            </div>
@@ -225,6 +259,7 @@
 	<script src="./js/table/bootstrap-table-export.js"></script>
 	<script src="./js/table/jquery.base64.js"></script>
 	<script src="./js/table/tableExport.js"></script>
+	<script src="./js/validate/bootstrapValidator.js"></script>
 	<script type="text/javascript">
 		function initIndex() {
 			$(".xtglchild .4xtgl0   a").addClass("active");

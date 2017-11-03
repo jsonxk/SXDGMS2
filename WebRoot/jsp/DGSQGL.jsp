@@ -125,15 +125,33 @@
 			<!-- MAIN CONTENT -->
 			<div class="main-content">
 				<div class="container-fluid">
-					<h3 class="page-title">用户信息表</h3>
+					<h3 class="page-title">搭挂申请</h3>
 					<div class="row">
 						<div class="col-md-12">
 							<!-- BASIC TABLE -->
-							<div class="panel">
-								<div style="width:40%">
-										
+							<div class="panel"  style="height:100%;">
+								<!-- 搭挂申请信息主体 -->
+								<div class="panel-body unitbody">
+									<h4>搭挂申请表</h4>
+									<div id="searchParam">
+										<button class="btn btn-primary Paramlabel" type="button">参数名称</button>
+										<input type="text" class="form-control Paramname"
+											placeholder="输入参数名称" name="Paramname">
+										<select id="Paramstatus" class="form-control">
+											
+										</select>
+										<button class="btn btn-primary" type="button" id="Parambtn">查找</button>
+										<button class="btn btn-primary addParam" type="button">
+											<i class="fa fa-plus-square"></i>&nbsp;添加参数
+										</button>
+										<button class="btn btn-primary" type="button" id="Returnbtn">刷新<span class="glyphicon glyphicon-repeat"></span></button>
+									</div>
+									<div id="ParamTable" class="span10">
+										<table id="paramtable">
+										</table>
+									</div>
 								</div>
-							</div>
+								</div>
 							<!-- END BASIC TABLE -->
 						</div>
 					</div>

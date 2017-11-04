@@ -10,14 +10,14 @@
 		<webVersion>3.0</webVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- spring版本号 -->
-		<spring.version>4.1.6.RELEASE</spring.version>
+		<spring.version>4.0.4.RELEASE</spring.version>
 		<!-- log4j日志文件管理包版本 -->
 		<slf4j.version>1.6.6</slf4j.version>
 		<log4j.version>1.2.12</log4j.version>
 		<!-- junit版本号 -->
 		<junit.version>4.10</junit.version>
 		<!-- mybatis版本号 -->
-		<mybatis.version>3.2.1</mybatis.version>
+		<mybatis.version>3.3.0</mybatis.version>
 		<!-- WebService -->
 		<cxf.version>3.1.3</cxf.version>
 	</properties>
@@ -151,32 +151,32 @@
 		<dependency>
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-engine</artifactId>
-			<version>5.15.1</version>
+			<version>5.22.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-spring</artifactId>
-			<version>5.15.1</version>
+			<version>5.22.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-bpmn-model</artifactId>
-			<version>5.15.1</version>
+			<version>5.22.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-bpmn-layout</artifactId>
-			<version>5.15.1</version>
+			<version>5.22.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-bpmn-converter</artifactId>
-			<version>5.15.1</version>
+			<version>5.22.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.activiti</groupId>
 			<artifactId>activiti-process-validation</artifactId>
-			<version>5.15.1</version>
+			<version>5.22.0</version>
 		</dependency>
 		<!-- activiti end -->
 

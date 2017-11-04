@@ -15,8 +15,11 @@ import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.repository.Deployment;
+import org.activiti.engine.repository.ProcessDefinition;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
-@WebService(endpointInterface="com.xk.ActivitiUtil.WebServiceimp")
+//@WebService(endpointInterface="com.xk.ActivitiUtil.WebServiceimp")
 public class WebServiceImpl implements WebServiceimp{
 	@Autowired
 	private ProcessEngine processEngine;
@@ -36,25 +39,31 @@ public class WebServiceImpl implements WebServiceimp{
 	private ManagementService managementService;
 	@WebMethod
 	@Override
-	public List<Object> getlist() {
-		// TODO Auto-generated method stub
-		List<Object> list=new ArrayList<Object>();
-		list.add("ss");
-		list.add("bb");
-		return list;
-	}
-	@WebMethod
-	@Override
-	public String Say(String id) {
-		// TODO Auto-generated method stub
-		System.out.println(id+"水电费胜多负少的");
-		return id;
-	}
-	@WebMethod
-	@Override
 	public List<Object> ProcessEngine() {
-		Deployment de=processEngine.getRepositoryService().createDeployment().addClasspathResource("./Activiti/HangLineApply.bpmn").deploy();
-		return null;
+		
+		//部署流程定义
+		repositoryService=processEngine.getRepositoryService();
+		Deployment de=repositoryService.createDeployment().addClasspathResource("./Activiti/MyProcess.bpmn").deploy();
+		
+		// * 流程定义类
+		 
+		List<ProcessDefinition> processDefinition=repositoryService.createProcessDefinitionQuery().list();
+		
+		 //* 流程执行实例
+		 
+		//ProcessInstance processInstance=processEngine.getRuntimeService().startProcessInstanceByKey("")
+		runtimeService=processEngine.getRuntimeService();
+		//默认最新的key启动流程实例
+		ProcessInstance processInstance=runtimeService.startProcessInstanceByKey("myProcess");
+		taskService=processEngine.getTaskService();
+		List<Task> task=taskService.createTaskQuery().list();
+		for(Task t:task)
+		{
+			System.out.println("任务id"+t.getId()+"名称"+t.getName());
+			//processEngine.getTaskService().complete(t.getId());
+		}
+		List<Object> list=null;
+		return list;
 	}
 	
 }

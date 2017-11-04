@@ -44,9 +44,8 @@
 		</property>
 	</bean>
 	<!-- 配置数据源事务管理器 -->
-	<bean id="transactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-		<property name="dataSource" ref="dataSource" /> <!-- 引用上面的数据源 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
 	</bean>
 		<!-- 配置Mybatis的文件 ，mapperLocations配置**Mapper.xml文件位置，configLocation配置mybatis-config文件位置 -->
 	<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -67,14 +66,11 @@
 	SpringProcessEngineConfiguration: 在Spring环境下使用流程引擎
 	JtaProcessEngineConfiguration: 单独运行流程引擎
 	-->
-	<bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+	<!-- <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
         <property name="dataSource" ref="dataSource" />  
         <property name="transactionManager" ref="transactionManager" />  
         <property name="databaseSchemaUpdate" value="true" />  
-        <property name="jobExecutorActivate" value="false" />  
-        <property name="activityFontName" value="宋体"/>  
-        <property name="labelFontName" value="宋体"/> 
-    	<property name="databaseType" value="mysql"></property>
+    	<property name="databaseType" value="mysql"></property> -->
     	 <!-- 部署流程文件 -->
     	<!-- <property name="deploymentResources" value=" "></property>
     	邮件服务器配置
@@ -83,10 +79,15 @@
     	<property name="mailServerUsername" value=""></property>
     	<property name="mailServerPassword" value=""></property> -->
     	
-    </bean>
+  <!--   </bean> -->
+  <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+  	<property name="dataSource" ref="dataSource"></property>
+  	<property name="transactionManager" ref="transactionManager"></property>
+  	<property name="databaseSchemaUpdate" value="true"></property>
+  </bean>
     <!-- 流程引擎 -->
-	<bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
-        <property name="processEngineConfiguration" ref="processEngineConfiguration"/>
+    <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+    	<property name="processEngineConfiguration" ref="processEngineConfiguration"></property>
     </bean>
 	<bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService"/>
     <bean id="runtimeService" factory-bean="processEngine" factory-method="getRuntimeService"/>
@@ -94,7 +95,7 @@
     <bean id="identityService" factory-bean="processEngine" factory-method="getIdentityService"/>
     <bean id="taskService" factory-bean="processEngine" factory-method="getTaskService"/>
     <bean id="historyService" factory-bean="processEngine" factory-method="getHistoryService"/>
-    <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService"/> 
+    <bean id="managementService" factory-bean="processEngine" factory-method="getManagementService"/>
     <!-- Activiti end -->    
     <context:component-scan base-package="com.xk.Dao"></context:component-scan>
     <context:component-scan base-package="com.xk.DaoImpl"></context:component-scan>

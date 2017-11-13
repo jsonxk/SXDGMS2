@@ -41,13 +41,14 @@ public class UnitBLL {
 		JSONObject jo=new JSONObject();
 		JSONArray datatotal=new JSONArray();
 		JSONObject jototal=new JSONObject();
+		//全称查找
 		if(unitname.equals(""))
 		{
 			dataunit=allDao.getunitMapperImpl().selectAllUnitPage(pagesize, offset);
 		}
+		//状态查找
 		else{
 			dataunit=allDao.getunitMapperImpl().selectUnitByname(unitname);
-			count=dataunit.size();
 		}
 		for(Unit u:dataunit)
 		{	

@@ -11,7 +11,7 @@
 		<result column="Status" property="status" jdbcType="SMALLINT" />
 		<result column="Memo" property="memo" jdbcType="VARCHAR" />
 	</resultMap>
-	<select id="LoginJudgy" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+	<select id="LoginJudgy" resultMap="BaseResultMap" parameterType="java.lang.String">
 		select
 		*
 		from user

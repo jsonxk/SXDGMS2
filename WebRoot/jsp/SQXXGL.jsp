@@ -125,16 +125,34 @@
 			<!-- MAIN CONTENT -->
 			<div class="main-content">
 				<div class="container-fluid">
-					<h3 class="page-title">用户信息表</h3>
+					<h3 class="page-title">搭挂申请信息</h3>
 					<div class="row">
 						<div class="col-md-12">
-							<!-- BASIC TABLE -->
-							<div class="panel">
-								<div style="width:40%">
-										
+						<!--申请信息表 TABLE Start -->
+							<div class="panel"  style="height:100%;">
+								<!-- 表格信息主体 -->
+								<div class="panel-body unitbody">
+									<h4>申请信息表</h4>
+									<div id="searchApply">
+										<button class="btn btn-primary unitlabel" type="button">线路名称</button>
+										<input type="text" class="form-control unitname"
+											placeholder="输入单位名称" name="searchname">
+										<select id="unitstatus">
+											<option value="正常"  selected>正常</option>
+											<option value="已删除" class="delunit">已删除</option>
+											<option value="" >待完善</option>
+										</select>
+										<button class="btn btn-primary" type="button" id="Unitbtn">查找</button>
+										<button class="btn btn-primary addUnit" type="button">
+											<i class="fa fa-plus-square"></i>&nbsp;添加
+										</button>
+									</div>
+									<div id="UnitTable" class="span10">
+																	
+									</div>
 								</div>
 							</div>
-							<!-- END BASIC TABLE -->
+							<!-- END 申请信息 TABLE -->
 						</div>
 					</div>
 				</div>

@@ -206,8 +206,6 @@ $('#TypeModal').on('hidden.bs.modal', function() {
     $("#updateform input").val("");
     $("#updateform textarea").val("");
 });
-
-
 //右边字典类型详细情况表
 function ItemInit(dictypeid){
 	$('#ItemTable').bootstrapTable("destroy");

@@ -111,3 +111,73 @@
 	border-radius:4px;
 	float:left;
 }
+/* ¥Óπ“…Í«Îπ‹¿Ìcss */
+.Hanglabel,#Hangbtn,#Refreshbtn,.addHang,.Permitlabel{
+	background-color: #2B333E;
+}
+#Hangbtn,#Refreshbtn{
+	float:left;
+	margin-left:3%;
+}
+.to{
+	border-radius:0;
+}
+.Hanglabel{
+	float:left;
+}
+.Permitlabel{
+	float:left;
+	margin-left:3%;
+}
+.Hangname{
+	width: 14%;
+	float: left;
+	margin-right: 2%;
+}
+#HangStatus,#HangStatus option{
+	height:5%;
+	width:15%;
+	border-radius:4px;
+	float:left;
+}
+.form_date{
+	float:left;
+	width:20%;
+	margin:0;
+	border-radius:0;
+}
+.dateFinish,.permittime{
+	float:left;
+	width:16%;
+	margin:0px;
+}
+.finishtime,.permitfinish{
+	border-radius:0;
+}
+.addHang {
+	float:right;
+	margin-right:9%;
+}
+.ApplyPeople,.ApplyUnit,.ApplyTime,.ApplyPhone{
+	width:45%;
+	float:left;
+}
+.ApplyNumber,.ApplyBuildType,.ApplyContact{
+	margin-left:10%;
+	width:45%;
+	float:left;
+}
+.ApplyMemo{
+	width:100%;
+	height:17%;
+	float:left;
+}
+.modalbutton{
+	float:right;
+}
+#myTab span{
+	font-size:17px;
+	line-height: 40px;
+	margin:0 0 0 40px;
+	font-weight: 400;
+}

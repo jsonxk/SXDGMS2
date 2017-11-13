@@ -21,19 +21,59 @@
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 <!-- VENDOR CSS -->
-<link rel="stylesheet" href="./assets/vendor/font-awesome/css/font-awesome.min.css">
-	<link rel="stylesheet" href="./assets/vendor/linearicons/style.css">
-	<!-- MAIN CSS -->
-	<link rel="stylesheet" href="./assets/css/main.css">
-	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
-	<link rel="stylesheet" href="./assets/css/demo.css">
-	<!-- ICONS -->
-	<link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
-	<link rel="icon" type="image/png" sizes="96x96" href="./assets/img/favicon.png">
-	<link rel="stylesheet" href="./js/table/bootstrap-table.css" />
-	<link rel="stylesheet" href="./js/table/bootstrap.css" />
-	<!-- treeview -->
-	<link rel="stylesheet" type="text/css" href="./treeview/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="./assets/vendor/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="./assets/vendor/linearicons/style.css">
+<!-- MAIN CSS -->
+<link rel="stylesheet" href="./assets/css/main.css">
+<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+<link rel="stylesheet" href="./assets/css/demo.css">
+<!-- ICONS -->
+<link rel="apple-touch-icon" sizes="76x76"
+	href="./assets/img/apple-icon.png">
+<link rel="icon" type="image/png" sizes="96x96"
+	href="./assets/img/favicon.png">
+<link rel="stylesheet" href="./js/table/bootstrap-table.css" />
+<link rel="stylesheet" href="./js/table/bootstrap.css" />
+<!-- treeview -->
+<link rel="stylesheet" type="text/css"
+	href="./treeview/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="./css/tabletitle.css">
+<style>
+#myTab {
+	width: 100%;
+	height: 40px;
+}
+
+#myTab li {
+	width: 55%;
+	float: left;
+	height: 40px;
+	list-style: none;
+	margin: 0px -10px;
+}
+
+#myTab li img {
+	float: left;
+	height: 100%;
+}
+
+.blue {
+	background: #0f9af2;
+}
+
+.gray {
+	background: #dfdfdf;
+}
+
+.tab-content {
+	width: 90%;
+	float: left;
+	margin: 0 5%;
+	border: solid 1px #000;
+}
+</style>
+</head>
 <body>
 	<!-- WRAPPER -->
 	<div id="wrapper">
@@ -129,29 +169,68 @@
 					<div class="row">
 						<div class="col-md-12">
 							<!-- BASIC TABLE -->
-							<div class="panel"  style="height:100%;">
+							<div class="panel" style="height:100%;">
 								<!-- 搭挂申请信息主体 -->
 								<div class="panel-body unitbody">
 									<h4>搭挂申请表</h4>
 									<div id="searchParam">
-										<button class="btn btn-primary Paramlabel" type="button">参数名称</button>
-										<input type="text" class="form-control Paramname"
-											placeholder="输入参数名称" name="Paramname">
-										<select id="Paramstatus" class="form-control">
-											
+										<button class="btn btn-primary Hanglabel" type="button">名称</button>
+										<input type="text" class="form-control Hangname"
+											placeholder="输入搭挂线路名称" name="Hangname"> 
+										<select id="HangStatus" class="form-control">
+
 										</select>
-										<button class="btn btn-primary" type="button" id="Parambtn">查找</button>
-										<button class="btn btn-primary addParam" type="button">
-											<i class="fa fa-plus-square"></i>&nbsp;添加参数
+										<button class="btn btn-primary" type="button" id="Hangbtn">查找</button>
+										<button class="btn btn-primary" type="button" id="Refreshbtn">
+											刷新<span class="glyphicon glyphicon-repeat"></span>
 										</button>
-										<button class="btn btn-primary" type="button" id="Returnbtn">刷新<span class="glyphicon glyphicon-repeat"></span></button>
+										<button class="btn btn-primary addHang" type="button">
+											<i class="fa fa-plus-square"></i>&nbsp;添加申请
+										</button>
+										<div style="float:left;margin-top:2%">
+											<!-- 申请日期 -->
+											<button class="btn btn-primary Hanglabel" type="button">申请日期</button>
+											<div class="input-group date form_date" data-date=""
+												data-date-format="dd MM yyyy" data-link-field="dtp_input2"
+												data-link-format="yyyy-mm-dd">
+												<input class="form-control timevalue" size="16" type="text"
+													value="" readonly> <span class="input-group-addon"><span
+													class="glyphicon glyphicon-calendar"></span></span> <span
+													class="form-control to">to</span>
+											</div>
+											<div class="input-group date dateFinish" data-date=""
+												data-date-format="dd MM yyyy" data-link-field="dtp_input2"
+												data-link-format="yyyy-mm-dd">
+												<input class="form-control finishtime" size="16" type="text"
+													value="" readonly> <span class="input-group-addon"><span
+													class="glyphicon glyphicon-calendar"></span></span>
+											</div>
+											<!-- 批准日期 -->
+											<button class="btn btn-primary Permitlabel" type="button">批准日期</button>
+											<div class="input-group date form_date" data-date=""
+												data-date-format="dd MM yyyy" data-link-field="dtp_input2"
+												data-link-format="yyyy-mm-dd">
+												<input class="form-control permittime" size="16" type="text"
+													value="" readonly> <span class="input-group-addon"><span
+													class="glyphicon glyphicon-calendar"></span></span> <span
+													class="form-control to">to</span>
+											</div>
+											<div class="input-group date dateFinish" data-date=""
+												data-date-format="dd MM yyyy" data-link-field="dtp_input2"
+												data-link-format="yyyy-mm-dd">
+												<input class="form-control permitfinish" size="16"
+													type="text" value="" readonly> <span
+													class="input-group-addon"><span
+													class="glyphicon glyphicon-calendar"></span></span>
+											</div>
+										</div>
 									</div>
-									<div id="ParamTable" class="span10">
-										<table id="paramtable">
+									<div id="HangLineTable" class="span10">
+										<table id="hanglinetable">
 										</table>
 									</div>
 								</div>
-								</div>
+							</div>
 							<!-- END BASIC TABLE -->
 						</div>
 					</div>
@@ -161,8 +240,98 @@
 			<!-- END MAIN -->
 			<div class="userinfo" style="display:none">
 				<span><%=session.getAttribute("userid")%></span>
+				<p id="p1"><%=session.getAttribute("loginname").toString() %></p>
+				<p id="p2"><%=session.getAttribute("unitname").toString() %></p>
+				<p id="p3"><%=session.getAttribute("unitid").toString() %></p>
 			</div>
 			<div class="clearfix"></div>
+		</div>
+	</div>
+	<!-- modal添加申请弹出框 -->
+	<div class="modal fade " id="HangModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="width:100%">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="exampleModalLabel">添加申请信息</h4>
+				</div>
+
+				<div class="modal-body">
+					<div style="width:100%;height:84%;">
+						<ul id="myTab" role="tablist">
+							<li id="step1Li" class="active blue" style="width:45%">
+								<span>1.基础信息录入</span>
+							</li>
+							<li id="step2Li" class="gray"><img id="step2Img"
+								src="./step/images/blue_gray.png" />
+								<span>2.录入文件信息</span>
+							</li>
+						</ul>
+						<div id="myTabContent" class="tab-content">
+							<div id="step1" class="tab-pane fade active in">
+								<form id="ApplyForm">
+									<div class="form-group ApplyPeople">
+										<label for="ApplyPeople" class="control-label">申请人</label> <input
+											type="text" id="ApplyPeople" name="ApplyPeople"
+											class="form-control" readonly/>
+									</div>
+									<div class="form-group ApplyNumber">
+										<label for="ApplyNumber" class="control-label">申请编号</label> <input
+											type="text" id="ApplyNumber" name="ApplyNumber"
+											class="form-control" readonly/>
+									</div>
+									<div class="form-group ApplyUnit">
+										<label for="ApplyUnit" class="control-label">单位名称</label> <input
+											type="text" id="ApplyUnit" name="ApplyUnit"
+											class="form-control" readonly/>
+									</div>
+										<div class="form-group ApplyBuildType">
+										<label for="ApplyBuildType" class="control-label">建设类型</label> </br> 
+										<select id="ApplyBuildType" class="form-control">
+										</select>
+									</div>
+									<div class="form-group ApplyTime">
+										<label for="ApplyTime" class="control-label">申请时间</label> <input
+											type="text" id="ApplyTime" name="ApplyTime"
+											class="form-control" readonly/>
+									</div>
+									<div class="form-group ApplyContact">
+										<label for="ApplyContact" class="control-label">联系人</label> <input
+											type="text" id="ApplyContact" name="ApplyContact" placeholder="请输入联系人"
+											class="form-control" />
+									</div>
+									<div class="form-group ApplyPhone">
+										<label for="ApplyPhone" class="control-label">联系电话</label> <input
+											type="text" id="ApplyPhone" name="ApplyPhone" placeholder="请输入联系电话"
+											class="form-control" />
+									</div>
+									<div class="form-group ApplyMemo">  
+										<label for="ApplyMemo" class="control-label">申请描述</label>
+										<textarea class="form-control textarea1" rows="3"
+											placeholder="项目描述" id="ApplyMemo" name="ApplyMemo"></textarea>
+									</div>
+									<div class="text-right modalbutton">
+										<span id="returnMessage" class="glyphicon"> </span>
+										<button type="button" class="btn btn-default cancel"
+											data-dismiss="modal">取消</button>
+										<button id="NextSubmit" type="button" class="btn btn-primary" onclick="eventFun.next(2)">下一步</button>
+
+									</div>
+								</form>
+							</div>
+							<div id="step2" class="tab-pane fade ">
+								<input type="text" id="val2">
+								<button id="pre" onclick="eventFun.pre(1)">上一步</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<!-- END WRAPPER -->
@@ -176,12 +345,15 @@
 	<script src="./js/table/bootstrap-table-export.js"></script>
 	<script src="./js/table/jquery.base64.js"></script>
 	<script src="./js/table/tableExport.js"></script>
+	<script src="./js/validate/bootstrapValidator.js"></script>
+	<script src="./js/datetimepicker/bootstrap-datetimepicker.js"></script>
 	<script type="text/javascript">
 		function initIndex() {
 			$(".sqglchild .0sqgl1   a").addClass("active");
 		}
 	</script>
 	<script src="./js/pageInit.js"></script>
+	<script src="./js/table/DGSQGL.js"></script>
 </body>
 
 </html>

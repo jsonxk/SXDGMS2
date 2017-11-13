@@ -25,6 +25,10 @@ public class AllService {
 	private DicitemBLL dicitemBLL;
 	@Autowired
 	private SysParamBLL sysparambll;
+	@Autowired
+	private HangLineBLL hangLineBLL;
+	@Autowired
+	private ApplyMapperBLL applyMapperBLL;
  	public UserMapperBLL getuserMapperBLL(){
 		return userMapperBLL;
 	}
@@ -48,5 +52,11 @@ public class AllService {
 	}
 	public SysParamBLL getsysparambll(){
 		return sysparambll;
+	}
+	public HangLineBLL gethangLineBLL(){
+		return hangLineBLL;
+	}
+	public ApplyMapperBLL getApplyMapperBLL(){
+		return applyMapperBLL;
 	}
 }

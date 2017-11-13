@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xk.Dao.ApplyMapper" >
+  <resultMap id="BaseResultMap" type="com.xk.orm.Apply" >
+    <id column="ApplyId" property="applyid" jdbcType="INTEGER" />
+    <result column="UnitId" property="unitid" jdbcType="INTEGER" />
+    <result column="UserId" property="userid" jdbcType="INTEGER" />
+    <result column="HangLineId" property="hanglineid" jdbcType="INTEGER" />
+    <result column="ProcessId" property="processid" jdbcType="VARCHAR" />
+    <result column="Num" property="num" jdbcType="DOUBLE" />
+    <result column="ApplyTime" property="applytime" jdbcType="TIMESTAMP" />
+    <result column="ContactPerson" property="contactperson" jdbcType="VARCHAR" />
+    <result column="ContactPhone" property="contactphone" jdbcType="VARCHAR" />
+    <result column="BuildUnit" property="buildunit" jdbcType="VARCHAR" />
+    <result column="BuildContact" property="buildcontact" jdbcType="VARCHAR" />
+    <result column="BuildPhone" property="buildphone" jdbcType="VARCHAR" />
+    <result column="BuildType" property="buildtype" jdbcType="INTEGER" />
+    <result column="Qualifications" property="qualifications" jdbcType="VARCHAR" />
+    <result column="Description" property="description" jdbcType="VARCHAR" />
+    <result column="Status" property="status" jdbcType="INTEGER" />
+    <result column="Memo" property="memo" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select *
+    from apply
+    where ApplyId = #{applyid,jdbcType=INTEGER}
+  </select>
+    <insert id="insertApplyInfo" parameterType="com.xk.orm.ApplyStringTime" >
+    insert into apply (UnitId, UserId, 
+      HangLineId, ProcessId, Num, 
+      ApplyTime, ContactPerson, ContactPhone, 
+      BuildUnit, BuildContact, BuildPhone, 
+      BuildType, Qualifications, Description, 
+      Status, Memo)
+    values (#{unitid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, 
+      #{hanglineid,jdbcType=INTEGER}, #{processid,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER}, 
+      #{applystringtime,jdbcType=TIMESTAMP}, #{contactperson,jdbcType=VARCHAR}, #{contactphone,jdbcType=VARCHAR}, 
+      #{buildunit,jdbcType=VARCHAR}, #{buildcontact,jdbcType=VARCHAR}, #{buildphone,jdbcType=VARCHAR}, 
+      #{buildtype,jdbcType=INTEGER}, #{qualifications,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{memo,jdbcType=VARCHAR})
+  </insert>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from apply
+    where ApplyId = #{applyid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertSelective" parameterType="com.xk.orm.Apply" >
+    insert into apply
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="applyid != null" >
+        ApplyId,
+      </if>
+      <if test="unitid != null" >
+        UnitId,
+      </if>
+      <if test="userid != null" >
+        UserId,
+      </if>
+      <if test="hanglineid != null" >
+        HangLineId,
+      </if>
+      <if test="processid != null" >
+        ProcessId,
+      </if>
+      <if test="num != null" >
+        Num,
+      </if>
+      <if test="applytime != null" >
+        ApplyTime,
+      </if>
+      <if test="contactperson != null" >
+        ContactPerson,
+      </if>
+      <if test="contactphone != null" >
+        ContactPhone,
+      </if>
+      <if test="buildunit != null" >
+        BuildUnit,
+      </if>
+      <if test="buildcontact != null" >
+        BuildContact,
+      </if>
+      <if test="buildphone != null" >
+        BuildPhone,
+      </if>
+      <if test="buildtype != null" >
+        BuildType,
+      </if>
+      <if test="qualifications != null" >
+        Qualifications,
+      </if>
+      <if test="description != null" >
+        Description,
+      </if>
+      <if test="status != null" >
+        Status,
+      </if>
+      <if test="memo != null" >
+        Memo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="applyid != null" >
+        #{applyid,jdbcType=INTEGER},
+      </if>
+      <if test="unitid != null" >
+        #{unitid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="hanglineid != null" >
+        #{hanglineid,jdbcType=INTEGER},
+      </if>
+      <if test="processid != null" >
+        #{processid,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=INTEGER},
+      </if>
+      <if test="applytime != null" >
+        #{applytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="contactperson != null" >
+        #{contactperson,jdbcType=VARCHAR},
+      </if>
+      <if test="contactphone != null" >
+        #{contactphone,jdbcType=VARCHAR},
+      </if>
+      <if test="buildunit != null" >
+        #{buildunit,jdbcType=VARCHAR},
+      </if>
+      <if test="buildcontact != null" >
+        #{buildcontact,jdbcType=VARCHAR},
+      </if>
+      <if test="buildphone != null" >
+        #{buildphone,jdbcType=VARCHAR},
+      </if>
+      <if test="buildtype != null" >
+        #{buildtype,jdbcType=INTEGER},
+      </if>
+      <if test="qualifications != null" >
+        #{qualifications,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xk.orm.Apply" >
+    update apply
+    <set >
+      <if test="unitid != null" >
+        UnitId = #{unitid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        UserId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="hanglineid != null" >
+        HangLineId = #{hanglineid,jdbcType=INTEGER},
+      </if>
+      <if test="processid != null" >
+        ProcessId = #{processid,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+        Num = #{num,jdbcType=INTEGER},
+      </if>
+      <if test="applytime != null" >
+        ApplyTime = #{applytime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="contactperson != null" >
+        ContactPerson = #{contactperson,jdbcType=VARCHAR},
+      </if>
+      <if test="contactphone != null" >
+        ContactPhone = #{contactphone,jdbcType=VARCHAR},
+      </if>
+      <if test="buildunit != null" >
+        BuildUnit = #{buildunit,jdbcType=VARCHAR},
+      </if>
+      <if test="buildcontact != null" >
+        BuildContact = #{buildcontact,jdbcType=VARCHAR},
+      </if>
+      <if test="buildphone != null" >
+        BuildPhone = #{buildphone,jdbcType=VARCHAR},
+      </if>
+      <if test="buildtype != null" >
+        BuildType = #{buildtype,jdbcType=INTEGER},
+      </if>
+      <if test="qualifications != null" >
+        Qualifications = #{qualifications,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        Description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="memo != null" >
+        Memo = #{memo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ApplyId = #{applyid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xk.orm.Apply" >
+    update apply
+    set UnitId = #{unitid,jdbcType=INTEGER},
+      UserId = #{userid,jdbcType=INTEGER},
+      HangLineId = #{hanglineid,jdbcType=INTEGER},
+      ProcessId = #{processid,jdbcType=VARCHAR},
+      Num = #{num,jdbcType=INTEGER},
+      ApplyTime = #{applytime,jdbcType=TIMESTAMP},
+      ContactPerson = #{contactperson,jdbcType=VARCHAR},
+      ContactPhone = #{contactphone,jdbcType=VARCHAR},
+      BuildUnit = #{buildunit,jdbcType=VARCHAR},
+      BuildContact = #{buildcontact,jdbcType=VARCHAR},
+      BuildPhone = #{buildphone,jdbcType=VARCHAR},
+      BuildType = #{buildtype,jdbcType=INTEGER},
+      Qualifications = #{qualifications,jdbcType=VARCHAR},
+      Description = #{description,jdbcType=VARCHAR},
+      Status = #{status,jdbcType=INTEGER},
+      Memo = #{memo,jdbcType=VARCHAR}
+    where ApplyId = #{applyid,jdbcType=INTEGER}
+  </update>
+</mapper>

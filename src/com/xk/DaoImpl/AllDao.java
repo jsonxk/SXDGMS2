@@ -23,6 +23,8 @@ public class AllDao {
 	private DicitemMapperImpl dicitemMapperImpl; 
 	@Autowired
 	private SysParamMapperImpl sysParamMapperImpl;
+	@Autowired
+	private ApplyMapperImpl applyMapperImpl;
 	public UserMapperImpl getuserMapperImpl()
 	{
 		return userMapperImpl;
@@ -50,5 +52,8 @@ public class AllDao {
 	}
 	public SysParamMapperImpl getsysParamMapperImpl(){
 		return sysParamMapperImpl;
+	}
+	public ApplyMapperImpl getApplyMapperImpl(){
+		return applyMapperImpl;
 	}
 }

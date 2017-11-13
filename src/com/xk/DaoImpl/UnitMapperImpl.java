@@ -13,7 +13,7 @@ import com.xk.orm.Unit;
 public class UnitMapperImpl {
 @Autowired 
 private UnitMapper unitMapper;
-//获取所有单位信息
+	//获取所有单位信息
 	public List<Unit> selectAllUnitName(){
 		return unitMapper.selectAllUnitName();
 	}

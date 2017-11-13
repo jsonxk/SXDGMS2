@@ -9,9 +9,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /** 
  * 功能概要： 
- *  
- * @author linbingwen 
- * @since  2015年9月28日  
  */  
 //指定bean注入的配置文件  
 @ContextConfiguration(locations={ "classpath:config/applicationContext.xml" })  

@@ -1,10 +1,15 @@
 package com.xk.DaoImpl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.xk.Dao.ApplyMapper;
-import com.xk.orm.ApplyStringTime;
+import com.xk.orm.Apply;
+import com.xk.orm.ApplyDocTime;
+import com.xk.orm.ApplyMore;
+import com.xk.orm.PublicEntity;
 
 /**
  * @author: xk
@@ -17,7 +22,23 @@ public class ApplyMapperImpl implements ApplyMapper{
 	@Autowired
 	private ApplyMapper applymapper;
 	@Override
-	public int insertApplyInfo(ApplyStringTime applyinfo) {
-	 	return applymapper.insertApplyInfo(applyinfo);
+	public int insertApplyInfo(ApplyMore applyinfo) {
+		//ApplyStringTime info=new ApplyStringTime();
+		applymapper.insertApplyInfo(applyinfo);
+		return applyinfo.getApplyid();
  	}
+	@Override
+	public int ModifyApplyInfo(ApplyMore applyStringTime) {
+		return applymapper.ModifyApplyInfo(applyStringTime);
+	}
+	public List<ApplyMore> SelectApplyInfoAll(PublicEntity publicentity) {
+		return applymapper.SelectApplyInfoAll(publicentity);
+	}
+	@Override
+	public int SelectApplyCount(PublicEntity publicEntity) {
+		return applymapper.SelectApplyCount(publicEntity);
+	}
+	public int ModifyProcessInstanceId(Apply apply) {
+		return applymapper.ModifyProcessInstanceId(apply);
+	}
 }

@@ -25,6 +25,10 @@ public class AllDao {
 	private SysParamMapperImpl sysParamMapperImpl;
 	@Autowired
 	private ApplyMapperImpl applyMapperImpl;
+	@Autowired
+	private DocTypeMapperImpl docTypeMapperImpl;
+	@Autowired
+	private ApplyDocMapperImpl applyDocMapperImpl;
 	public UserMapperImpl getuserMapperImpl()
 	{
 		return userMapperImpl;
@@ -55,5 +59,11 @@ public class AllDao {
 	}
 	public ApplyMapperImpl getApplyMapperImpl(){
 		return applyMapperImpl;
+	}
+	public DocTypeMapperImpl getdocTypeMapperImpl(){
+		return docTypeMapperImpl;
+	}
+	public ApplyDocMapperImpl getApplyDocMapperImpl(){
+		return applyDocMapperImpl;
 	}
 }

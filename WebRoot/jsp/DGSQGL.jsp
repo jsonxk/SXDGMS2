@@ -174,9 +174,26 @@
 								<div class="panel-body unitbody">
 									<h4>搭挂申请表</h4>
 									<div id="searchParam">
-										<button class="btn btn-primary Hanglabel" type="button">名称</button>
-										<input type="text" class="form-control Hangname"
-											placeholder="输入搭挂线路名称" name="Hangname"> 
+										<!-- 日期查找 -->
+										<select id="TimeType" class="form-control">
+											<option  selected value='0'>申请日期</option>
+											<option  value='1'>批准日期</option>
+										</select>
+										<div class="input-group date form_date" data-date=""
+											data-date-format="dd MM yyyy" data-link-field="dtp_input2"
+											data-link-format="yyyy-mm-dd">
+											<input class="form-control timevalue" size="16" type="text"
+												value="" readonly> <span class="input-group-addon"><span
+												class="glyphicon glyphicon-calendar"></span></span> <span
+												class="form-control to">to</span>
+										</div>
+										<div class="input-group date dateFinish" data-date=""
+											data-date-format="dd MM yyyy" data-link-field="dtp_input2"
+											data-link-format="yyyy-mm-dd">
+											<input class="form-control finishtime" size="16" type="text"
+												value="" readonly> <span class="input-group-addon"><span
+												class="glyphicon glyphicon-calendar"></span></span>
+										</div>
 										<select id="HangStatus" class="form-control">
 
 										</select>
@@ -187,43 +204,6 @@
 										<button class="btn btn-primary addHang" type="button">
 											<i class="fa fa-plus-square"></i>&nbsp;添加申请
 										</button>
-										<div style="float:left;margin-top:2%">
-											<!-- 申请日期 -->
-											<button class="btn btn-primary Hanglabel" type="button">申请日期</button>
-											<div class="input-group date form_date" data-date=""
-												data-date-format="dd MM yyyy" data-link-field="dtp_input2"
-												data-link-format="yyyy-mm-dd">
-												<input class="form-control timevalue" size="16" type="text"
-													value="" readonly> <span class="input-group-addon"><span
-													class="glyphicon glyphicon-calendar"></span></span> <span
-													class="form-control to">to</span>
-											</div>
-											<div class="input-group date dateFinish" data-date=""
-												data-date-format="dd MM yyyy" data-link-field="dtp_input2"
-												data-link-format="yyyy-mm-dd">
-												<input class="form-control finishtime" size="16" type="text"
-													value="" readonly> <span class="input-group-addon"><span
-													class="glyphicon glyphicon-calendar"></span></span>
-											</div>
-											<!-- 批准日期 -->
-											<button class="btn btn-primary Permitlabel" type="button">批准日期</button>
-											<div class="input-group date form_date" data-date=""
-												data-date-format="dd MM yyyy" data-link-field="dtp_input2"
-												data-link-format="yyyy-mm-dd">
-												<input class="form-control permittime" size="16" type="text"
-													value="" readonly> <span class="input-group-addon"><span
-													class="glyphicon glyphicon-calendar"></span></span> <span
-													class="form-control to">to</span>
-											</div>
-											<div class="input-group date dateFinish" data-date=""
-												data-date-format="dd MM yyyy" data-link-field="dtp_input2"
-												data-link-format="yyyy-mm-dd">
-												<input class="form-control permitfinish" size="16"
-													type="text" value="" readonly> <span
-													class="input-group-addon"><span
-													class="glyphicon glyphicon-calendar"></span></span>
-											</div>
-										</div>
 									</div>
 									<div id="HangLineTable" class="span10">
 										<table id="hanglinetable">
@@ -240,9 +220,9 @@
 			<!-- END MAIN -->
 			<div class="userinfo" style="display:none">
 				<span><%=session.getAttribute("userid")%></span>
-				<p id="p1"><%=session.getAttribute("loginname").toString() %></p>
-				<p id="p2"><%=session.getAttribute("unitname").toString() %></p>
-				<p id="p3"><%=session.getAttribute("unitid").toString() %></p>
+				<p id="p1"><%=session.getAttribute("loginname").toString()%></p>
+				<p id="p2"><%=session.getAttribute("unitname").toString()%></p>
+				<p id="p3"><%=session.getAttribute("unitid").toString()%></p>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -251,7 +231,7 @@
 	<div class="modal fade " id="HangModal" tabindex="-1" role="dialog"
 		aria-labelledby="exampleModalLabel">
 		<div class="modal-dialog" role="document">
-			<div class="modal-content" style="width:100%">
+			<div class="modal-content" style="width:115%">
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
@@ -264,13 +244,10 @@
 				<div class="modal-body">
 					<div style="width:100%;height:84%;">
 						<ul id="myTab" role="tablist">
-							<li id="step1Li" class="active blue" style="width:45%">
-								<span>1.基础信息录入</span>
+							<li id="step1Li" class="active blue" style="width:45%"><span>1.基础信息录入</span>
 							</li>
 							<li id="step2Li" class="gray"><img id="step2Img"
-								src="./step/images/blue_gray.png" />
-								<span>2.录入文件信息</span>
-							</li>
+								src="./step/images/blue_gray.png" /> <span>2.录入文件信息</span></li>
 						</ul>
 						<div id="myTabContent" class="tab-content">
 							<div id="step1" class="tab-pane fade active in">
@@ -278,55 +255,69 @@
 									<div class="form-group ApplyPeople">
 										<label for="ApplyPeople" class="control-label">申请人</label> <input
 											type="text" id="ApplyPeople" name="ApplyPeople"
-											class="form-control" readonly/>
+											class="form-control" readonly />
 									</div>
 									<div class="form-group ApplyNumber">
 										<label for="ApplyNumber" class="control-label">申请编号</label> <input
 											type="text" id="ApplyNumber" name="ApplyNumber"
-											class="form-control" readonly/>
+											class="form-control" readonly />
 									</div>
 									<div class="form-group ApplyUnit">
 										<label for="ApplyUnit" class="control-label">单位名称</label> <input
 											type="text" id="ApplyUnit" name="ApplyUnit"
-											class="form-control" readonly/>
+											class="form-control" readonly />
 									</div>
-										<div class="form-group ApplyBuildType">
-										<label for="ApplyBuildType" class="control-label">建设类型</label> </br> 
-										<select id="ApplyBuildType" class="form-control">
+									<div class="form-group ApplyBuildType">
+										<label for="ApplyBuildType" class="control-label">建设类型</label>
+										</br> <select id="ApplyBuildType" class="form-control">
 										</select>
 									</div>
 									<div class="form-group ApplyTime">
 										<label for="ApplyTime" class="control-label">申请时间</label> <input
 											type="text" id="ApplyTime" name="ApplyTime"
-											class="form-control" readonly/>
+											class="form-control" readonly />
 									</div>
 									<div class="form-group ApplyContact">
 										<label for="ApplyContact" class="control-label">联系人</label> <input
-											type="text" id="ApplyContact" name="ApplyContact" placeholder="请输入联系人"
-											class="form-control" />
+											type="text" id="ApplyContact" name="ApplyContact"
+											placeholder="请输入联系人" class="form-control" />
 									</div>
 									<div class="form-group ApplyPhone">
 										<label for="ApplyPhone" class="control-label">联系电话</label> <input
-											type="text" id="ApplyPhone" name="ApplyPhone" placeholder="请输入联系电话"
-											class="form-control" />
+											type="text" id="ApplyPhone" name="ApplyPhone"
+											placeholder="请输入联系电话" class="form-control" />
 									</div>
-									<div class="form-group ApplyMemo">  
+									<div class="form-group ApplyMemo">
 										<label for="ApplyMemo" class="control-label">申请描述</label>
 										<textarea class="form-control textarea1" rows="3"
 											placeholder="项目描述" id="ApplyMemo" name="ApplyMemo"></textarea>
 									</div>
 									<div class="text-right modalbutton">
-										<span id="returnMessage" class="glyphicon"> </span>
 										<button type="button" class="btn btn-default cancel"
 											data-dismiss="modal">取消</button>
-										<button id="NextSubmit" type="button" class="btn btn-primary" onclick="eventFun.next(2)">下一步</button>
-
+										<button id="NextSubmit" type="button" class="btn btn-primary"
+											onclick="eventFun.next(2,0)">下一步</button>
+										<button id="NextSubmit2" type="button" class="btn btn-primary"
+											onclick="eventFun.next(2,1)">下一步</button>
 									</div>
 								</form>
 							</div>
 							<div id="step2" class="tab-pane fade ">
-								<input type="text" id="val2">
-								<button id="pre" onclick="eventFun.pre(1)">上一步</button>
+								<div class="span10">
+									<table class="DocTypeTable">
+									</table>
+								</div>
+								<div id="FilePromet" style="display:none">请完善必须信息</div>
+								<div class="text-right modalbutton">
+									<button type="button" class="btn btn-primary prebtn"
+										onclick="eventFun.pre(1)">上一步</button>
+									<button type="button" class="btn btn-primary Upbtn"
+										onclick="eventFun.SubmitInfo()">提交</button>
+									<button type="button" class="btn btn-default cancel"
+										data-dismiss="modal">取消</button>
+									<button type="button" class="btn btn-primary OKbtn"
+										onclick="eventFun.complete()">完成</button>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -347,6 +338,7 @@
 	<script src="./js/table/tableExport.js"></script>
 	<script src="./js/validate/bootstrapValidator.js"></script>
 	<script src="./js/datetimepicker/bootstrap-datetimepicker.js"></script>
+	<script src="./js/ajaxupload/ajaxfileupload.js"></script>
 	<script type="text/javascript">
 		function initIndex() {
 			$(".sqglchild .0sqgl1   a").addClass("active");

@@ -17,14 +17,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xk.orm.Apply;
-import com.xk.orm.ApplyStringTime;
+import com.xk.orm.ApplyMore;
+import com.xk.orm.PublicEntity;
 import com.xk.service.AllService;
 
 /**
  * @author: xk
  * @date:2017年11月8日 下午11:05:30
  * @version :
- * 
+ * 申请 信息管理
  */
 @Controller
 @RequestMapping("/HangLine")
@@ -46,16 +47,62 @@ public class HangLineController {
 	 * @return
 	 */
 	@RequestMapping(value="/InsertApplyInfo",method=RequestMethod.POST)
-	public @ResponseBody JSONArray InsertApplyInfo(@RequestBody ApplyStringTime applyinfo)
+	public @ResponseBody JSONArray InsertApplyInfo(@RequestBody ApplyMore applyinfo)
 	{
 		
 		JSONArray msg=new JSONArray();
-		if(allService.getApplyMapperBLL().InsertApplyInfo(applyinfo))
+		int i=allService.getApplyMapperBLL().InsertApplyInfo(applyinfo);
+		if(i>0)
 		{
-			msg=JSONArray.fromObject("[{'msg':'success'}]");
+			msg=JSONArray.fromObject("[{'Insert':"+i+"}]");
 		}
 		else 
-			msg=JSONArray.fromObject("[{'msg':'error'}]");
+			msg=JSONArray.fromObject("[{'Insert':"+0+"}]");
 		return msg;
+	}
+	/**
+	 * 修改申请信息
+	 * @param applyinfo
+	 * @return
+	 */
+	@RequestMapping(value="/ModifyApplyInfo",method=RequestMethod.POST)
+	public @ResponseBody JSONArray ModifyApplyInfo(@RequestBody ApplyMore applyinfo)
+	{
+		
+		JSONArray msg=new JSONArray();
+		if(allService.getApplyMapperBLL().ModifyApplyInfo(applyinfo))
+		{
+			msg=JSONArray.fromObject("[{'Modify':'success'}]");
+		}
+		else 
+			msg=JSONArray.fromObject("[{'Modify':'error'}]");
+		return msg;
+	}
+	/**
+	 * 查找搭挂申请所需要的文件信息
+	 * @param Applytype申请状态
+	 * @return
+	 */
+	@RequestMapping(value="/SelectDoctype",method=RequestMethod.POST)
+	public @ResponseBody JSONArray SelectDoctype(@RequestParam("Applytype") String Applytype){
+		return allService.getApplyMapperBLL().SelectDoctype(Applytype);
+	}
+	/**
+	 * 获取所有申请信息(包括查找信息)
+	 * @param publicentity
+	 * @return
+	 */
+	@RequestMapping(value="/SelectApplyInfo",method=RequestMethod.POST)
+	public @ResponseBody JSONArray SelectApplyInfo(@RequestBody PublicEntity publicentity ){
+		return allService.getApplyMapperBLL().SelectApplyInfo(publicentity);
+	}
+	/**
+	 * 用户提交申请接受信息后用于开启流程
+	 * @param publicentity
+	 * @return
+	 */
+	@RequestMapping(value="/SubmitApply",method=RequestMethod.POST)
+	public @ResponseBody JSONArray SubmitApply(@RequestBody Apply publicentity ){
+		return allService.getApplyMapperBLL().SubmitApply(publicentity);
 	}
 }

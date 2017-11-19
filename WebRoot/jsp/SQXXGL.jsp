@@ -34,6 +34,11 @@
 	<link rel="stylesheet" href="./js/table/bootstrap.css" />
 	<!-- treeview -->
 	<link rel="stylesheet" type="text/css" href="./treeview/css/bootstrap.min.css">
+<style>
+	#fileToUpload2{
+		display:none;
+		}
+</style>
 <body>
 	<!-- WRAPPER -->
 	<div id="wrapper">
@@ -148,7 +153,9 @@
 										</button>
 									</div>
 									<div id="UnitTable" class="span10">
-																	
+											<label for="fileToUpload2" id="sadsad">选择文件</label>	
+											<input id="fileToUpload2" name="file1" type="file" onchange="change()"/>
+											<input class="fileToUpload2" type="text">						
 									</div>
 								</div>
 							</div>
@@ -177,6 +184,17 @@
 	<script src="./js/table/jquery.base64.js"></script>
 	<script src="./js/table/tableExport.js"></script>
 	<script type="text/javascript">
+		
+		function change(){
+			var file = $("#fileToUpload2").val();
+			var fileName = getFileName(file);
+ 			alert(fileName);
+			$(".fileToUpload2").val(fileName);
+		}
+		function getFileName(o) {
+			var pos = o.lastIndexOf("\\");
+			return o.substring(pos + 1);
+		}
 		function initIndex() {
 			$(".sqglchild .0sqgl0   a").addClass("active");
 		}

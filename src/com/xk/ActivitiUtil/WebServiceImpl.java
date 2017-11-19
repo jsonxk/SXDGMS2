@@ -65,5 +65,19 @@ public class WebServiceImpl implements WebServiceimp{
 		List<Object> list=null;
 		return list;
 	}
-	
+	@Override
+	public List<Object> Playruntime() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<Object> TaskListen() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void RepositoryStart() {
+		repositoryService=processEngine.getRepositoryService();
+		repositoryService.createDeployment().addClasspathResource("./Activiti/ApplyProcess.bpmn");
+	}
 }

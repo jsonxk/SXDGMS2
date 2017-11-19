@@ -220,7 +220,8 @@
 			</div>
 			<div class="clearfix"></div>
 			<!-- 用户信息修改 -->
-			<div class="modal" id="mymodal">
+			<div class="modal fade" id="mymodal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -273,7 +274,8 @@
 		</div>
 	</div>
 	<!-- 角色设置 -->
-	<div class="modal" id="JSModel">
+	<div class="modal fade" id="JSModel" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">

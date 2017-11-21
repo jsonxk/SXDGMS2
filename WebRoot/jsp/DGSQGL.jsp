@@ -347,5 +347,4 @@
 	<script src="./js/pageInit.js"></script>
 	<script src="./js/table/DGSQGL.js"></script>
 </body>
-
 </html>

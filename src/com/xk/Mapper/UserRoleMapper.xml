@@ -9,6 +9,9 @@
   <select id="selectroleidByUserid" resultMap="BaseResultMap" parameterType="java.lang.Integer">
   	select * from userrole where userrole.userid=#{userid,jdbcType=INTEGER}
   </select>
+  <select id="SelectRepairUsers" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+  	select * from userrole where userrole.RoleId=#{repairId}
+  </select>
   <delete id="deleteByuseridRoleid" parameterType="com.xk.orm.UserRole" >
     delete from userrole where UserId =#{userid} and RoleId = #{roleid}
   </delete>

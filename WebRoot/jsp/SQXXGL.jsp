@@ -21,23 +21,28 @@
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 <!-- VENDOR CSS -->
-<link rel="stylesheet" href="./assets/vendor/font-awesome/css/font-awesome.min.css">
-	<link rel="stylesheet" href="./assets/vendor/linearicons/style.css">
-	<!-- MAIN CSS -->
-	<link rel="stylesheet" href="./assets/css/main.css">
-	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
-	<link rel="stylesheet" href="./assets/css/demo.css">
-	<!-- ICONS -->
-	<link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
-	<link rel="icon" type="image/png" sizes="96x96" href="./assets/img/favicon.png">
-	<link rel="stylesheet" href="./js/table/bootstrap-table.css" />
-	<link rel="stylesheet" href="./js/table/bootstrap.css" />
-	<!-- treeview -->
-	<link rel="stylesheet" type="text/css" href="./treeview/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="./assets/vendor/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="./assets/vendor/linearicons/style.css">
+<!-- MAIN CSS -->
+<link rel="stylesheet" href="./assets/css/main.css">
+<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+<link rel="stylesheet" href="./assets/css/demo.css">
+<!-- ICONS -->
+<link rel="apple-touch-icon" sizes="76x76"
+	href="./assets/img/apple-icon.png">
+<link rel="icon" type="image/png" sizes="96x96"
+	href="./assets/img/favicon.png">
+<link rel="stylesheet" href="./js/table/bootstrap-table.css" />
+<link rel="stylesheet" href="./js/table/bootstrap.css" />
+<!-- treeview -->
+<link rel="stylesheet" type="text/css"
+	href="./treeview/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="./css/tabletitle.css">
 <style>
-	#fileToUpload2{
-		display:none;
-		}
+#fileToUpload2 {
+	display: none;
+}
 </style>
 <body>
 	<!-- WRAPPER -->
@@ -133,29 +138,48 @@
 					<h3 class="page-title">搭挂申请信息</h3>
 					<div class="row">
 						<div class="col-md-12">
-						<!--申请信息表 TABLE Start -->
-							<div class="panel"  style="height:100%;">
+							<!--申请信息表 TABLE Start -->
+							<div class="panel" style="height:100%;">
 								<!-- 表格信息主体 -->
 								<div class="panel-body unitbody">
 									<h4>申请信息表</h4>
-									<div id="searchApply">
-										<button class="btn btn-primary unitlabel" type="button">线路名称</button>
-										<input type="text" class="form-control unitname"
-											placeholder="输入单位名称" name="searchname">
-										<select id="unitstatus">
-											<option value="正常"  selected>正常</option>
-											<option value="已删除" class="delunit">已删除</option>
-											<option value="" >待完善</option>
+									<div id="searchParam">
+										<!-- 单位查找 -->
+										<button class="btn btn-primary" type="button"
+											id="ApplyUnitname">单位名称</button>
+										<select id="ApplyUnittype" class="form-control">
+
 										</select>
-										<button class="btn btn-primary" type="button" id="Unitbtn">查找</button>
-										<button class="btn btn-primary addUnit" type="button">
-											<i class="fa fa-plus-square"></i>&nbsp;添加
-										</button>
+										<!-- 日期查找 -->
+										<select id="TimeType" class="form-control">
+											<option selected value='0'>申请日期</option>
+											<option value='1'>批准日期</option>
+										</select>
+										<div class="input-group date form_date" data-date=""
+											data-date-format="dd MM yyyy" data-link-field="dtp_input2"
+											data-link-format="yyyy-mm-dd">
+											<input class="form-control timevalue" size="16" type="text"
+												value="" readonly> <span class="input-group-addon"><span
+												class="glyphicon glyphicon-calendar"></span></span> <span
+												class="form-control to">to</span>
+										</div>
+										<div class="input-group date dateFinish" data-date=""
+											data-date-format="dd MM yyyy" data-link-field="dtp_input2"
+											data-link-format="yyyy-mm-dd">
+											<input class="form-control finishtime" size="16" type="text"
+												value="" readonly> <span class="input-group-addon"><span
+												class="glyphicon glyphicon-calendar"></span></span>
+										</div>
+										<select id="HangStatus" class="form-control">
+
+										</select>
+										<button class="btn btn-primary" type="button" id="Hangbtn">查找</button>
 									</div>
-									<div id="UnitTable" class="span10">
-											<label for="fileToUpload2" id="sadsad">选择文件</label>	
-											<input id="fileToUpload2" name="file1" type="file" onchange="change()"/>
-											<input class="fileToUpload2" type="text">						
+									<!-- 表格信息主体 -->
+									<div id="SQXXGLTable" class="span10">
+										<table id="sqxxgltable">
+
+										</table>
 									</div>
 								</div>
 							</div>
@@ -165,9 +189,35 @@
 				</div>
 				<!-- END MAIN CONTENT -->
 			</div>
+			<!-- 点击处理按钮 弹出modal-->
+			<div class="modal fade " id="HanderModal" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content" style="width:115%">
+
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="exampleModalLabel">添加申请信息</h4>
+						</div>
+
+						<div class="modal-body">
+							
+								
+							
+							
+						</div>
+					</div>
+				</div>
+			</div>
 			<!-- END MAIN -->
 			<div class="userinfo" style="display:none">
 				<span><%=session.getAttribute("userid")%></span>
+				<p id="p1"><%=session.getAttribute("loginname").toString()%></p>
+				<p id="p2"><%=session.getAttribute("unitname").toString()%></p>
+				<p id="p3"><%=session.getAttribute("unitid").toString()%></p>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -183,23 +233,15 @@
 	<script src="./js/table/bootstrap-table-export.js"></script>
 	<script src="./js/table/jquery.base64.js"></script>
 	<script src="./js/table/tableExport.js"></script>
+	<script src="./js/validate/bootstrapValidator.js"></script>
+	<script src="./js/datetimepicker/bootstrap-datetimepicker.js"></script>
 	<script type="text/javascript">
-		
-		function change(){
-			var file = $("#fileToUpload2").val();
-			var fileName = getFileName(file);
- 			alert(fileName);
-			$(".fileToUpload2").val(fileName);
-		}
-		function getFileName(o) {
-			var pos = o.lastIndexOf("\\");
-			return o.substring(pos + 1);
-		}
 		function initIndex() {
 			$(".sqglchild .0sqgl0   a").addClass("active");
 		}
 	</script>
 	<script src="./js/pageInit.js"></script>
+	<script src="./js/table/SQXXGL.js"></script>
 </body>
 
 </html>

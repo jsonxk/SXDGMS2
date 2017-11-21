@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xk.Dao.PoleMapper">
+	<resultMap id="BaseResultMap" type="com.xk.orm.Pole">
+		<id column="PoleId" property="poleid" jdbcType="INTEGER" />
+		<result column="UnitId" property="unitid" jdbcType="INTEGER" />
+		<result column="LineId" property="lineid" jdbcType="INTEGER" />
+		<result column="Code" property="code" jdbcType="VARCHAR" />
+		<result column="Name" property="name" jdbcType="VARCHAR" />
+		<result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+		<result column="Longtitude" property="longtitude" jdbcType="DECIMAL" />
+		<result column="Latitude" property="latitude" jdbcType="DECIMAL" />
+		<result column="PositionMethod" property="positionmethod"
+			jdbcType="SMALLINT" />
+		<result column="Height" property="height" jdbcType="DECIMAL" />
+		<result column="Type" property="type" jdbcType="VARCHAR" />
+		<result column="Status" property="status" jdbcType="SMALLINT" />
+		<result column="Memo" property="memo" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="SelectPoleInfo" parameterType="java.lang.Integer"
+		resultType="com.xk.orm.Pole">
+		select pole.*,d1.Item as statusname,d2.Item as typename from pole LEFT JOIN
+		dicitem d1 ON pole.`Status`=d1.DicItemId LEFT JOIN dicitem d2 ON
+		pole.Type=d2.DicItemId where pole.LineId=#{lineid}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from pole
+		where PoleId = #{poleid,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.xk.orm.Pole">
+		insert into pole (PoleId, UnitId, LineId,
+		Code, Name, CreateTime,
+		Longtitude, Latitude, PositionMethod,
+		Height, Type, Status,
+		Memo)
+		values (#{poleid,jdbcType=INTEGER}, #{unitid,jdbcType=INTEGER},
+		#{lineid,jdbcType=INTEGER},
+		#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP},
+		#{longtitude,jdbcType=DECIMAL}, #{latitude,jdbcType=DECIMAL},
+		#{positionmethod,jdbcType=SMALLINT},
+		#{height,jdbcType=DECIMAL}, #{type,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT},
+		#{memo,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.xk.orm.Pole">
+		insert into pole
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="poleid != null">
+				PoleId,
+			</if>
+			<if test="unitid != null">
+				UnitId,
+			</if>
+			<if test="lineid != null">
+				LineId,
+			</if>
+			<if test="code != null">
+				Code,
+			</if>
+			<if test="name != null">
+				Name,
+			</if>
+			<if test="createtime != null">
+				CreateTime,
+			</if>
+			<if test="longtitude != null">
+				Longtitude,
+			</if>
+			<if test="latitude != null">
+				Latitude,
+			</if>
+			<if test="positionmethod != null">
+				PositionMethod,
+			</if>
+			<if test="height != null">
+				Height,
+			</if>
+			<if test="type != null">
+				Type,
+			</if>
+			<if test="status != null">
+				Status,
+			</if>
+			<if test="memo != null">
+				Memo,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="poleid != null">
+				#{poleid,jdbcType=INTEGER},
+			</if>
+			<if test="unitid != null">
+				#{unitid,jdbcType=INTEGER},
+			</if>
+			<if test="lineid != null">
+				#{lineid,jdbcType=INTEGER},
+			</if>
+			<if test="code != null">
+				#{code,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="longtitude != null">
+				#{longtitude,jdbcType=DECIMAL},
+			</if>
+			<if test="latitude != null">
+				#{latitude,jdbcType=DECIMAL},
+			</if>
+			<if test="positionmethod != null">
+				#{positionmethod,jdbcType=SMALLINT},
+			</if>
+			<if test="height != null">
+				#{height,jdbcType=DECIMAL},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=SMALLINT},
+			</if>
+			<if test="memo != null">
+				#{memo,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.xk.orm.Pole">
+		update pole
+		<set>
+			<if test="unitid != null">
+				UnitId = #{unitid,jdbcType=INTEGER},
+			</if>
+			<if test="lineid != null">
+				LineId = #{lineid,jdbcType=INTEGER},
+			</if>
+			<if test="code != null">
+				Code = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				Name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				CreateTime = #{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="longtitude != null">
+				Longtitude = #{longtitude,jdbcType=DECIMAL},
+			</if>
+			<if test="latitude != null">
+				Latitude = #{latitude,jdbcType=DECIMAL},
+			</if>
+			<if test="positionmethod != null">
+				PositionMethod = #{positionmethod,jdbcType=SMALLINT},
+			</if>
+			<if test="height != null">
+				Height = #{height,jdbcType=DECIMAL},
+			</if>
+			<if test="type != null">
+				Type = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				Status = #{status,jdbcType=SMALLINT},
+			</if>
+			<if test="memo != null">
+				Memo = #{memo,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where PoleId = #{poleid,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.xk.orm.Pole">
+		update pole
+		set UnitId = #{unitid,jdbcType=INTEGER},
+		LineId = #{lineid,jdbcType=INTEGER},
+		Code = #{code,jdbcType=VARCHAR},
+		Name = #{name,jdbcType=VARCHAR},
+		CreateTime = #{createtime,jdbcType=TIMESTAMP},
+		Longtitude = #{longtitude,jdbcType=DECIMAL},
+		Latitude = #{latitude,jdbcType=DECIMAL},
+		PositionMethod = #{positionmethod,jdbcType=SMALLINT},
+		Height = #{height,jdbcType=DECIMAL},
+		Type = #{type,jdbcType=VARCHAR},
+		Status = #{status,jdbcType=SMALLINT},
+		Memo = #{memo,jdbcType=VARCHAR}
+		where PoleId = #{poleid,jdbcType=INTEGER}
+	</update>
+</mapper>

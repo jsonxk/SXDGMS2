@@ -25,6 +25,14 @@
 		parameterType="java.lang.Integer">
 		select unit.* from unit limit #{offset},#{pagesize}
 	</select>
+	<!-- 查找所有正常状态单位 -->
+	<select id="selectAllnormalUnit" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select * from unit
+		 where
+		 <if test="status!=0">
+		 	unit.`Status`=#{status}
+		 </if> 
+	</select>
 	<!-- 添加单位 -->
 	<insert id="InsertUnit" parameterType="java.util.List">
 		insert into

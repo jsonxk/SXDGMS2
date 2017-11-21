@@ -29,6 +29,10 @@ public class AllService {
 	private HangLineBLL hangLineBLL;
 	@Autowired
 	private ApplyMapperBLL applyMapperBLL;
+	@Autowired
+	private SqxxglBLL sqxxglBLL;
+	@Autowired
+	private LinePoleBLL linePoleBLL;
  	public UserMapperBLL getuserMapperBLL(){
 		return userMapperBLL;
 	}
@@ -58,5 +62,12 @@ public class AllService {
 	}
 	public ApplyMapperBLL getApplyMapperBLL(){
 		return applyMapperBLL;
+	}
+	public SqxxglBLL getSqxxglBll()
+	{
+		return sqxxglBLL;
+	}
+	public LinePoleBLL getLinePoleBLL(){
+		return linePoleBLL;
 	}
 }

@@ -19,7 +19,7 @@
   </select>
   <!-- 查找信息 -->
   <select id="selectTypeByInfo" parameterType="java.lang.String" resultMap="BaseResultMap">
-  	select * from dictype where DicName like "%"#{typename}"%"
+  	select * from dictype where DicName like #{typename}
   </select>
   <!-- 添加信息 -->
   <insert id="InsertDictype" parameterType="com.xk.orm.dictype" >

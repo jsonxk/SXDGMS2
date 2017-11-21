@@ -89,7 +89,7 @@ public class HangLineController {
 	}
 	/**
 	 * 获取所有申请信息(包括查找信息)
-	 * @param publicentity
+	 * @param publicentity{时间,类型}
 	 * @return
 	 */
 	@RequestMapping(value="/SelectApplyInfo",method=RequestMethod.POST)

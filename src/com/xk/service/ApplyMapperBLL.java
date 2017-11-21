@@ -27,6 +27,7 @@ import com.xk.orm.ApplyDocTime;
 import com.xk.orm.ApplyMore;
 import com.xk.orm.Doctype;
 import com.xk.orm.PublicEntity;
+import com.xk.orm.dicitem;
 import com.xk.orm.dictype;
 
 /**
@@ -184,18 +185,32 @@ public class ApplyMapperBLL {
 		runtimeService=processEngine.getRuntimeService();
 		taskService=processEngine.getTaskService();
 		String useridInfo=apply.getUserid()+"";
+		List<dicitem> itemdata=alldao.getdicitemMapperImpl().selectAllItem();
+		for(dicitem  item:itemdata)
+		{
+			if(item.getItem().equals("申请受理"))
+			{
+				apply.setStatus(item.getDicitemid());
+			}
+		}
 		Map<String, Object> map=new HashMap<String, Object>();
 		/**
-		 * 
+		 * 设置提交申请的用户
 		 */
 		map.put("apply", useridInfo);
 		identityService=processEngine.getIdentityService();
 		ProcessInstance processInstance=runtimeService.startProcessInstanceByKey(EnumData.processKey, map);
+		/**
+		 * 当前任务
+		 */
 		List<Task> task=taskService.createTaskQuery().processInstanceId(processInstance.getId()).list();
 		for(Task t:task){
 			taskService.complete(t.getId());
 		};
 		apply.setProcessid(processInstance.getId());
+		/**
+		 * 修改申请表中ProcessId和status状态
+		 */
 		int i=ModifyProcessInstanceId(apply);
 		return null;
 	}

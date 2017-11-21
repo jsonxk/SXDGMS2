@@ -136,6 +136,11 @@ public class UnitBLL {
 		else
 			return false;
 	}
+	/**
+	 * 修改单位信息
+	 * @param unitlist
+	 * @return
+	 */
 	public boolean unittypeModify(List<Unit> unitlist) {
 		int i=allDao.getunitMapperImpl().unittypeModify(unitlist);
 		if(i>0)

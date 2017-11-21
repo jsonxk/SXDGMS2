@@ -80,7 +80,7 @@ $(".addHang").click(function() {
  * @param 搜索参数(类型，
  *            申请日期，批准日期)
  */
-function DGInit(serarchInfo) {
+function DGInit() {
 	$('#hanglinetable').bootstrapTable("destroy");
 	$('#hanglinetable').bootstrapTable({
 		url : 'HangLine/SelectApplyInfo.spring',
@@ -93,6 +93,10 @@ function DGInit(serarchInfo) {
 		dataField : "rows",
 		sidePagination : "server",
 		queryParams : function queryParams(params) {
+			/**
+			 * @param status=0表格加载全部申请类型
+			 * timestatus{0表示申请时间1表示批准时间}
+			 */
 			var status = $("#HangStatus").val();
 			if (status == "") {
 				status = 0

@@ -7,6 +7,8 @@ import java.util.List;
  * @date:2017年11月13日 下午10:42:10
  * @version :
  * 继承Apply日期格式为String 
+ * Listdoc为文件相关信息 详见ApplyDoc表
+ * taskid 流程任务id
  */
 public class ApplyMore extends Apply{
 	private String applystringtime;
@@ -15,6 +17,7 @@ public class ApplyMore extends Apply{
 	private String username;
 	private String hanglinename;
 	private String statusname;
+	private String TaskId;
 	private List<ApplyDoc> listDoc;
 	public String getApplystringtime() {
 		return applystringtime;
@@ -58,4 +61,11 @@ public class ApplyMore extends Apply{
 	public void setListDoc(List<ApplyDoc> listDoc) {
 		this.listDoc = listDoc;
 	}
+	public String getTaskId() {
+		return TaskId;
+	}
+	public void setTaskId(String taskId) {
+		TaskId = taskId;
+	}
+	
 }

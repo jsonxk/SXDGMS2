@@ -28,14 +28,15 @@
 		SELECT apply.*,applyrecord.CreateTime as
 		permitStringtime,`user`.`Name` as
 		username,unit.UnitName
-		as unitname,dicitem.Item as statusname FROM
+		as
+		unitname,dicitem.Item as statusname FROM
 		apply LEFT JOIN applyrecord ON
 		apply.ApplyId=applyrecord.ApplyId LEFT
 		JOIN `user` on
 		apply.UserId=`user`.UserId LEFT JOIN unit on
 		apply.UnitId=unit.UnitId
 		LEFT JOIN dicitem on apply.`status`
-		=dicitem.dicitemid 
+		=dicitem.dicitemid
 		WHERE
 		<if
 			test="starttime!=null and starttime!='' and finishtime!=null and finishtime!=''">
@@ -51,15 +52,28 @@
 		<if test="status!=0">
 			and apply.Status=#{status}
 		</if>
+		<if test="unitid">
+			and apply.UnitId=#{unitid}
+		</if>
 		<if test="userid!=0">
 			and apply.UserId=#{userid}
 		</if>
 		LIMIT #{offset},#{pageSize}
 	</select>
-	<select id="SelectApplyCount" parameterType="com.xk.orm.PublicEntity" resultType="java.lang.Integer">
-		SELECT COUNT(*) FROM apply LEFT JOIN applyrecord on
-		apply.ApplyId=applyrecord.ApplyId WHERE
-			<if
+	<select id="SelectApplyAndTask" parameterType="com.xk.orm.PublicEntity" resultType="com.xk.orm.ApplyMore">
+		SELECT apply.*,applyrecord.CreateTime as
+		permitStringtime,`user`.`Name` as
+		username,unit.UnitName
+		as unitname,dicitem.Item as statusname FROM
+		apply LEFT JOIN applyrecord ON
+		apply.ApplyId=applyrecord.ApplyId LEFT
+		JOIN `user` on
+		apply.UserId=`user`.UserId LEFT JOIN unit on
+		apply.UnitId=unit.UnitId
+		LEFT JOIN dicitem on apply.`status`
+		=dicitem.dicitemid
+		WHERE
+		<if
 			test="starttime!=null and starttime!='' and finishtime!=null and finishtime!=''">
 			apply.ApplyTime &gt;=#{starttime} and
 			apply.ApplyTime
@@ -70,9 +84,56 @@
 			applyrecord.CreateTime &gt;=#{permittimestart} and
 			applyrecord.CreateTime &lt;=#{permitfinishtime}
 		</if>
-			<if test="status!=0">
+		<if test="status!=0">
+			and apply.Status=#{status} 
+		</if>
+		<if test="unitid">
+			and apply.UnitId=#{unitid}
+		</if>
+		<if test="userid!=0">
+			and apply.UserId=#{userid}
+		</if>
+		and apply.status!=1
+		LIMIT #{offset},#{pageSize}
+	</select>
+	<select id="SelectApplyCount" parameterType="com.xk.orm.PublicEntity"
+		resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM apply LEFT JOIN applyrecord on
+		apply.ApplyId=applyrecord.ApplyId WHERE
+		<if
+			test="starttime!=null and starttime!='' and finishtime!=null and finishtime!=''">
+			apply.ApplyTime &gt;=#{starttime} and
+			apply.ApplyTime
+			&lt;=#{finishtime}
+		</if>
+		<if
+			test="permittimestart!=null and permittimestart!='' and permitfinishtime!=null and permitfinishtime!=''">
+			applyrecord.CreateTime &gt;=#{permittimestart} and
+			applyrecord.CreateTime &lt;=#{permitfinishtime}
+		</if>
+		<if test="status!=0">
 			and apply.Status=#{status}
 		</if>
+	</select>
+	<select id="SelectApplyALLCount" parameterType="com.xk.orm.PublicEntity"
+		resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM apply LEFT JOIN applyrecord on
+		apply.ApplyId=applyrecord.ApplyId WHERE
+		<if
+			test="starttime!=null and starttime!='' and finishtime!=null and finishtime!=''">
+			apply.ApplyTime &gt;=#{starttime} and
+			apply.ApplyTime
+			&lt;=#{finishtime}
+		</if>
+		<if
+			test="permittimestart!=null and permittimestart!='' and permitfinishtime!=null and permitfinishtime!=''">
+			applyrecord.CreateTime &gt;=#{permittimestart} and
+			applyrecord.CreateTime &lt;=#{permitfinishtime}
+		</if>
+		<if test="status!=0">
+			and apply.Status=#{status}
+		</if>
+		and apply.Status!=1
 	</select>
 	<!-- 添加信息返回主键 keyProperty为返回Entity中的字段 -->
 	<insert id="insertApplyInfo" useGeneratedKeys="true"
@@ -130,9 +191,11 @@
 		#{applyid,jdbcType=INTEGER}
 	</update>
 	<update id="ModifyProcessInstanceId" parameterType="com.xk.orm.Apply">
-		update apply set 
-		ProcessId = #{processid,jdbcType=VARCHAR}
-		where apply.ApplyId=#{applyid}
+		update apply
+		set
+		ProcessId = #{processid,jdbcType=VARCHAR},apply.`Status`=#{status}
+		where
+		apply.ApplyId=#{applyid}
 	</update>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from apply

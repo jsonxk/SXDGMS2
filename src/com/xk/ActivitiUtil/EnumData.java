@@ -7,4 +7,5 @@ package com.xk.ActivitiUtil;
  */
 public class EnumData {
 	public final static String processKey="sxdgsplc";
+	public final static String RepairUsers="运维检修部";
 }

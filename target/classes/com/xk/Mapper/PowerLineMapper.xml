@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xk.Dao.PowerLineMapper">
+	<resultMap id="BaseResultMap" type="com.xk.orm.PowerLine">
+		<id column="LineId" property="lineid" jdbcType="INTEGER" />
+		<result column="UnitId" property="unitid" jdbcType="INTEGER" />
+		<result column="Code" property="code" jdbcType="VARCHAR" />
+		<result column="Name" property="name" jdbcType="VARCHAR" />
+		<result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+		<result column="FirstPoleId" property="firstpoleid" jdbcType="INTEGER" />
+		<result column="FinallyPoleId" property="finallypoleid"
+			jdbcType="INTEGER" />
+		<result column="Status" property="status" jdbcType="SMALLINT" />
+		<result column="LineLength" property="linelength" jdbcType="DOUBLE" />
+		<result column="Type" property="type" jdbcType="VARCHAR" />
+		<result column="Memo" property="memo" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="SelectAllLine" resultType="com.xk.orm.PowerLine"
+		parameterType="com.xk.orm.PublicEntity">
+		select powerline.*,d1.Item as statusname,d2.Item as typename from
+		powerline LEFT JOIN dicitem d1 ON powerline.`Status`=d1.DicItemId LEFT
+		JOIN dicitem d2 ON powerline.Type=d2.DicItemId
+		where
+		<if test="unitid!=0">
+			powerline.UnitId=#{unitid}
+		</if>
+		<if test="name!=null and name!=''">
+			and powerline.Name=#{name}
+		</if>
+		LIMIT #{offset},#{pageSize}
+	</select>
+	<select id="SelectAllLineCount" parameterType="com.xk.orm.PublicEntity"
+		resultType="java.lang.Integer">
+		select COUNT(*) as count from powerline where
+		<if test="unitid!=0">
+			powerline.UnitId=#{unitid}
+		</if>
+		<if test="name!=null and name!=''">
+			and powerline.Name like like "%"#{name}"%"
+		</if>
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		powerline
+		where LineId = #{lineid,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.xk.orm.PowerLine">
+		insert into powerline (LineId,
+		UnitId, Code,
+		Name, CreateTime, FirstPoleId,
+		FinallyPoleId, Status,
+		LineLength,
+		Type, Memo)
+		values (#{lineid,jdbcType=INTEGER},
+		#{unitid,jdbcType=INTEGER},
+		#{code,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP},
+		#{firstpoleid,jdbcType=INTEGER},
+		#{finallypoleid,jdbcType=INTEGER},
+		#{status,jdbcType=SMALLINT},
+		#{linelength,jdbcType=DOUBLE},
+		#{type,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.xk.orm.PowerLine">
+		insert into powerline
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="lineid != null">
+				LineId,
+			</if>
+			<if test="unitid != null">
+				UnitId,
+			</if>
+			<if test="code != null">
+				Code,
+			</if>
+			<if test="name != null">
+				Name,
+			</if>
+			<if test="createtime != null">
+				CreateTime,
+			</if>
+			<if test="firstpoleid != null">
+				FirstPoleId,
+			</if>
+			<if test="finallypoleid != null">
+				FinallyPoleId,
+			</if>
+			<if test="status != null">
+				Status,
+			</if>
+			<if test="linelength != null">
+				LineLength,
+			</if>
+			<if test="type != null">
+				Type,
+			</if>
+			<if test="memo != null">
+				Memo,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="lineid != null">
+				#{lineid,jdbcType=INTEGER},
+			</if>
+			<if test="unitid != null">
+				#{unitid,jdbcType=INTEGER},
+			</if>
+			<if test="code != null">
+				#{code,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="firstpoleid != null">
+				#{firstpoleid,jdbcType=INTEGER},
+			</if>
+			<if test="finallypoleid != null">
+				#{finallypoleid,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=SMALLINT},
+			</if>
+			<if test="linelength != null">
+				#{linelength,jdbcType=DOUBLE},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+			</if>
+			<if test="memo != null">
+				#{memo,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.xk.orm.PowerLine">
+		update powerline
+		<set>
+			<if test="unitid != null">
+				UnitId = #{unitid,jdbcType=INTEGER},
+			</if>
+			<if test="code != null">
+				Code = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				Name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				CreateTime = #{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="firstpoleid != null">
+				FirstPoleId = #{firstpoleid,jdbcType=INTEGER},
+			</if>
+			<if test="finallypoleid != null">
+				FinallyPoleId = #{finallypoleid,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				Status = #{status,jdbcType=SMALLINT},
+			</if>
+			<if test="linelength != null">
+				LineLength = #{linelength,jdbcType=DOUBLE},
+			</if>
+			<if test="type != null">
+				Type = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="memo != null">
+				Memo = #{memo,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where LineId = #{lineid,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.xk.orm.PowerLine">
+		update powerline
+		set UnitId = #{unitid,jdbcType=INTEGER},
+		Code =
+		#{code,jdbcType=VARCHAR},
+		Name = #{name,jdbcType=VARCHAR},
+		CreateTime =
+		#{createtime,jdbcType=TIMESTAMP},
+		FirstPoleId =
+		#{firstpoleid,jdbcType=INTEGER},
+		FinallyPoleId =
+		#{finallypoleid,jdbcType=INTEGER},
+		Status =
+		#{status,jdbcType=SMALLINT},
+		LineLength =
+		#{linelength,jdbcType=DOUBLE},
+		Type = #{type,jdbcType=VARCHAR},
+		Memo =
+		#{memo,jdbcType=VARCHAR}
+		where LineId = #{lineid,jdbcType=INTEGER}
+	</update>
+</mapper>

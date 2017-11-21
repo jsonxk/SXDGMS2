@@ -21,19 +21,27 @@
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 <!-- VENDOR CSS -->
-<link rel="stylesheet" href="./assets/vendor/font-awesome/css/font-awesome.min.css">
-	<link rel="stylesheet" href="./assets/vendor/linearicons/style.css">
-	<!-- MAIN CSS -->
-	<link rel="stylesheet" href="./assets/css/main.css">
-	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
-	<link rel="stylesheet" href="./assets/css/demo.css">
-	<!-- ICONS -->
-	<link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
-	<link rel="icon" type="image/png" sizes="96x96" href="./assets/img/favicon.png">
-	<link rel="stylesheet" href="./js/table/bootstrap-table.css" />
-	<link rel="stylesheet" href="./js/table/bootstrap.css" />
-	<!-- treeview -->
-	<link rel="stylesheet" type="text/css" href="./treeview/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="./assets/vendor/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="./assets/vendor/linearicons/style.css">
+<!-- MAIN CSS -->
+<link rel="stylesheet" href="./assets/css/main.css">
+<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+<link rel="stylesheet" href="./assets/css/demo.css">
+<!-- ICONS -->
+<link rel="apple-touch-icon" sizes="76x76"
+	href="./assets/img/apple-icon.png">
+<link rel="icon" type="image/png" sizes="96x96"
+	href="./assets/img/favicon.png">
+<link rel="stylesheet" href="./js/table/bootstrap-table.css" />
+<link rel="stylesheet" href="./js/table/bootstrap.css" />
+<!-- treeview -->
+<link rel="stylesheet" type="text/css"
+	href="./treeview/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="./css/tabletitle.css">
+<script
+	src="https://webapi.amap.com/maps?v=1.4.0&key=e8fe2f8a5385cb0c048947ec75738cb0&plugin=AMap.PolyEditor"></script>
+<script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
 <body>
 	<!-- WRAPPER -->
 	<div id="wrapper">
@@ -125,26 +133,172 @@
 			<!-- MAIN CONTENT -->
 			<div class="main-content">
 				<div class="container-fluid">
-					<h3 class="page-title">用户信息表</h3>
+					<h3 class="page-title">线路/线杆信息管理</h3>
 					<div class="row">
 						<div class="col-md-12">
 							<!-- BASIC TABLE -->
-							<div class="panel">
-								<div style="width:40%">
-										
+							<div id="search">
+								<button class="btn btn-primary lineNameBtn" type="button">名称</button>
+								<input type="text" class="form-control lineName"
+									placeholder="输入线路名称" name="lineName">
+								<button class="btn btn-primary" type="button" id="lineSearchBtn">查找</button>
+							</div>
+							<!-- 线路信息表 -->
+							<div class="panel-body lineleft">
+								<h4>线路信息表</h4>
+								<button class="btn btn-primary addLine" type="button">
+									<i class="fa fa-plus-square"></i>&nbsp;添加线路
+								</button>
+								<div id="lineInfo" class="span10">
+									<table id="lineInfoTable" data-side-pagination="server">
+									</table>
 								</div>
 							</div>
-							<!-- END BASIC TABLE -->
+							<!-- 线杆信息 -->
+							<div class="panel-body poleRight">
+								<h4>线杆信息表</h4>
+								<button class="btn btn-primary addPole" type="button">
+									<i class="fa fa-plus-square"></i>&nbsp;添加线杆
+								</button>
+								<div id="poleInfo" class="span10">
+									<table id="poleInfoTable">
+									</table>
+								</div>
+							</div>
 						</div>
+						<!-- END BASIC TABLE -->
 					</div>
 				</div>
-				<!-- END MAIN CONTENT -->
 			</div>
-			<!-- END MAIN -->
-			<div class="userinfo" style="display:none">
-				<span><%=session.getAttribute("userid")%></span>
+			<!-- END MAIN CONTENT -->
+		</div>
+		<!-- END MAIN -->
+		<div class="userinfo" style="display:none">
+			<span><%=session.getAttribute("userid")%></span>
+			<p id="p1"><%=session.getAttribute("loginname").toString()%></p>
+			<p id="p2"><%=session.getAttribute("unitname").toString()%></p>
+			<p id="p3"><%=session.getAttribute("unitid").toString()%></p>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	<!-- modal添加申请弹出框 -->
+	<div class="modal fade " id="AddLineModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="width:125%">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="exampleModalLabel">添加线路信息</h4>
+				</div>
+
+				<div class="modal-body">
+					<div style="width:100%;height:100%;">
+						<form id="LineForm">
+							<div class="form-group">
+								<div class="form-group LineNameInput">
+									<label for="LineNameInput" class="control-label">线路名称</label> <input
+										type="text" id="LineNameInput" name="LineNameInput"
+										class="form-control" />
+								</div>
+								<div class="form-group LineLength">
+									<label for="LineLength" class="control-label">线路长度</label> <input
+										type="text" id="LineLength" name="LineLength"
+										placeholder="请输入联系人" class="form-control" value="-1" readonly/>
+								</div>
+								<div class="form-group LineNumber">
+									<label for="LineNumber" class="control-label">线杆数量</label> <input
+										type="text" id="LineNumber" name="LineNumber"
+										placeholder="请输入产生线杆数量" class="form-control" />
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="form-group LineUnit">
+									<label for="LineUnit" class="control-label">单位名称</label> </br> 
+									<select id="LineUnit" class="form-control">
+									</select>
+								</div>
+								<div class="form-group LineType">
+									<label for="LineType" class="control-label">线路类型</label> </br> <select
+										id="LineType" class="form-control">
+									</select>
+								</div>
+								<div class="form-group LineStatus">
+									<label for="LineStatus" class="control-label">线路状态</label> </br> <select
+										id="LineStatus" class="form-control">
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="form-group LineFirstPolelon">
+									<label for="LineFirstPolelon" class="control-label">线路首杆</label>
+									<input type="text" id="LineFirstPolelon"
+										name="LineFirstPolelon" placeholder="首杆经度"
+										class="form-control" readonly/>
+								</div>
+								<div class="form-group LineFirstPolelat">
+									<label for="LineFirstPolelat" class="control-label">&nbsp;</label>
+									<input type="text" id="LineFirstPolelat"
+										name="LineFirstPolelat" placeholder="首杆纬度"
+										class="form-control" readonly/>
+								</div>
+								<div class="form-group LineLastPolelon">
+									<label for="LineLastPolelonlon" class="control-label">线路尾杆</label>
+									<input type="text" id="LineLastPolelon" name="LineLastPolelon"
+										placeholder="尾杆经度" class="form-control" readonly/>
+								</div>
+								<div class="form-group LineLastPolelat">
+									<label for="LineLastPolelat" class="control-label">&nbsp;</label>
+									<input type="text" id="LineLastPolelat" name="LineLastPolelat"
+										placeholder="尾杆经度" class="form-control" readonly/>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="form-group LineTime">
+									<label for="LineTime" class="control-label">添加时间</label> <input
+										type="text" id="LineTime" name="LineTime" class="form-control"
+										readonly />
+								</div>
+								<div class="form-group LinePlace">
+									<label for="LinePlace" class="control-label">添加地点</label> <input
+										type="text" id="LinePlace" name="LinePlace"
+										placeholder="请输入搜索地点" class="form-control" />
+								</div>
+								<div class="form-group LineBtnLocation">
+									<label for="LineBtnLocation" class="control-label">&nbsp;</label>
+									<input type="button" id="LineBtnLocation"
+										name="LineBtnLocation" class="form-control" value="定位" />
+								</div>
+								<div class="form-group LineBtn">
+									<label for="SelectPole" class="control-label">&nbsp;</label> <input
+										type="button" id="SelectPole" name="SelectPole"
+										class="form-control" value="选择线路起止线杆" />
+								</div>
+							</div>
+							<div class="form-group LineMap" id="LineMap">
+								<div id="mapbtn">
+								</div>
+							</div>
+							<div id="form-group">
+								<div class="form-group LineMemo">
+									<label for="LineMemo" class="control-label">线路描述</label>
+									<textarea class="form-control textarea1" rows="2"
+										placeholder="项目描述" id="LineMemo" name="LineMemo"></textarea>
+								</div>
+							</div>
+							<div class="text-right modalbutton">
+								<button type="button" class="btn btn-default LineModalcancel"
+									data-dismiss="modal">取消</button>
+								<button id="LineOK" type="button" class="btn btn-primary"
+									onclick="">完成</button>
+							</div>
+						</form>
+					</div>
+				</div>
 			</div>
-			<div class="clearfix"></div>
 		</div>
 	</div>
 	<!-- END WRAPPER -->
@@ -164,6 +318,8 @@
 		}
 	</script>
 	<script src="./js/pageInit.js"></script>
+	<script src="./js/table/XLXGGL.js"></script>
+	<script src="./js/table/Linemap.js"></script>
 </body>
 
 </html>

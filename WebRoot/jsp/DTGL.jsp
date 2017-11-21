@@ -21,19 +21,39 @@
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 <!-- VENDOR CSS -->
-<link rel="stylesheet" href="./assets/vendor/font-awesome/css/font-awesome.min.css">
-	<link rel="stylesheet" href="./assets/vendor/linearicons/style.css">
-	<!-- MAIN CSS -->
-	<link rel="stylesheet" href="./assets/css/main.css">
-	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
-	<link rel="stylesheet" href="./assets/css/demo.css">
-	<!-- ICONS -->
-	<link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
-	<link rel="icon" type="image/png" sizes="96x96" href="./assets/img/favicon.png">
-	<link rel="stylesheet" href="./js/table/bootstrap-table.css" />
-	<link rel="stylesheet" href="./js/table/bootstrap.css" />
-	<!-- treeview -->
-	<link rel="stylesheet" type="text/css" href="./treeview/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="./assets/vendor/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="./assets/vendor/linearicons/style.css">
+<!-- MAIN CSS -->
+<link rel="stylesheet" href="./assets/css/main.css">
+<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+<link rel="stylesheet" href="./assets/css/demo.css">
+<!-- ICONS -->
+<link rel="apple-touch-icon" sizes="76x76"
+	href="./assets/img/apple-icon.png">
+<link rel="icon" type="image/png" sizes="96x96"
+	href="./assets/img/favicon.png">
+<link rel="stylesheet" href="./js/table/bootstrap-table.css" />
+<link rel="stylesheet" href="./js/table/bootstrap.css" />
+<!-- treeview -->
+<link rel="stylesheet" type="text/css"
+	href="./treeview/css/bootstrap.min.css">
+<script
+	src="https://webapi.amap.com/maps?v=1.4.0&key=e8fe2f8a5385cb0c048947ec75738cb0&plugin=AMap.PolyEditor"></script>
+<script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+<style type="text/css">
+#allmap {
+	width: 100%;
+	height: 100%;
+}
+
+.handerButton {
+	float: left;
+	position: absolute;
+	z-index: 1000;
+	margin-top: 30px;
+}
+</style>
 <body>
 	<!-- WRAPPER -->
 	<div id="wrapper">
@@ -125,13 +145,28 @@
 			<!-- MAIN CONTENT -->
 			<div class="main-content">
 				<div class="container-fluid">
-					<h3 class="page-title">用户信息表</h3>
+					<h3 class="page-title">地图信息管理</h3>
 					<div class="row">
 						<div class="col-md-12">
 							<!-- BASIC TABLE -->
 							<div class="panel">
-								<div style="width:40%">
-										
+								<div style="width:100%;height:68%">
+									<div id="allmap">
+										<div class="handerButton">
+											<input type="button" class="button" value="添加线路"
+												onClick="editor.startEditLine()" /> <input type="button"
+												class="button" value="添加线杆" onClick="editor.closeEditLine()" />
+											<input type="button" class="button" value="添加搭挂线路"
+												onClick="editor.dingwei()" /> <input type="button"
+												class="button" value="编辑线杆位置" onClick="editor.dingwei()" />
+											<input type="button" class="button" value="删除线杆"
+												onClick="editor.dingwei()" /> <input type="button"
+												class="button" value="关闭操作" onClick="editor.dingwei()" /> <input
+												type="button" class="button" value="点击定位"
+												onClick="editor.dingwei()" />
+										</div>
+									</div>
+									<div id="tip"></div>
 								</div>
 							</div>
 							<!-- END BASIC TABLE -->
@@ -164,6 +199,76 @@
 		}
 	</script>
 	<script src="./js/pageInit.js"></script>
+	<script type="text/javascript">
+		//创建地图
+		var map, geolocation;
+		map = new AMap.Map('allmap', {
+			resizeEnable : true,
+			zoom : 50,
+			center : [121.61122,29.91092 ],
+		});
+		/* map.plugin(["AMap.ToolBar"],function(){   //在地图中添加ToolBar插件      
+        	toolBar = new AMap.ToolBar();  
+        	map.addControl(toolBar);       
+    	});  */
+		//解析定位结果
+		function onComplete(data) {
+			var str = [ '定位成功' ];
+			str.push('经度：' + data.position.getLng());
+			str.push('纬度：' + data.position.getLat());
+			if (data.accuracy) {
+				str.push('精度：' + data.accuracy + ' 米');
+			}//如为IP精确定位结果则没有精度信息
+			str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
+			document.getElementById('tip').innerHTML = str.join('<br>');
+		}
+		//解析定位错误信息
+		function onError(data) {
+			document.getElementById('tip').innerHTML = '定位失败';
+		}
+		//在地图上绘制折线
+		var editor = {};
+		editor._line = (function() {
+			var lineArr = [ [ 116.37, 39.91 ], [ 116.38, 39.90 ],
+					[ 116.39, 39.91 ], [ 116.39, 39.90 ] ];
+			return new AMap.Polyline({
+				map : map,
+				path : lineArr,
+				strokeColor : "#FF33FF",//线颜色
+				strokeOpacity : 1,//线透明度
+				strokeWeight : 3,//线宽
+				strokeStyle : "solid"//线样式
+			});
+		})();
+		map.setFitView();
+		editor._lineEditor = new AMap.PolyEditor(map, editor._line);
+		editor.startEditLine = function() {
+			editor._lineEditor.open();
+		}
+		editor.closeEditLine = function() {
+			editor._lineEditor.close();
+		}
+		editor.dingwei = function() {
+			 map.plugin('AMap.Geolocation', function() {
+				geolocation = new AMap.Geolocation({
+					enableHighAccuracy: true,//是否使用高精度定位，默认:true
+           	 		timeout: 10000,          //超过10秒后停止定位，默认：无穷大
+            		buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+            		zoomToAccuracy: true,      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+            		uttonPosition:'RB',
+					panToLocation : true,
+				});
+				map.addControl(geolocation);
+				geolocation.getCurrentPosition();
+				AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
+				AMap.event.addListener(geolocation, 'error', onError); //返回定位出错信息
+			}); 
+		};
+		//为地图注册click事件获取鼠标点击出的经纬度坐标
+		var clickEventListener = map.on('click', function(e) {
+			alert(e.lnglat.getLng() + ',' + e.lnglat.getLat());
+		}); 
+	</script>
 </body>
 
 </html>

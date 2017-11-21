@@ -41,4 +41,14 @@ public class ApplyMapperImpl implements ApplyMapper{
 	public int ModifyProcessInstanceId(Apply apply) {
 		return applymapper.ModifyProcessInstanceId(apply);
 	}
+	@Override
+	public List<ApplyMore> SelectApplyAndTask(PublicEntity publicentity) {
+		// TODO Auto-generated method stub
+		return applymapper.SelectApplyAndTask(publicentity);
+	}
+	@Override
+	public int SelectApplyALLCount(PublicEntity publicEntity) {
+		// TODO Auto-generated method stub
+		return applymapper.SelectApplyALLCount(publicEntity);
+	}
 }

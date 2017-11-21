@@ -35,4 +35,7 @@ private UnitMapper unitMapper;
 	public int unittypeModify(List<Unit> unitlist) {
 		return unitMapper.unittypeModify(unitlist);
 	}
+	public List<Unit> selectAllnormalUnit(Integer status) {
+		return unitMapper.selectAllnormalUnit(status);
+	}
 }

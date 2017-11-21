@@ -18,6 +18,7 @@ public class PublicEntity {
 	private String permittimestart;
 	private String permitfinishtime;
 	private String publicname;
+	private String name;
 	public int getTimestatus() {
 		return timestatus;
 	}
@@ -89,6 +90,12 @@ public class PublicEntity {
 	}
 	public void setUnitid(int unitid) {
 		this.unitid = unitid;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }

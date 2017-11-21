@@ -38,4 +38,16 @@ public interface ApplyMapper {
 	 * @return
 	 */
 	int ModifyProcessInstanceId(Apply apply);
+	/**
+	 * 申请信息管理
+	 * @param publicentity{unitid,status{!=1},time{申请批准}}
+	 * @return
+	 */
+	List<ApplyMore> SelectApplyAndTask(PublicEntity publicentity);
+	/**
+	 * 除提交申请外总数
+	 * @param publicEntity
+	 * @return
+	 */
+	int SelectApplyALLCount(PublicEntity publicEntity);
 }

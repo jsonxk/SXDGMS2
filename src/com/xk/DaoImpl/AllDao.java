@@ -31,6 +31,10 @@ public class AllDao {
 	private ApplyDocMapperImpl applyDocMapperImpl;
 	@Autowired
 	private LinePoleMapperImpl linePoleMapperImpl;
+	@Autowired
+	private HangLineMapperImpl hangLineMapperImpl;
+	@Autowired
+	private FaultMapperImpl faultMapperImpl;
 	public UserMapperImpl getuserMapperImpl()
 	{
 		return userMapperImpl;
@@ -70,5 +74,11 @@ public class AllDao {
 	}
 	public LinePoleMapperImpl getLinePoleMapperImpl(){
 		return linePoleMapperImpl;
+	}
+	public HangLineMapperImpl getHangLineMapperImpl(){
+		return hangLineMapperImpl;
+	}
+	public FaultMapperImpl getFaultMapperImpl(){
+		return faultMapperImpl;
 	}
 }

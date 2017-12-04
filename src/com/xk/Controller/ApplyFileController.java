@@ -47,7 +47,6 @@ public class ApplyFileController {
 	public void upload2(HttpServletRequest request,
 			HttpServletResponse response, ApplyDocTime appDocTime)
 			throws IllegalStateException, IOException {
-		System.out.println("upload2 start work.....");
 		String DBPath = "";
 		// 创建一个通用的多部分解析器
 		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(

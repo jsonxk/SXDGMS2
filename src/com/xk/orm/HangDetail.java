@@ -4,8 +4,8 @@ public class HangDetail {
     private Integer handdetailid;
 
     private Integer poleid;
-
-    private Integer index;
+    
+    private String code;
 
     private Integer hanglineid;
 
@@ -13,9 +13,9 @@ public class HangDetail {
 
     private Integer nextpoleid;
 
-    private Short getmethod;
+    private Integer getmethod;
 
-    private Short status;
+    private Integer status;
 
     private String memo;
 
@@ -35,12 +35,12 @@ public class HangDetail {
         this.poleid = poleid;
     }
 
-    public Integer getIndex() {
-        return index;
+    public String getCode() {
+        return code;
     }
 
-    public void setIndex(Integer index) {
-        this.index = index;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public Integer getHanglineid() {
@@ -67,19 +67,19 @@ public class HangDetail {
         this.nextpoleid = nextpoleid;
     }
 
-    public Short getGetmethod() {
+    public Integer getGetmethod() {
         return getmethod;
     }
 
-    public void setGetmethod(Short getmethod) {
+    public void setGetmethod(Integer getmethod) {
         this.getmethod = getmethod;
     }
 
-    public Short getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Short status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

@@ -4,41 +4,93 @@
 	<resultMap id="BaseResultMap" type="com.xk.orm.Pole">
 		<id column="PoleId" property="poleid" jdbcType="INTEGER" />
 		<result column="UnitId" property="unitid" jdbcType="INTEGER" />
-		<result column="LineId" property="lineid" jdbcType="INTEGER" />
 		<result column="Code" property="code" jdbcType="VARCHAR" />
 		<result column="Name" property="name" jdbcType="VARCHAR" />
 		<result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
-		<result column="Longtitude" property="longtitude" jdbcType="DECIMAL" />
-		<result column="Latitude" property="latitude" jdbcType="DECIMAL" />
+		<result column="Longtitude" property="longtitude" jdbcType="DOUBLE" />
+		<result column="Latitude" property="latitude" jdbcType="DOUBLE" />
 		<result column="PositionMethod" property="positionmethod"
-			jdbcType="SMALLINT" />
-		<result column="Height" property="height" jdbcType="DECIMAL" />
-		<result column="Type" property="type" jdbcType="VARCHAR" />
-		<result column="Status" property="status" jdbcType="SMALLINT" />
+			jdbcType="DOUBLE" />
+		<result column="Height" property="height" jdbcType="DOUBLE" />
+		<result column="Type" property="type" jdbcType="INTEGER" />
+		<result column="Status" property="status" jdbcType="INTEGER" />
 		<result column="Memo" property="memo" jdbcType="VARCHAR" />
 	</resultMap>
 	<select id="SelectPoleInfo" parameterType="java.lang.Integer"
 		resultType="com.xk.orm.Pole">
-		select pole.*,d1.Item as statusname,d2.Item as typename from pole LEFT JOIN
-		dicitem d1 ON pole.`Status`=d1.DicItemId LEFT JOIN dicitem d2 ON
-		pole.Type=d2.DicItemId where pole.LineId=#{lineid}
+		select pole.*,d1.Item as statusname,d2.Item as typename
+		from pole LEFT JOIN
+		dicitem d1 ON pole.`Status`=d1.DicItemId LEFT JOIN
+		dicitem d2 ON
+		pole.Type=d2.DicItemId WHERE pole.PoleId in (SELECT linedetail.PoleId
+		from linedetail WHERE linedetail.LineId=#{lineid})
+	</select>
+	<select id="SelectPoleInfoByPoleId" parameterType="java.lang.Integer" resultType="com.xk.orm.Pole">
+		select pole.*,d1.Item as statusname,d2.Item as typename,unit.UnitName as unitname 
+		from pole LEFT JOIN
+		dicitem d1 ON pole.`Status`=d1.DicItemId LEFT JOIN
+		dicitem d2 ON
+		pole.Type=d2.DicItemId 
+		LEFT JOIN unit on pole.UnitId=unit.UnitId WHERE pole.PoleId=#{poleid}
+	</select>
+	<!-- 所有pole -->
+	<select id="selectAllPole" resultType="com.xk.orm.Pole">
+		select pole.* from pole
+	</select>
+	<select id="SelectPoleInfoByName" resultType="com.xk.orm.LineDetail" parameterType="java.lang.String">
+		select * from linedetail where linedetail.name like "%"#{name}"%"
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from pole
 		where PoleId = #{poleid,jdbcType=INTEGER}
 	</delete>
-	<insert id="insert" parameterType="com.xk.orm.Pole">
-		insert into pole (PoleId, UnitId, LineId,
+	<!-- 批量添加信息 -->
+	<insert id="InsertPoleInfo" useGeneratedKeys="true" keyProperty="poleid"
+		parameterType="com.xk.orm.Pole">
+		insert into pole (UnitId,
 		Code, Name, CreateTime,
-		Longtitude, Latitude, PositionMethod,
+		Longtitude,
+		Latitude, PositionMethod,
+		Height,
+		Type, Status,
+		Memo)
+		values
+		(#{unitid,jdbcType=INTEGER},
+		#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+		#{timeString,jdbcType=TIMESTAMP},
+		#{longtitude,jdbcType=DOUBLE},
+		#{latitude,jdbcType=DOUBLE},
+		#{positionmethod,jdbcType=DOUBLE},
+		#{height,jdbcType=DOUBLE}, #{type,jdbcType=INTEGER},
+		#{status,jdbcType=INTEGER},
+		#{memo,jdbcType=VARCHAR})
+
+	</insert>
+	<update id="ModifyPolePosition" parameterType="com.xk.orm.Pole">
+		update pole set Longtitude =
+		#{longtitude,jdbcType=DOUBLE},
+		Latitude =
+		#{latitude,jdbcType=DOUBLE}
+		where
+		PoleId = #{poleid,jdbcType=INTEGER}
+	</update>
+	<insert id="insert" parameterType="com.xk.orm.Pole">
+		insert into pole (PoleId,
+		UnitId, LineId,
+		Code, Name, CreateTime,
+		Longtitude, Latitude,
+		PositionMethod,
 		Height, Type, Status,
 		Memo)
-		values (#{poleid,jdbcType=INTEGER}, #{unitid,jdbcType=INTEGER},
+		values
+		(#{poleid,jdbcType=INTEGER}, #{unitid,jdbcType=INTEGER},
 		#{lineid,jdbcType=INTEGER},
-		#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP},
+		#{code,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP},
 		#{longtitude,jdbcType=DECIMAL}, #{latitude,jdbcType=DECIMAL},
 		#{positionmethod,jdbcType=SMALLINT},
-		#{height,jdbcType=DECIMAL}, #{type,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT},
+		#{height,jdbcType=DECIMAL},
+		#{type,jdbcType=VARCHAR}, #{status,jdbcType=SMALLINT},
 		#{memo,jdbcType=VARCHAR})
 	</insert>
 	<insert id="insertSelective" parameterType="com.xk.orm.Pole">
@@ -170,18 +222,28 @@
 	</update>
 	<update id="updateByPrimaryKey" parameterType="com.xk.orm.Pole">
 		update pole
-		set UnitId = #{unitid,jdbcType=INTEGER},
-		LineId = #{lineid,jdbcType=INTEGER},
+		set
+		UnitId = #{unitid,jdbcType=INTEGER},
+		LineId =
+		#{lineid,jdbcType=INTEGER},
 		Code = #{code,jdbcType=VARCHAR},
-		Name = #{name,jdbcType=VARCHAR},
-		CreateTime = #{createtime,jdbcType=TIMESTAMP},
-		Longtitude = #{longtitude,jdbcType=DECIMAL},
-		Latitude = #{latitude,jdbcType=DECIMAL},
-		PositionMethod = #{positionmethod,jdbcType=SMALLINT},
-		Height = #{height,jdbcType=DECIMAL},
+		Name =
+		#{name,jdbcType=VARCHAR},
+		CreateTime =
+		#{createtime,jdbcType=TIMESTAMP},
+		Longtitude =
+		#{longtitude,jdbcType=DECIMAL},
+		Latitude =
+		#{latitude,jdbcType=DECIMAL},
+		PositionMethod =
+		#{positionmethod,jdbcType=SMALLINT},
+		Height =
+		#{height,jdbcType=DECIMAL},
 		Type = #{type,jdbcType=VARCHAR},
-		Status = #{status,jdbcType=SMALLINT},
+		Status =
+		#{status,jdbcType=SMALLINT},
 		Memo = #{memo,jdbcType=VARCHAR}
-		where PoleId = #{poleid,jdbcType=INTEGER}
+		where
+		PoleId = #{poleid,jdbcType=INTEGER}
 	</update>
 </mapper>

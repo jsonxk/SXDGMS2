@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xk.Dao.CheckDetailMapper">
+	<resultMap id="BaseResultMap" type="com.xk.orm.CheckDetail">
+		<id column="CheckDetailId" property="checkdetailid" jdbcType="INTEGER" />
+		<result column="LineCheckId" property="linecheckid" jdbcType="INTEGER" />
+		<result column="CheckItemId" property="checkitemid" jdbcType="INTEGER" />
+		<result column="HangDetailId" property="hangdetailid" jdbcType="INTEGER" />
+		<result column="PoleId" property="poleid" jdbcType="INTEGER" />
+		<result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+		<result column="Status" property="status" jdbcType="INTEGER" />
+		<result column="FaultId" property="faultid" jdbcType="INTEGER" />
+		<result column="Description" property="description" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="SelectAllFaultInfo" parameterType="com.xk.orm.PublicEntity"
+		resultType="com.xk.orm.CheckDetail">
+		SELECT
+		checkitem.`Name` as typename,checkdetail.CheckDetailId,checkdetail.LineCheckId,checkdetail.CheckItemId,checkdetail.HangDetailId,checkdetail.PoleId,fault.ProcessId,fault.CreateTime
+		as
+		createtime,fault.FaultId,fault.Memo,fault.`Status`,fault.TaskId,fault.UnitId,dicitem.Item
+		as
+		statusname,pole.`Name` as name from
+		checkdetail LEFT JOIN checkitem on
+		checkdetail.CheckItemId=checkitem.CheckItemId LEFT JOIN fault on
+		checkdetail.FaultId=fault.FaultId LEFT JOIN dicitem ON
+		dicitem.DicItemId=fault.`Status` LEFT JOIN pole on
+		pole.PoleId=checkdetail.PoleId 
+ 		where checkdetail.FaultId=fault.FaultId
+		<if test="type!=0">
+			and checkdetail.CheckItemId in
+			(SELECT
+			check1.CheckItemId from checkitem as check1 WHERE
+			check1.CheckTypeId=#{type})
+		</if>
+		<if
+			test="starttime!=null and starttime!='' and finishtime!=null and finishtime!=''">
+			and fault.CreateTime &gt;=#{starttime} and
+			fault.CreateTime
+			&lt;=#{finishtime}
+		</if>
+		<if test="status!=0">
+			and fault.`Status`=#{status}
+		</if>
+		and checkitem.CheckItemId=checkdetail.CheckItemId
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		checkdetail
+		where CheckDetailId = #{checkdetailid,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.xk.orm.CheckDetail">
+		insert into checkdetail
+		(CheckDetailId, LineCheckId, CheckItemId,
+		HangDetailId, PoleId,
+		ProcessId,
+		CreateTime, Status, FaultId,
+		Description)
+		values
+		(#{checkdetailid,jdbcType=INTEGER}, #{linecheckid,jdbcType=INTEGER},
+		#{checkitemid,jdbcType=INTEGER},
+		#{hangdetailid,jdbcType=INTEGER},
+		#{poleid,jdbcType=INTEGER}, #{processid,jdbcType=INTEGER},
+		#{createtime,jdbcType=TIMESTAMP}, #{status,jdbcType=SMALLINT},
+		#{faultid,jdbcType=INTEGER},
+		#{description,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.xk.orm.CheckDetail">
+		insert into checkdetail
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="checkdetailid != null">
+				CheckDetailId,
+			</if>
+			<if test="linecheckid != null">
+				LineCheckId,
+			</if>
+			<if test="checkitemid != null">
+				CheckItemId,
+			</if>
+			<if test="hangdetailid != null">
+				HangDetailId,
+			</if>
+			<if test="poleid != null">
+				PoleId,
+			</if>
+			<if test="processid != null">
+				ProcessId,
+			</if>
+			<if test="createtime != null">
+				CreateTime,
+			</if>
+			<if test="status != null">
+				Status,
+			</if>
+			<if test="faultid != null">
+				FaultId,
+			</if>
+			<if test="description != null">
+				Description,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="checkdetailid != null">
+				#{checkdetailid,jdbcType=INTEGER},
+			</if>
+			<if test="linecheckid != null">
+				#{linecheckid,jdbcType=INTEGER},
+			</if>
+			<if test="checkitemid != null">
+				#{checkitemid,jdbcType=INTEGER},
+			</if>
+			<if test="hangdetailid != null">
+				#{hangdetailid,jdbcType=INTEGER},
+			</if>
+			<if test="poleid != null">
+				#{poleid,jdbcType=INTEGER},
+			</if>
+			<if test="processid != null">
+				#{processid,jdbcType=INTEGER},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=SMALLINT},
+			</if>
+			<if test="faultid != null">
+				#{faultid,jdbcType=INTEGER},
+			</if>
+			<if test="description != null">
+				#{description,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.xk.orm.CheckDetail">
+		update checkdetail
+		<set>
+			<if test="linecheckid != null">
+				LineCheckId = #{linecheckid,jdbcType=INTEGER},
+			</if>
+			<if test="checkitemid != null">
+				CheckItemId = #{checkitemid,jdbcType=INTEGER},
+			</if>
+			<if test="hangdetailid != null">
+				HangDetailId = #{hangdetailid,jdbcType=INTEGER},
+			</if>
+			<if test="poleid != null">
+				PoleId = #{poleid,jdbcType=INTEGER},
+			</if>
+			<if test="processid != null">
+				ProcessId = #{processid,jdbcType=INTEGER},
+			</if>
+			<if test="createtime != null">
+				CreateTime = #{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				Status = #{status,jdbcType=SMALLINT},
+			</if>
+			<if test="faultid != null">
+				FaultId = #{faultid,jdbcType=INTEGER},
+			</if>
+			<if test="description != null">
+				Description = #{description,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where CheckDetailId = #{checkdetailid,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.xk.orm.CheckDetail">
+		update checkdetail
+		set LineCheckId = #{linecheckid,jdbcType=INTEGER},
+		CheckItemId =
+		#{checkitemid,jdbcType=INTEGER},
+		HangDetailId =
+		#{hangdetailid,jdbcType=INTEGER},
+		PoleId = #{poleid,jdbcType=INTEGER},
+		ProcessId = #{processid,jdbcType=INTEGER},
+		CreateTime =
+		#{createtime,jdbcType=TIMESTAMP},
+		Status = #{status,jdbcType=SMALLINT},
+		FaultId = #{faultid,jdbcType=INTEGER},
+		Description =
+		#{description,jdbcType=VARCHAR}
+		where CheckDetailId =
+		#{checkdetailid,jdbcType=INTEGER}
+	</update>
+</mapper>

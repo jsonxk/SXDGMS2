@@ -105,4 +105,13 @@ public class HangLineController {
 	public @ResponseBody JSONArray SubmitApply(@RequestBody Apply publicentity ){
 		return allService.getApplyMapperBLL().SubmitApply(publicentity);
 	}
+	/**
+	 * 根据poleid查找搭挂线路信息
+	 * @param poleid
+	 * @return
+	 */
+	@RequestMapping(value="/selectHangLineByPoleid",method=RequestMethod.POST)
+	public @ResponseBody JSONArray SelectHangLineByPoleid(@RequestParam("poleid") int poleid){
+		return allService.gethangLineBLL().SelectHangLineByPoleid(poleid);
+	}
 }

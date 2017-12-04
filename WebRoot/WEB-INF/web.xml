@@ -26,7 +26,22 @@
         <filter-name>SpringEncodingFilter</filter-name>  
         <url-pattern>/*</url-pattern>  
     </filter-mapping>
-    
+    <filter>
+    	<filter-name>contextFilter</filter-name>
+    	<filter-class>com.xk.Util.WebContentFilter</filter-class>
+    </filter>
+    <filter-mapping>
+    	<filter-name>contextFilter</filter-name>
+    	<url-pattern>*.spring</url-pattern>
+    </filter-mapping>
+    <!-- <filter>
+    	<filter-name>CorsFilter</filter-name>
+    	<filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
+    </filter>
+    <filter-mapping>
+    	<filter-name>CorsFilter</filter-name>
+    	<url-pattern>*.spring</url-pattern>
+    </filter-mapping>  -->
        <!-- 日志记录   -->
     <context-param>  
        <!--  日志配置文件路径  --> 
@@ -60,6 +75,10 @@
   		<param-name>contextConfigLocation</param-name>
   		<param-value>classpath:config/springMvc.xml</param-value>
   	</init-param>
+ <!--  	<init-param>
+  		<param-name>dispatchOptionsRequest</param-name>
+  		<param-value>true</param-value>
+  	</init-param> -->
   	<load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>

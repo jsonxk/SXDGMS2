@@ -11,7 +11,7 @@
 <head>
 <base href="<%=basePath%>">
 
-<title>线路/线杆管理管理</title>
+<title>缺陷管理</title>
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
@@ -34,6 +34,7 @@
 	<link rel="stylesheet" href="./js/table/bootstrap.css" />
 	<!-- treeview -->
 	<link rel="stylesheet" type="text/css" href="./treeview/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="./css/tabletitle.css">
 <body>
 	<!-- WRAPPER -->
 	<div id="wrapper">
@@ -125,13 +126,45 @@
 			<!-- MAIN CONTENT -->
 			<div class="main-content">
 				<div class="container-fluid">
-					<h3 class="page-title">用户信息表</h3>
+					<h3 class="page-title">缺陷管理</h3>
 					<div class="row">
 						<div class="col-md-12">
-							<!-- BASIC TABLE -->
 							<div class="panel">
-								<div style="width:40%">
-										
+								<!-- 缺陷信息主体 -->
+								<div class="panel-body">
+									<h4>缺陷信息表</h4>
+									<div id="searchFault">
+										<!-- 日期查找 -->
+										<button class="btn btn-primary" type="button" id="TimeFault">创建时间</button>
+										<div class="input-group date fromtimeFault" data-date=""
+											data-date-format="dd MM yyyy" data-link-field="dtp_input2"
+											data-link-format="yyyy-mm-dd">
+											<input class="form-control fromtimeFault1" size="16" type="text"
+												value="" readonly> <span class="input-group-addon"><span
+												class="glyphicon glyphicon-calendar"></span></span> <span
+												class="form-control to">to</span>
+										</div>
+										<div class="input-group date dateFinishFault" data-date=""
+											data-date-format="dd MM yyyy" data-link-field="dtp_input2"
+											data-link-format="yyyy-mm-dd">
+											<input class="form-control dateFinishFault1" size="16" type="text"
+												value="" readonly> <span class="input-group-addon"><span
+												class="glyphicon glyphicon-calendar"></span></span>
+										</div>
+										<span class="form-control spanstatus">&nbsp;缺陷状态</span>
+										<select id="FaultStatus" class="form-control">
+
+										</select>
+										<span class="form-control spantype">&nbsp;缺陷类型</span>
+										<select id="FaultType" class="form-control">
+
+										</select>
+										<button class="btn btn-primary" type="button" id="FaultSearch">查找</button>
+									</div>
+									<div id="FaultTable" class="span10">
+										<table id="Faulttable">
+										</table>
+									</div>
 								</div>
 							</div>
 							<!-- END BASIC TABLE -->
@@ -150,6 +183,93 @@
 			<div class="clearfix"></div>
 		</div>
 	</div>
+	<!-- 点击查看按钮 弹出modal-->
+			<div class="modal fade " id="CheckFaultModal" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content" style="width:100%">
+
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="exampleModalLabel">缺陷信息</h4>
+						</div>
+
+						<div class="modal-body">
+							<div id="FaultInfo">
+								<label for="FaultPole" class="control-label">线杆名称</label> <input
+								type="text" id="FaultPole" name="FaultPole" readonly /> 
+								<label for="FaultOfType" class="control-label">检查类型</label> <input
+								type="text" id="FaultOfType" name="FaultOfType"  readonly />
+								<label for="FaultPoleStatus" class="control-label">线杆状态</label> <input
+								type="text" id="FaultPoleStatus" name="FaultPoleStatus"  readonly />
+								<label for="FaultLine" class="control-label">所属线路</label> <input
+								type="text" id="FaultLine" name="FaultLine" readonly/>
+								<label for="FaultOfUnit" class="control-label">单位名称</label> <input
+								type="text" id="FaultOfUnit" name="FaultOfUnit"  readonly /> 
+								<label for="FaultMemo" class="control-label FaultMemo">缺陷描述</label>
+								<textarea class="form-control textarea1" rows="2"
+								placeholder="缺陷描述" id="FaultMemo" name="FaultMemo"></textarea> 
+								<label for="FaultMemo" class="control-label FaultMemo">缺陷图片</label>
+							</div>
+							<div id="FaultPhoto">
+								<ul>
+									
+								</ul>
+								<i class="leftImg"></i>
+								<i class="rightImg"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 点击查看发送通知 弹出modal-->
+			<div class="modal fade " id="SubmitRepairModal" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content" style="width:80%">
+
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="exampleModalLabel">发送通知</h4>
+						</div>
+
+						<div class="modal-body">
+							<div id="FaultInfo">
+								<label for="FaultPole" class="control-label">通知类型</label> 
+								<select id="AdviceType">
+									<option value="0">发送缺陷通知</option>
+									<option value="1">发送整改通知</option>
+								</select>
+								</br>
+								<label for="FaultPole" class="control-label">通知单位</label> 
+								<select id="AdviceUnit">
+									
+								</select>
+								</br>
+								<label for="AdviceHeader" class="control-label">通知标题</label> 
+								<input type="text" id="AdviceHeader" name="AdviceHeader" placeholder="请输入通知标题 "/>
+								</br>
+								<label for="adviceFile" class="control-label">通知文件</label>
+								<input type="file" id="adviceFile" name="adviceFile"/>
+								<label for="AdviceMemo" class="control-label">通知内容</label>
+								<textarea class="form-control textarea1" rows="5"
+								placeholder="缺陷描述" id="AdviceMemo" name="AdviceMemo"></textarea> 
+							</div>
+							<div class="Advicebutton">
+									<button type="button" class="btn btn-default Advicecancel"
+										data-dismiss="modal">取消</button>
+									<button type="button" class="btn btn-primary SubmitAdvicebtn">发送</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 	<!-- END WRAPPER -->
 	<script src="./assets/vendor/jquery/jquery.min.js"></script>
 	<script src="./assets/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -161,12 +281,16 @@
 	<script src="./js/table/bootstrap-table-export.js"></script>
 	<script src="./js/table/jquery.base64.js"></script>
 	<script src="./js/table/tableExport.js"></script>
+	<script src="./js/validate/bootstrapValidator.js"></script>
+	<script src="./js/datetimepicker/bootstrap-datetimepicker.js"></script>
+	<script src="./js/ajaxupload/ajaxfileupload.js"></script>
 	<script type="text/javascript">
 		function initIndex() {
 			$(".qxglchild .2qxgl0   a").addClass("active");
 		}
 	</script>
 	<script src="./js/pageInit.js"></script>
+	<script src="./js/table/QXGL.js"></script>
 </body>
 
 </html>

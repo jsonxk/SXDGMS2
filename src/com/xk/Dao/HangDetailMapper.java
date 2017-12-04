@@ -1,17 +1,30 @@
 package com.xk.Dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.xk.orm.HangDetail;
+import com.xk.orm.HangDetailList;
+import com.xk.orm.Pole;
 
 public interface HangDetailMapper {
-    int deleteByPrimaryKey(Integer handdetailid);
-
-    int insert(HangDetail record);
-
-    int insertSelective(HangDetail record);
-
-    HangDetail selectByPrimaryKey(Integer handdetailid);
-
-    int updateByPrimaryKeySelective(HangDetail record);
-
-    int updateByPrimaryKey(HangDetail record);
+	/**
+	 * 查找搭挂线杆信息
+	 * @param hanglineid
+	 * @return
+	 */
+	List<Pole> selectHangPole(@Param("hanglineid")int hanglineid);
+	/**
+	 * 添加搭挂线杆信息
+	 * @param hangDetail2
+	 * @return
+	 */
+	int InsertHangPoleDetail(HangDetail hangDetail2);
+	/**
+	 * 根据poleid查找搭挂线路信息
+	 * @param poleid
+	 * @return
+	 */
+	List<HangDetailList> SelectHangLineByPoleid(@Param("poleid")int poleid);
 }

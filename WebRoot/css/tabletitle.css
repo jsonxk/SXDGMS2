@@ -219,7 +219,6 @@
 	float: left;
 	margin-right: 2%;
 }
-
 #lineSearchBtn {
 	float: left;
 	margin: 3% ；
@@ -227,10 +226,6 @@
 
 .lineNameBtn, #lineSearchBtn, .addLine, .addPole {
 	background-color: #2B333E;
-}
-.modal-content{
-	width:65%;
-	margin: 0 auto;
 }
 .lineleft {
 	width: 55%;
@@ -273,10 +268,14 @@
 .LineTime{
 	margin-left: 6%;
 	float:left;
+	width:21%;
 }
-.LinePlace,.LineBtnLocation,.LineBtn{
+.LinePlace,.LineBtnLocation,.LineBtn,.LineCode{
 	margin-left:2%;
 	float:left;
+}
+.LinePlace,.LineCode{
+	width: 21%;
 }
 .LineMemo{
 	width:87%;
@@ -286,11 +285,240 @@
 .LineMap{
 	width:87%;
 	height:36%;
-	border:1px solid black;
+/* 	border:1px solid black; */
 	float:left;
 	margin-left: 6%;
 }
 .modalbutton{
 	width:100%;
 	float:left;
+}
+/* 线杆 */
+#PoleNumber,#PoleNameInput,.PoleCode,#PoleStatus{
+	border-radius:3px;
+	border:1px solid #cccccc;
+	height:5%;
+	width:16%
+}
+#PoleTime{
+	border-radius:3px;
+	border:1px solid #cccccc;
+	height:5%;
+	width:20%
+}
+#PoleLength{
+	order-radius:3px;
+	border:1px solid #cccccc;
+	height:5%;
+	width:10%
+}
+#PoleUnit,#PoleType,.PolePre,.PoleForLine{
+	border-radius:3px;
+	border:1px solid #cccccc;
+	height:5%;
+	width:16%;
+}
+#PoleLon,#PoleLat{
+	border-radius:2px;
+	border:1px solid #cccccc;
+	height:5%;
+	width:11%;
+}
+#mapdiv{
+	width:100%;
+	height:40%;
+	border:1px solid black;
+}
+#addPoleBtn,.delLinePole{
+	background-color: #2B333E;
+	color:white;
+	border:0px;
+	border-radius:3px;
+	height:5%;
+}
+#firstLayer,#secondLayer{
+	margin-top: 3%;
+}
+.thirdLayer0,.thirdLayer1,.thirdLayer2{
+	margin-top: 2%;
+}
+#mapdiv{
+	margin-top: 3%;
+}
+.poleModalBtn{
+	width:20%;
+	margin-left:82%; 
+}
+.cancelPole{
+	background-color: #2B333E;
+	margin-top: 3%;
+}
+.OkPole{
+	background-color: #2B333E;
+	margin:3% 0 0 12%;
+}
+/*搭挂线路管理*/
+.Hanglinename,.HanglineUnit1,.HanglineTime,.HanglineCode,.HanglineType1,.HanglineStatus1{
+	float:left;
+	width:50%;
+}
+.HanglineMemo{
+	float:left;
+	width:100%;
+}
+.HanglinemodalBtn{
+	width:100%;
+	float:left;
+}
+#HangLineOK{
+	background-color: #2B333E;
+}
+.HangPolename1,.HangPole1,.HangPoleCode1,.HangPolePre1,.HangPoleNext1,.HangPoleStatus1{
+	float:left;
+	width:50%;
+}
+.HangPoleMemo{
+	float:left;
+	width:100%;
+}
+.HangPolemodalBtn{
+	width:100%;
+	float:left;
+}
+#HangPoleOK{
+	background-color: #2B333E;
+}
+/*缺陷管理*/
+#TimeFault{
+	background-color: #2B333E;
+	float:left;
+}
+.fromtimeFault{
+	float:left;
+	width:18%;
+	margin:0px;
+	border-radius:0;
+}
+.dateFinishFault{
+	float:left;
+	width:14%;
+	margin:0px;
+}
+.spanstatus,.spantype{
+	margin: 0 0 0 2%;
+	width:9%;
+	float:left;
+	background-color:#2B333E; 
+	color:white;
+}
+#FaultStatus,#FaultType{
+	float:left;
+	width:14%;
+}
+#FaultSearch
+{
+	margin: 0 0 0 1%;
+	background-color: #2B333E;
+	float:left;
+}
+#FaultPole,#FaultOfType,#FaultPoleStatus,#FaultOfUnit,#FaultLine{
+	border-radius:3px;
+	border:1px solid #cccccc;
+	height:5%;
+	margin-top: 2%;	
+}
+#FaultPole{
+	width:25%;
+}
+#FaultOfType{
+	width:20%
+}
+#FaultPoleStatus{
+	width:20%;
+}
+#FaultLine,#FaultOfUnit{
+	width:80%;	
+}
+.FaultMemo{
+	margin-top: 2%;
+}
+#FaultMemo{
+	width:80%;
+	margin: 0 auto;
+}
+#FaultPhoto{
+	width:500px;
+	height:40%;
+	margin: 3% auto;
+	border:1px solid black;
+}
+#FaultPhoto{
+	overflow:hidden;
+}
+#FaultPhoto ul{
+	height:100%;
+	width:200%;
+	margin:0px;
+ 	padding:0px;
+}
+#AdviceType,#AdviceUnit{
+	width:80%;
+	border-radius:3px;
+	border:1px solid #cccccc;
+	height:5%;
+	margin-top: 2%;
+}
+#AdviceHeader{
+	width:80%;
+	border-radius:3px;
+	border:1px solid #cccccc;
+	height:5%;
+	margin-top: 2%;
+}
+#AdviceMemo{
+	width:80%;
+	border-radius:3px;
+	border:1px solid #cccccc;
+	margin-left:13%;
+}
+#adviceFile{
+	margin:2% 0px;
+}
+.Advicebutton{
+	height:5%;
+}
+.Advicecancel,.SubmitAdvicebtn{
+	float:right;
+	margin:2%;
+}
+#FaultPhoto ul li{
+	height:100%;
+	width:50%;
+	float:left;
+	list-style-type:none;
+}
+#FaultPhoto ul li img{
+	width:100%;
+	height:100%;
+}
+.leftImg,.rightImg{
+	width: 58px;
+	height:120px;
+	position: absolute;
+	top: 60%;
+	cursor: pointer;
+	border-radius: 5px;
+}
+.leftImg{
+	left: 20px;
+	background: url('../images/left_right.png') no-repeat 0 0px;
+	background-color: rgba(0, 0, 0, 0.11);
+}
+.rightImg{
+	right: 20px;
+	background: url('../images/left_right.png') no-repeat 0 -120px;
+	background-color: rgba(0, 0, 0, 0.11);
+}
+.leftImg:hover,.rightImg:hover {
+	background-color: rgba(0, 0, 0, 0.31);
 }

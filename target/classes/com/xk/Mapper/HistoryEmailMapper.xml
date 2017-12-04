@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xk.Dao.HistoryEmailMapper" >
+  <resultMap id="BaseResultMap" type="com.xk.orm.HistoryEmail" >
+    <id column="EmailId" property="emailid" jdbcType="INTEGER" />
+    <result column="UnitId" property="unitid" jdbcType="INTEGER" />
+    <result column="SendAddress" property="sendaddress" jdbcType="VARCHAR" />
+    <result column="ToAddress" property="toaddress" jdbcType="VARCHAR" />
+    <result column="SendDocPath" property="senddocpath" jdbcType="VARCHAR" />
+    <result column="Subject" property="subject" jdbcType="VARCHAR" />
+    <result column="UserId" property="userid" jdbcType="INTEGER" />
+    <result column="Context" property="context" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    *
+    from historyemail
+    where EmailId = #{emailid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from historyemail
+    where EmailId = #{emailid,jdbcType=INTEGER}
+  </delete>
+  <insert id="SubmitRepairInfo" parameterType="com.xk.orm.HistoryEmail" >
+    insert into historyemail (UnitId, SendAddress, 
+      ToAddress, SendDocPath, Subject, 
+      UserId, Context)
+    values (#{unitid,jdbcType=INTEGER}, #{sendaddress,jdbcType=VARCHAR}, 
+      #{toaddress,jdbcType=VARCHAR}, #{senddocpath,jdbcType=VARCHAR}, #{subject,jdbcType=VARCHAR}, 
+      #{userid,jdbcType=INTEGER}, #{context,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xk.orm.HistoryEmail" >
+    insert into historyemail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="emailid != null" >
+        EmailId,
+      </if>
+      <if test="unitid != null" >
+        UnitId,
+      </if>
+      <if test="sendaddress != null" >
+        SendAddress,
+      </if>
+      <if test="toaddress != null" >
+        ToAddress,
+      </if>
+      <if test="senddocpath != null" >
+        SendDocPath,
+      </if>
+      <if test="subject != null" >
+        Subject,
+      </if>
+      <if test="userid != null" >
+        UserId,
+      </if>
+      <if test="context != null" >
+        Context,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="emailid != null" >
+        #{emailid,jdbcType=INTEGER},
+      </if>
+      <if test="unitid != null" >
+        #{unitid,jdbcType=INTEGER},
+      </if>
+      <if test="sendaddress != null" >
+        #{sendaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="toaddress != null" >
+        #{toaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="senddocpath != null" >
+        #{senddocpath,jdbcType=VARCHAR},
+      </if>
+      <if test="subject != null" >
+        #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="context != null" >
+        #{context,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xk.orm.HistoryEmail" >
+    update historyemail
+    <set >
+      <if test="unitid != null" >
+        UnitId = #{unitid,jdbcType=INTEGER},
+      </if>
+      <if test="sendaddress != null" >
+        SendAddress = #{sendaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="toaddress != null" >
+        ToAddress = #{toaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="senddocpath != null" >
+        SendDocPath = #{senddocpath,jdbcType=VARCHAR},
+      </if>
+      <if test="subject != null" >
+        Subject = #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        UserId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="context != null" >
+        Context = #{context,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where EmailId = #{emailid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xk.orm.HistoryEmail" >
+    update historyemail
+    set UnitId = #{unitid,jdbcType=INTEGER},
+      SendAddress = #{sendaddress,jdbcType=VARCHAR},
+      ToAddress = #{toaddress,jdbcType=VARCHAR},
+      SendDocPath = #{senddocpath,jdbcType=VARCHAR},
+      Subject = #{subject,jdbcType=VARCHAR},
+      UserId = #{userid,jdbcType=INTEGER},
+      Context = #{context,jdbcType=VARCHAR}
+    where EmailId = #{emailid,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xk.Dao.LineDetailMapper">
+	<resultMap id="BaseResultMap" type="com.xk.orm.LineDetailList">
+		<result column="LineId" property="lineid" jdbcType="INTEGER" />
+		<result column="linename" property="linename" jdbcType="VARCHAR" />
+		<collection property="lineList" ofType="com.xk.orm.LineDetail"
+			column="LineId" javaType="list">
+			<id column="childlinedetailid" property="linedetailid" jdbcType="INTEGER" />
+			<result column="childLineId" property="lineid" jdbcType="INTEGER" />
+			<result column="childPoleId" property="poleid" jdbcType="INTEGER" />
+			<result column="childPrePoleId" property="prepoleid" jdbcType="INTEGER" />
+			<result column="childCode" property="code" jdbcType="VARCHAR" />
+			<result column="childName" property="name" jdbcType="VARCHAR" />
+			<result column="childMemo" property="memo" jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+	<select id="SelectAllLineIdByPoleid" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		<!-- select * from linedetail where linedetail.PoleId=#{poleid} -->
+		select d1.LineId,powerline.`Name` as linename,d2.LineDetailId as
+		childlinedetailid,d2.LineId as childLineId,d2.PoleId as
+		childPoleId,d2.PrePoleId as childPrePoleId,d2.`Code` as
+		childCode,d2.`Name` as childName,d2.Memo as childMemo from linedetail
+		d1 LEFT JOIN linedetail d2 on d1.LineId=d2.LineId LEFT JOIN powerline
+		on d1.LineId=powerline.LineId WHERE d1.PoleId=#{poleid} ORDER BY d1.LineId
+		DESC
+	</select>
+	<insert id="InsertLinePoleDetail" parameterType="com.xk.orm.Pole">
+		insert into
+		linedetail (LineId, PoleId, Code, Name,
+		Memo)
+		values
+		(#{lineid,jdbcType=INTEGER}, #{poleid,jdbcType=INTEGER},
+		#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+		#{memo,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertPoleLineDetail" parameterType="com.xk.orm.LineDetail">
+		insert into
+		linedetail (LineId, PoleId,prepoleid,Code,Name)
+		values
+		(#{lineid,jdbcType=INTEGER},
+		#{poleid,jdbcType=INTEGER},#{prepoleid,jdbcType=INTEGER},
+		#{code,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.xk.orm.LineDetail">
+		insert into linedetail
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="linedetailid != null">
+				LineDetailId,
+			</if>
+			<if test="lineid != null">
+				LineId,
+			</if>
+			<if test="poleid != null">
+				PoleId,
+			</if>
+			<if test="prepoleid != null">
+				PrePoleId,
+			</if>
+			<if test="code != null">
+				Code,
+			</if>
+			<if test="name != null">
+				Name,
+			</if>
+			<if test="memo != null">
+				Memo,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="linedetailid != null">
+				#{linedetailid,jdbcType=INTEGER},
+			</if>
+			<if test="lineid != null">
+				#{lineid,jdbcType=INTEGER},
+			</if>
+			<if test="poleid != null">
+				#{poleid,jdbcType=INTEGER},
+			</if>
+			<if test="prepoleid != null">
+				#{prepoleid,jdbcType=INTEGER},
+			</if>
+			<if test="code != null">
+				#{code,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="memo != null">
+				#{memo,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.xk.orm.LineDetail">
+		update linedetail
+		<set>
+			<if test="lineid != null">
+				LineId = #{lineid,jdbcType=INTEGER},
+			</if>
+			<if test="poleid != null">
+				PoleId = #{poleid,jdbcType=INTEGER},
+			</if>
+			<if test="prepoleid != null">
+				PrePoleId = #{prepoleid,jdbcType=INTEGER},
+			</if>
+			<if test="code != null">
+				Code = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				Name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="memo != null">
+				Memo = #{memo,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where LineDetailId = #{linedetailid,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.xk.orm.LineDetail">
+		update linedetail
+		set LineId = #{lineid,jdbcType=INTEGER},
+		PoleId =
+		#{poleid,jdbcType=INTEGER},
+		PrePoleId = #{prepoleid,jdbcType=INTEGER},
+		Code = #{code,jdbcType=VARCHAR},
+		Name = #{name,jdbcType=VARCHAR},
+		Memo =
+		#{memo,jdbcType=VARCHAR}
+		where LineDetailId =
+		#{linedetailid,jdbcType=INTEGER}
+	</update>
+</mapper>

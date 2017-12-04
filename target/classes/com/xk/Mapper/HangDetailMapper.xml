@@ -1,142 +1,163 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xk.Dao.HangDetailMapper" >
-  <resultMap id="BaseResultMap" type="com.xk.orm.HangDetail" >
-    <id column="HandDetailId" property="handdetailid" jdbcType="INTEGER" />
-    <result column="PoleId" property="poleid" jdbcType="INTEGER" />
-    <result column="index" property="index" jdbcType="INTEGER" />
-    <result column="HangLineId" property="hanglineid" jdbcType="INTEGER" />
-    <result column="PrevPoleId" property="prevpoleid" jdbcType="INTEGER" />
-    <result column="NextPoleId" property="nextpoleid" jdbcType="INTEGER" />
-    <result column="GetMethod" property="getmethod" jdbcType="SMALLINT" />
-    <result column="Status" property="status" jdbcType="SMALLINT" />
-    <result column="Memo" property="memo" jdbcType="VARCHAR" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    HandDetailId, PoleId, index, HangLineId, PrevPoleId, NextPoleId, GetMethod, Status, 
-    Memo
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from hangdetail
-    where HandDetailId = #{handdetailid,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from hangdetail
-    where HandDetailId = #{handdetailid,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.xk.orm.HangDetail" >
-    insert into hangdetail (HandDetailId, PoleId, index, 
-      HangLineId, PrevPoleId, NextPoleId, 
-      GetMethod, Status, Memo
-      )
-    values (#{handdetailid,jdbcType=INTEGER}, #{poleid,jdbcType=INTEGER}, #{index,jdbcType=INTEGER}, 
-      #{hanglineid,jdbcType=INTEGER}, #{prevpoleid,jdbcType=INTEGER}, #{nextpoleid,jdbcType=INTEGER}, 
-      #{getmethod,jdbcType=SMALLINT}, #{status,jdbcType=SMALLINT}, #{memo,jdbcType=VARCHAR}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.xk.orm.HangDetail" >
-    insert into hangdetail
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="handdetailid != null" >
-        HandDetailId,
-      </if>
-      <if test="poleid != null" >
-        PoleId,
-      </if>
-      <if test="index != null" >
-        index,
-      </if>
-      <if test="hanglineid != null" >
-        HangLineId,
-      </if>
-      <if test="prevpoleid != null" >
-        PrevPoleId,
-      </if>
-      <if test="nextpoleid != null" >
-        NextPoleId,
-      </if>
-      <if test="getmethod != null" >
-        GetMethod,
-      </if>
-      <if test="status != null" >
-        Status,
-      </if>
-      <if test="memo != null" >
-        Memo,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="handdetailid != null" >
-        #{handdetailid,jdbcType=INTEGER},
-      </if>
-      <if test="poleid != null" >
-        #{poleid,jdbcType=INTEGER},
-      </if>
-      <if test="index != null" >
-        #{index,jdbcType=INTEGER},
-      </if>
-      <if test="hanglineid != null" >
-        #{hanglineid,jdbcType=INTEGER},
-      </if>
-      <if test="prevpoleid != null" >
-        #{prevpoleid,jdbcType=INTEGER},
-      </if>
-      <if test="nextpoleid != null" >
-        #{nextpoleid,jdbcType=INTEGER},
-      </if>
-      <if test="getmethod != null" >
-        #{getmethod,jdbcType=SMALLINT},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=SMALLINT},
-      </if>
-      <if test="memo != null" >
-        #{memo,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xk.orm.HangDetail" >
-    update hangdetail
-    <set >
-      <if test="poleid != null" >
-        PoleId = #{poleid,jdbcType=INTEGER},
-      </if>
-      <if test="index != null" >
-        index = #{index,jdbcType=INTEGER},
-      </if>
-      <if test="hanglineid != null" >
-        HangLineId = #{hanglineid,jdbcType=INTEGER},
-      </if>
-      <if test="prevpoleid != null" >
-        PrevPoleId = #{prevpoleid,jdbcType=INTEGER},
-      </if>
-      <if test="nextpoleid != null" >
-        NextPoleId = #{nextpoleid,jdbcType=INTEGER},
-      </if>
-      <if test="getmethod != null" >
-        GetMethod = #{getmethod,jdbcType=SMALLINT},
-      </if>
-      <if test="status != null" >
-        Status = #{status,jdbcType=SMALLINT},
-      </if>
-      <if test="memo != null" >
-        Memo = #{memo,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where HandDetailId = #{handdetailid,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.xk.orm.HangDetail" >
-    update hangdetail
-    set PoleId = #{poleid,jdbcType=INTEGER},
-      index = #{index,jdbcType=INTEGER},
-      HangLineId = #{hanglineid,jdbcType=INTEGER},
-      PrevPoleId = #{prevpoleid,jdbcType=INTEGER},
-      NextPoleId = #{nextpoleid,jdbcType=INTEGER},
-      GetMethod = #{getmethod,jdbcType=SMALLINT},
-      Status = #{status,jdbcType=SMALLINT},
-      Memo = #{memo,jdbcType=VARCHAR}
-    where HandDetailId = #{handdetailid,jdbcType=INTEGER}
-  </update>
+<mapper namespace="com.xk.Dao.HangDetailMapper">
+	<resultMap id="BaseResultMap" type="com.xk.orm.HangDetailList">
+		<result column="HangLineId" property="hanglineid" jdbcType="INTEGER" />
+		<result column="hangname" property="hangname" jdbcType="VARCHAR" />
+		<collection property="hangList" ofType="com.xk.orm.HangDetail"
+			column="HangLineId" javaType="list">
+			<id column="childhangdetailid" property="handdetailid" jdbcType="INTEGER" />
+			<result column="childhanglineid" property="hanglineid"
+				jdbcType="INTEGER" />
+			<result column="childcode" property="code" jdbcType="VARCHAR" />
+			<result column="childpoleid" property="poleid" jdbcType="INTEGER" />
+			<result column="childprevpoleid" property="prevpoleid"
+				jdbcType="INTEGER" />
+			<result column="childnextpoleid" property="nextpoleid"
+				jdbcType="INTEGER" />
+			<result column="childgetmethod" property="getmethod" jdbcType="INTEGER" />
+			<result column="childstatus" property="status" jdbcType="INTEGER" />
+			<result column="childmemo" property="memo" jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+	<select id="selectHangPole" resultType="com.xk.orm.Pole"
+		parameterType="java.lang.Integer">
+		select pole.* from pole WHERE pole.PoleId in (select
+		hangdetail.PoleId from
+		hangdetail WHERE
+		hangdetail.HangLineId=#{hanglineid})
+	</select>
+	<select id="SelectHangLineByPoleid" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select DISTINCT h1.HangLineId,hangline.HangName as
+		hangname,h2.HandDetailId as childhangdetailid,h2.HangLineId as
+		childhanglineid,h2.`Code` as childcode,h2.PoleId as
+		childpoleid,h2.PrevPoleId as childprevpoleid,h2.NextPoleId as
+		childnextpoleid,h2.GetMethod as childgetmethod,h2.`Status` as
+		childstatus,h2.Memo as childmemo from hangdetail h1 LEFT JOIN
+		hangdetail h2 on h1.HangLineId=h2.HangLineId LEFT JOIN hangline on
+		h1.HangLineId=hangline.HangLineId WHERE h2.PoleId=#{poleid}
+	</select>
+	<!-- 添加搭挂线杆信息 -->
+	<insert id="InsertHangPoleDetail" parameterType="com.xk.orm.HangDetail">
+		insert into
+		hangdetail (PoleId, Code,
+		HangLineId, PrevPoleId, NextPoleId,
+		GetMethod, Status, Memo
+		)
+		values (#{poleid,jdbcType=INTEGER},
+		#{code,jdbcType=INTEGER},
+		#{hanglineid,jdbcType=INTEGER},
+		#{prevpoleid,jdbcType=INTEGER}, #{nextpoleid,jdbcType=INTEGER},
+		#{getmethod,jdbcType=SMALLINT}, #{status,jdbcType=SMALLINT},
+		#{memo,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.xk.orm.HangDetail">
+		insert into hangdetail
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="handdetailid != null">
+				HandDetailId,
+			</if>
+			<if test="poleid != null">
+				PoleId,
+			</if>
+			<if test="index != null">
+				index,
+			</if>
+			<if test="hanglineid != null">
+				HangLineId,
+			</if>
+			<if test="prevpoleid != null">
+				PrevPoleId,
+			</if>
+			<if test="nextpoleid != null">
+				NextPoleId,
+			</if>
+			<if test="getmethod != null">
+				GetMethod,
+			</if>
+			<if test="status != null">
+				Status,
+			</if>
+			<if test="memo != null">
+				Memo,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="handdetailid != null">
+				#{handdetailid,jdbcType=INTEGER},
+			</if>
+			<if test="poleid != null">
+				#{poleid,jdbcType=INTEGER},
+			</if>
+			<if test="index != null">
+				#{index,jdbcType=INTEGER},
+			</if>
+			<if test="hanglineid != null">
+				#{hanglineid,jdbcType=INTEGER},
+			</if>
+			<if test="prevpoleid != null">
+				#{prevpoleid,jdbcType=INTEGER},
+			</if>
+			<if test="nextpoleid != null">
+				#{nextpoleid,jdbcType=INTEGER},
+			</if>
+			<if test="getmethod != null">
+				#{getmethod,jdbcType=SMALLINT},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=SMALLINT},
+			</if>
+			<if test="memo != null">
+				#{memo,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.xk.orm.HangDetail">
+		update hangdetail
+		<set>
+			<if test="poleid != null">
+				PoleId = #{poleid,jdbcType=INTEGER},
+			</if>
+			<if test="index != null">
+				index = #{index,jdbcType=INTEGER},
+			</if>
+			<if test="hanglineid != null">
+				HangLineId = #{hanglineid,jdbcType=INTEGER},
+			</if>
+			<if test="prevpoleid != null">
+				PrevPoleId = #{prevpoleid,jdbcType=INTEGER},
+			</if>
+			<if test="nextpoleid != null">
+				NextPoleId = #{nextpoleid,jdbcType=INTEGER},
+			</if>
+			<if test="getmethod != null">
+				GetMethod = #{getmethod,jdbcType=SMALLINT},
+			</if>
+			<if test="status != null">
+				Status = #{status,jdbcType=SMALLINT},
+			</if>
+			<if test="memo != null">
+				Memo = #{memo,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where HandDetailId = #{handdetailid,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.xk.orm.HangDetail">
+		update hangdetail
+		set PoleId = #{poleid,jdbcType=INTEGER},
+		index =
+		#{index,jdbcType=INTEGER},
+		HangLineId = #{hanglineid,jdbcType=INTEGER},
+		PrevPoleId = #{prevpoleid,jdbcType=INTEGER},
+		NextPoleId =
+		#{nextpoleid,jdbcType=INTEGER},
+		GetMethod =
+		#{getmethod,jdbcType=SMALLINT},
+		Status = #{status,jdbcType=SMALLINT},
+		Memo = #{memo,jdbcType=VARCHAR}
+		where HandDetailId =
+		#{handdetailid,jdbcType=INTEGER}
+	</update>
 </mapper>

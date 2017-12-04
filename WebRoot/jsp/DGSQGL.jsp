@@ -231,7 +231,7 @@
 	<div class="modal fade " id="HangModal" tabindex="-1" role="dialog"
 		aria-labelledby="exampleModalLabel">
 		<div class="modal-dialog" role="document">
-			<div class="modal-content" style="width:115%">
+			<div class="modal-content" style="width:100%">
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
@@ -308,7 +308,7 @@
 									</table>
 								</div>
 								<div id="FilePromet" style="display:none">请完善必须信息</div>
-								<div class="text-right modalbutton">
+								<div class="modalbutton">
 									<button type="button" class="btn btn-primary prebtn"
 										onclick="eventFun.pre(1)">上一步</button>
 									<button type="button" class="btn btn-primary Upbtn"

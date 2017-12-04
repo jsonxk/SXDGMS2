@@ -1,141 +1,171 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xk.Dao.HangLineMapper" >
-  <resultMap id="BaseResultMap" type="com.xk.orm.HangLine" >
-    <id column="HangLineId" property="hanglineid" jdbcType="INTEGER" />
-    <result column="UnitId" property="unitid" jdbcType="INTEGER" />
-    <result column="HangName" property="hangname" jdbcType="VARCHAR" />
-    <result column="StartPoleId" property="startpoleid" jdbcType="INTEGER" />
-    <result column="EndPoleId" property="endpoleid" jdbcType="INTEGER" />
-    <result column="Type" property="type" jdbcType="VARCHAR" />
-    <result column="ApplyDate" property="applydate" jdbcType="TIMESTAMP" />
-    <result column="Status" property="status" jdbcType="SMALLINT" />
-    <result column="Memo" property="memo" jdbcType="VARCHAR" />
-  </resultMap>
-  <sql id="Base_Column_List" >
-    HangLineId, UnitId, HangName, StartPoleId, EndPoleId, Type, ApplyDate, Status, Memo
-  </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from hangline
-    where HangLineId = #{hanglineid,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from hangline
-    where HangLineId = #{hanglineid,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.xk.orm.HangLine" >
-    insert into hangline (HangLineId, UnitId, HangName, 
-      StartPoleId, EndPoleId, Type, 
-      ApplyDate, Status, Memo
-      )
-    values (#{hanglineid,jdbcType=INTEGER}, #{unitid,jdbcType=INTEGER}, #{hangname,jdbcType=VARCHAR}, 
-      #{startpoleid,jdbcType=INTEGER}, #{endpoleid,jdbcType=INTEGER}, #{type,jdbcType=VARCHAR}, 
-      #{applydate,jdbcType=TIMESTAMP}, #{status,jdbcType=SMALLINT}, #{memo,jdbcType=VARCHAR}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.xk.orm.HangLine" >
-    insert into hangline
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="hanglineid != null" >
-        HangLineId,
-      </if>
-      <if test="unitid != null" >
-        UnitId,
-      </if>
-      <if test="hangname != null" >
-        HangName,
-      </if>
-      <if test="startpoleid != null" >
-        StartPoleId,
-      </if>
-      <if test="endpoleid != null" >
-        EndPoleId,
-      </if>
-      <if test="type != null" >
-        Type,
-      </if>
-      <if test="applydate != null" >
-        ApplyDate,
-      </if>
-      <if test="status != null" >
-        Status,
-      </if>
-      <if test="memo != null" >
-        Memo,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="hanglineid != null" >
-        #{hanglineid,jdbcType=INTEGER},
-      </if>
-      <if test="unitid != null" >
-        #{unitid,jdbcType=INTEGER},
-      </if>
-      <if test="hangname != null" >
-        #{hangname,jdbcType=VARCHAR},
-      </if>
-      <if test="startpoleid != null" >
-        #{startpoleid,jdbcType=INTEGER},
-      </if>
-      <if test="endpoleid != null" >
-        #{endpoleid,jdbcType=INTEGER},
-      </if>
-      <if test="type != null" >
-        #{type,jdbcType=VARCHAR},
-      </if>
-      <if test="applydate != null" >
-        #{applydate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=SMALLINT},
-      </if>
-      <if test="memo != null" >
-        #{memo,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xk.orm.HangLine" >
-    update hangline
-    <set >
-      <if test="unitid != null" >
-        UnitId = #{unitid,jdbcType=INTEGER},
-      </if>
-      <if test="hangname != null" >
-        HangName = #{hangname,jdbcType=VARCHAR},
-      </if>
-      <if test="startpoleid != null" >
-        StartPoleId = #{startpoleid,jdbcType=INTEGER},
-      </if>
-      <if test="endpoleid != null" >
-        EndPoleId = #{endpoleid,jdbcType=INTEGER},
-      </if>
-      <if test="type != null" >
-        Type = #{type,jdbcType=VARCHAR},
-      </if>
-      <if test="applydate != null" >
-        ApplyDate = #{applydate,jdbcType=TIMESTAMP},
-      </if>
-      <if test="status != null" >
-        Status = #{status,jdbcType=SMALLINT},
-      </if>
-      <if test="memo != null" >
-        Memo = #{memo,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where HangLineId = #{hanglineid,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.xk.orm.HangLine" >
-    update hangline
-    set UnitId = #{unitid,jdbcType=INTEGER},
-      HangName = #{hangname,jdbcType=VARCHAR},
-      StartPoleId = #{startpoleid,jdbcType=INTEGER},
-      EndPoleId = #{endpoleid,jdbcType=INTEGER},
-      Type = #{type,jdbcType=VARCHAR},
-      ApplyDate = #{applydate,jdbcType=TIMESTAMP},
-      Status = #{status,jdbcType=SMALLINT},
-      Memo = #{memo,jdbcType=VARCHAR}
-    where HangLineId = #{hanglineid,jdbcType=INTEGER}
-  </update>
+<mapper namespace="com.xk.Dao.HangLineMapper">
+	<resultMap id="BaseResultMap" type="com.xk.orm.HangLine">
+		<id column="HangLineId" property="hanglineid" jdbcType="INTEGER" />
+		<result column="UnitId" property="unitid" jdbcType="INTEGER" />
+		<result column="Code" property="code" jdbcType="VARCHAR" />
+		<result column="HangName" property="hangname" jdbcType="VARCHAR" />
+		<result column="Type" property="type" jdbcType="VARCHAR" />
+		<result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+		<result column="Status" property="status" jdbcType="SMALLINT" />
+		<result column="Memo" property="memo" jdbcType="VARCHAR" />
+	</resultMap>
+	<!-- 查找搭挂线路具体信息 -->
+	<select id="SelectAllHangLine" resultType="com.xk.orm.HangLine"
+		parameterType="com.xk.orm.PublicEntity">
+		select hangline.*,d1.Item as statusname,d2.Item as typename from
+		hangline LEFT JOIN dicitem d1 ON hangline.`Status`=d1.DicItemId LEFT
+		JOIN dicitem d2 ON hangline.Type=d2.DicItemId
+		<if test="name!=null and name!=''">
+			where hangline.Name like "%"#{name}"%"
+		</if>
+		LIMIT #{offset},#{pageSize}
+	</select>
+	<!-- 查找搭挂线路名字 -->
+	<select id="SelectAllHangLineName" resultType="com.xk.orm.HangLine">
+		select * from
+		hangline
+	</select>
+	<select id="SelectAllHangLineCount" parameterType="com.xk.orm.PublicEntity"
+		resultType="java.lang.Integer">
+		select COUNT(*) as count from hangline where
+		<if test="unitid!=0">
+			hangline.UnitId=#{unitid}
+		</if>
+		<if test="name!=null and name!=''">
+			and hangline.Name like "%"#{name}"%"
+		</if>
+	</select>
+	<!-- 根据poleid查找搭挂线路信息 -->
+	<select id="FaultPoleOfLine" parameterType="java.lang.Integer" resultType="com.xk.orm.HangLine"> 
+		SELECT
+		hangline.*,unit.UnitName as unitname,hangdetail.PoleId from hangline
+		LEFT JOIN unit on hangline.UnitId=unit.UnitId LEFT JOIN hangdetail ON
+		hangdetail.HangLineId=hangline.HangLineId WHERE hangdetail.PoleId=#{poleid}
+	</select>
+	<select id="SelectHangInfoByName" parameterType="java.lang.String" resultType="com.xk.orm.HangLine">
+		select * from hangline where hangline.hangname like "%"#{name}"%"
+	</select>
+	<insert id="insertHangLine" parameterType="com.xk.orm.HangLine">
+		insert into hangline
+		(UnitId,
+		HangName,Type,CreateTime,Status,Memo,Code
+		)
+		values
+		(#{unitid,jdbcType=INTEGER},
+		#{hangname,jdbcType=VARCHAR},
+		#{type,jdbcType=INTEGER},
+		#{timeString,jdbcType=TIMESTAMP},#{status,jdbcType=INTEGER},
+		#{memo,jdbcType=VARCHAR},
+		#{code,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.xk.orm.HangLine">
+		insert into hangline
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="hanglineid != null">
+				HangLineId,
+			</if>
+			<if test="unitid != null">
+				UnitId,
+			</if>
+			<if test="hangname != null">
+				HangName,
+			</if>
+			<if test="startpoleid != null">
+				StartPoleId,
+			</if>
+			<if test="endpoleid != null">
+				EndPoleId,
+			</if>
+			<if test="type != null">
+				Type,
+			</if>
+			<if test="applydate != null">
+				ApplyDate,
+			</if>
+			<if test="status != null">
+				Status,
+			</if>
+			<if test="memo != null">
+				Memo,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="hanglineid != null">
+				#{hanglineid,jdbcType=INTEGER},
+			</if>
+			<if test="unitid != null">
+				#{unitid,jdbcType=INTEGER},
+			</if>
+			<if test="hangname != null">
+				#{hangname,jdbcType=VARCHAR},
+			</if>
+			<if test="startpoleid != null">
+				#{startpoleid,jdbcType=INTEGER},
+			</if>
+			<if test="endpoleid != null">
+				#{endpoleid,jdbcType=INTEGER},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+			</if>
+			<if test="applydate != null">
+				#{applydate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=SMALLINT},
+			</if>
+			<if test="memo != null">
+				#{memo,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.xk.orm.HangLine">
+		update hangline
+		<set>
+			<if test="unitid != null">
+				UnitId = #{unitid,jdbcType=INTEGER},
+			</if>
+			<if test="hangname != null">
+				HangName = #{hangname,jdbcType=VARCHAR},
+			</if>
+			<if test="startpoleid != null">
+				StartPoleId = #{startpoleid,jdbcType=INTEGER},
+			</if>
+			<if test="endpoleid != null">
+				EndPoleId = #{endpoleid,jdbcType=INTEGER},
+			</if>
+			<if test="type != null">
+				Type = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="applydate != null">
+				ApplyDate = #{applydate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				Status = #{status,jdbcType=SMALLINT},
+			</if>
+			<if test="memo != null">
+				Memo = #{memo,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where HangLineId = #{hanglineid,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.xk.orm.HangLine">
+		update hangline
+		set UnitId = #{unitid,jdbcType=INTEGER},
+		HangName =
+		#{hangname,jdbcType=VARCHAR},
+		StartPoleId =
+		#{startpoleid,jdbcType=INTEGER},
+		EndPoleId =
+		#{endpoleid,jdbcType=INTEGER},
+		Type = #{type,jdbcType=VARCHAR},
+		ApplyDate = #{applydate,jdbcType=TIMESTAMP},
+		Status =
+		#{status,jdbcType=SMALLINT},
+		Memo = #{memo,jdbcType=VARCHAR}
+		where
+		HangLineId = #{hanglineid,jdbcType=INTEGER}
+	</update>
 </mapper>

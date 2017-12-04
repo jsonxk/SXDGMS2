@@ -21,19 +21,24 @@
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 <!-- VENDOR CSS -->
-<link rel="stylesheet" href="./assets/vendor/font-awesome/css/font-awesome.min.css">
-	<link rel="stylesheet" href="./assets/vendor/linearicons/style.css">
-	<!-- MAIN CSS -->
-	<link rel="stylesheet" href="./assets/css/main.css">
-	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
-	<link rel="stylesheet" href="./assets/css/demo.css">
-	<!-- ICONS -->
-	<link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
-	<link rel="icon" type="image/png" sizes="96x96" href="./assets/img/favicon.png">
-	<link rel="stylesheet" href="./js/table/bootstrap-table.css" />
-	<link rel="stylesheet" href="./js/table/bootstrap.css" />
-	<!-- treeview -->
-	<link rel="stylesheet" type="text/css" href="./treeview/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="./assets/vendor/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="./assets/vendor/linearicons/style.css">
+<!-- MAIN CSS -->
+<link rel="stylesheet" href="./assets/css/main.css">
+<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
+<link rel="stylesheet" href="./assets/css/demo.css">
+<!-- ICONS -->
+<link rel="apple-touch-icon" sizes="76x76"
+	href="./assets/img/apple-icon.png">
+<link rel="icon" type="image/png" sizes="96x96"
+	href="./assets/img/favicon.png">
+<link rel="stylesheet" href="./js/table/bootstrap-table.css" />
+<link rel="stylesheet" href="./js/table/bootstrap.css" />
+<!-- treeview -->
+<link rel="stylesheet" type="text/css"
+	href="./treeview/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="./css/tabletitle.css">
 <body>
 	<!-- WRAPPER -->
 	<div id="wrapper">
@@ -125,14 +130,38 @@
 			<!-- MAIN CONTENT -->
 			<div class="main-content">
 				<div class="container-fluid">
-					<h3 class="page-title">用户信息表</h3>
+					<h3 class="page-title">搭挂线路管理</h3>
 					<div class="row">
 						<div class="col-md-12">
 							<!-- BASIC TABLE -->
-								<div class="panel"  style="height:100%;">
-								
+							<div id="search">
+								<button class="btn btn-primary lineNameBtn" type="button">名称</button>
+								<input type="text" class="form-control lineName"
+									placeholder="输入搭挂线路名称" name="lineName">
+								<button class="btn btn-primary" type="button" id="lineSearchBtn">查找</button>
+							</div>
+							<!-- 线路信息表 -->
+							<div class="panel-body lineleft">
+								<h4>搭挂线路信息</h4>
+								<button class="btn btn-primary addLine" type="button">
+									<i class="fa fa-plus-square"></i>&nbsp;添加线路
+								</button>
+								<div id="lineInfo" class="span10">
+									<table id="lineInfoTable" data-side-pagination="server">
+									</table>
 								</div>
-							<!-- END BASIC TABLE -->
+							</div>
+							<!-- 线杆信息 -->
+							<div class="panel-body poleRight">
+								<h4>搭挂线杆信息</h4>
+								<button class="btn btn-primary addPole" type="button">
+									<i class="fa fa-plus-square"></i>&nbsp;添加线杆
+								</button>
+								<div id="poleInfo" class="span10">
+									<table id="poleInfoTable">
+									</table>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -141,8 +170,131 @@
 			<!-- END MAIN -->
 			<div class="userinfo" style="display:none">
 				<span><%=session.getAttribute("userid")%></span>
+				<p id="p1"><%=session.getAttribute("loginname").toString()%></p>
+				<p id="p2"><%=session.getAttribute("unitname").toString()%></p>
+				<p id="p3"><%=session.getAttribute("unitid").toString()%></p>
 			</div>
 			<div class="clearfix"></div>
+		</div>
+	</div>
+	<!-- modal添加搭挂线路弹出框 -->
+	<div class="modal fade " id="HangLineModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="width:80%;height:450px">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="exampleModalLabel">添加搭挂线路信息</h4>
+				</div>
+				<div class="modal-body">
+					<form id="AddHangLineform">
+	                    <div class="form-group Hanglinename">
+                        	<label for="Hanglinename" class="control-label">搭挂线路名称</label>
+                        	<input type="text" id="Hanglinename" name="Hanglinename" class="form-control" placeholder="搭挂线路名称"/>
+                   		</div>
+                   		<div class="form-group HanglineUnit1">
+	                        <label class="control-label">选择单位</label>
+							<select class="form-control HanglineUnit" >
+								
+							</select>	
+	                    </div>
+	                    <div class="form-group HanglineTime">
+	                        <label class="control-label" for="HanglineTime">创建时间</label>
+							<input type="text" id="HanglineTime" name="HanglineTime" class="form-control" readonly/>	
+	                    </div>
+	                    <div class="form-group HanglineCode">
+	                        <label class="control-label" for="HanglineCode">编号</label>
+							<input type="text" id="HanglineCode" name="HanglineCode" class="form-control" placeholder="搭挂线路编号"/>	
+	                    </div>
+	                    <div class="form-group HanglineType1">
+	                        <label class="control-label">选择类型</label>
+							<select class="form-control HanglineType" >
+								
+							</select>	
+	                    </div>
+	                    <div class="form-group HanglineStatus1">
+	                        <label class="control-label">选择状态</label>
+							<select class="form-control HanglineStatus" >
+								
+							</select>	
+	                    </div>
+	                    <div class="form-group HanglineMemo">
+	                        <label for="HanglineMemo" class="control-label">搭挂线路描述</label>
+							<textarea class="form-control textarea1" rows="3" placeholder="搭挂线路描述" id="HanglineMemo" name="HanglineMemo"></textarea>
+	                    </div>
+	                    <div class="text-right HanglinemodalBtn">
+	                        <span id="returnMessage" class="glyphicon"> </span>
+	                        <button type="button" class="btn btn-default right" data-dismiss="modal">取消</button>
+	                        <button id="HangLineOK" type="button" class="btn btn-primary">完成</button>
+	                    </div>
+	                </form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- modal添加搭挂线杆弹出框 -->
+	<div class="modal fade " id="HangPoleModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="width:80%;height:450px">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="exampleModalLabel">添加搭挂线路信息</h4>
+				</div>
+				<div class="modal-body">
+					<form id="AddHangPoleform">
+	                    <div class="form-group HangPolename1">
+                        	<label for="HangPolename" class="control-label">搭挂线路</label>
+                   			<select class="form-control HangPolename" >
+								
+							</select>
+                   		</div>
+                   		<div class="form-group HangPole1">
+                        	<label for="HangPole" class="control-label">搭挂线杆</label>
+                   			<select class="form-control HangPole" >
+								
+							</select>
+                   		</div>
+                   		<div class="form-group HangPolePre1">
+                        	<label for="HangPolePre" class="control-label">上一杆</label>
+                   			<select class="form-control HangPolePre" >
+								
+							</select>
+                   		</div>
+                   		<div class="form-group HangPoleNext1">
+                        	<label for="HangPoleNext" class="control-label">下一杆</label>
+                   			<select class="form-control HangPoleNext" >
+								
+							</select>
+                   		</div>
+	                    <div class="form-group HangPoleCode1">
+	                        <label class="control-label" for="HangPoleCode">编号</label>
+							<input type="text" id="HangPoleCode" name="HangPoleCode" class="form-control" placeholder="搭挂线路编号"/>	
+	                    </div>
+	                    <div class="form-group HangPoleStatus1">
+	                        <label class="control-label">选择状态</label>
+							<select class="form-control HangPoleStatus" >
+								
+							</select>	
+	                    </div>
+	                    <div class="form-group HangPoleMemo">
+	                        <label for="HangPoleMemo" class="control-label">搭挂线路描述</label>
+							<textarea class="form-control textarea1" rows="3" placeholder="搭挂线路描述" id="HangPoleMemo" name="HanglineMemo"></textarea>
+	                    </div>
+	                    <div class="text-right HangPolemodalBtn">
+	                        <span id="returnMessage" class="glyphicon"> </span>
+	                        <button type="button" class="btn btn-default right" data-dismiss="modal">取消</button>
+	                        <button id="HangPoleOK" type="button" class="btn btn-primary">完成</button>
+	                    </div>
+	                </form>
+				</div>
+			</div>
 		</div>
 	</div>
 	<!-- END WRAPPER -->
@@ -162,6 +314,7 @@
 		}
 	</script>
 	<script src="./js/pageInit.js"></script>
+	<script src="./js/table/DGXLGL.js"></script>
 </body>
 
 </html>

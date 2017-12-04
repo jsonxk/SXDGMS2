@@ -10,9 +10,9 @@
 		<result column="FirstPoleId" property="firstpoleid" jdbcType="INTEGER" />
 		<result column="FinallyPoleId" property="finallypoleid"
 			jdbcType="INTEGER" />
-		<result column="Status" property="status" jdbcType="SMALLINT" />
+		<result column="Status" property="status" jdbcType="INTEGER" />
 		<result column="LineLength" property="linelength" jdbcType="DOUBLE" />
-		<result column="Type" property="type" jdbcType="VARCHAR" />
+		<result column="Type" property="type" jdbcType="INTEGER" />
 		<result column="Memo" property="memo" jdbcType="VARCHAR" />
 	</resultMap>
 	<select id="SelectAllLine" resultType="com.xk.orm.PowerLine"
@@ -25,7 +25,7 @@
 			powerline.UnitId=#{unitid}
 		</if>
 		<if test="name!=null and name!=''">
-			and powerline.Name=#{name}
+			and powerline.Name like "%"#{name}"%"
 		</if>
 		LIMIT #{offset},#{pageSize}
 	</select>
@@ -36,9 +36,45 @@
 			powerline.UnitId=#{unitid}
 		</if>
 		<if test="name!=null and name!=''">
-			and powerline.Name like like "%"#{name}"%"
+			and powerline.Name like "%"#{name}"%"
 		</if>
 	</select>
+	<!-- 加载所有线路信息 -->
+	<select id="selectAllLineName" resultType="com.xk.orm.PowerLine">
+		select * from powerline
+	</select>
+	<!-- 搜索电力线路信息 -->
+	<select id="SelectLineInfoByName" resultType="com.xk.orm.PowerLine" parameterType="java.lang.String">
+		select * from powerline where powerline.name like "%"#{name}"%"
+	</select>
+	<!-- 添加line返回主键 -->
+	<insert id="InsertLineInfo" parameterType="com.xk.orm.PowerLine" useGeneratedKeys="true"
+		keyProperty="lineid">
+		insert into powerline (
+		UnitId, Code,
+		Name, CreateTime, FirstPoleId,
+		FinallyPoleId, Status,
+		LineLength,
+		Type, Memo)
+		values (
+		#{unitid,jdbcType=INTEGER},
+		#{code,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR}, #{timeString,jdbcType=TIMESTAMP},
+		#{firstpoleid,jdbcType=INTEGER},
+		#{finallypoleid,jdbcType=INTEGER},
+		#{status,jdbcType=SMALLINT},
+		#{linelength,jdbcType=DOUBLE},
+		#{type,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR})
+	</insert>
+	<update id="ModifyLinePoleId" parameterType="com.xk.orm.PowerLine">
+		update powerline
+		set 
+		FirstPoleId =
+		#{firstpoleid,jdbcType=INTEGER},
+		FinallyPoleId =
+		#{finallypoleid,jdbcType=INTEGER}
+		where LineId = #{lineid,jdbcType=INTEGER}
+	</update>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from
 		powerline

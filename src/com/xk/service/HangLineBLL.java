@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xk.DaoImpl.AllDao;
+import com.xk.orm.HangDetailList;
 import com.xk.orm.dicitem;
 import com.xk.orm.dictype;
 
@@ -44,5 +45,14 @@ public class HangLineBLL {
 			}
 		}
 		return data;
+	}
+		/**
+	 * 根据poleid查找搭挂信息
+	 * @param poleid
+	 * @return
+	 */
+	public JSONArray SelectHangLineByPoleid(int poleid) {
+		List<HangDetailList> hangdetail=alldao.getHangLineMapperImpl().SelectHangLineByPoleid(poleid);
+		return JSONArray.fromObject(hangdetail);
 	}
 }

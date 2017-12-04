@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xk.Dao.CheckTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.xk.orm.CheckType" >
+    <id column="CheckTypeId" property="checktypeid" jdbcType="INTEGER" />
+    <result column="Name" property="name" jdbcType="VARCHAR" />
+    <result column="Memo" property="memo" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="SelectFaultType" resultMap="BaseResultMap" >
+    select * from checktype
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from checktype
+    where CheckTypeId = #{checktypeid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xk.orm.CheckType" >
+    insert into checktype (CheckTypeId, Name, Memo
+      )
+    values (#{checktypeid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xk.orm.CheckType" >
+    insert into checktype
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="checktypeid != null" >
+        CheckTypeId,
+      </if>
+      <if test="name != null" >
+        Name,
+      </if>
+      <if test="memo != null" >
+        Memo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="checktypeid != null" >
+        #{checktypeid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xk.orm.CheckType" >
+    update checktype
+    <set >
+      <if test="name != null" >
+        Name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        Memo = #{memo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where CheckTypeId = #{checktypeid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xk.orm.CheckType" >
+    update checktype
+    set Name = #{name,jdbcType=VARCHAR},
+      Memo = #{memo,jdbcType=VARCHAR}
+    where CheckTypeId = #{checktypeid,jdbcType=INTEGER}
+  </update>
+</mapper>

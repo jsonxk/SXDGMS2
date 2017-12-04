@@ -11,6 +11,7 @@ public class PublicEntity {
 	private int pageSize;
 	private int offset;
 	private int status;
+	private int type;
 	private int total;
 	private int timestatus;
 	private String starttime;
@@ -96,6 +97,12 @@ public class PublicEntity {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public int getType() {
+		return type;
+	}
+	public void setType(int type) {
+		this.type = type;
 	}
 	
 }

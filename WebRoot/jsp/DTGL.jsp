@@ -39,7 +39,7 @@
 <link rel="stylesheet" type="text/css"
 	href="./treeview/css/bootstrap.min.css">
 <script
-	src="https://webapi.amap.com/maps?v=1.4.0&key=e8fe2f8a5385cb0c048947ec75738cb0&plugin=AMap.PolyEditor"></script>
+	src="https://webapi.amap.com/maps?v=1.4.0&key=e8fe2f8a5385cb0c048947ec75738cb0&plugin=AMap.PolyEditor,AMap.Autocomplete,AMap.PlaceSearch"></script>
 <script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
 <style type="text/css">
 #allmap {
@@ -153,6 +153,9 @@
 								<div style="width:100%;height:68%">
 									<div id="allmap">
 										<div class="handerButton">
+											<select>
+												<option>1</option><option>1</option>
+											</select>
 											<input type="button" class="button" value="添加线路"
 												onClick="editor.startEditLine()" /> <input type="button"
 												class="button" value="添加线杆" onClick="editor.closeEditLine()" />
@@ -164,6 +167,9 @@
 												class="button" value="关闭操作" onClick="editor.dingwei()" /> <input
 												type="button" class="button" value="点击定位"
 												onClick="editor.dingwei()" />
+												<input
+												type="text" class="button" id="tipinput"
+												/>
 										</div>
 									</div>
 									<div id="tip"></div>
@@ -199,7 +205,7 @@
 		}
 	</script>
 	<script src="./js/pageInit.js"></script>
-	<script type="text/javascript">
+<!-- <script type="text/javascript">
 		//创建地图
 		var map, geolocation;
 		map = new AMap.Map('allmap', {
@@ -207,6 +213,19 @@
 			zoom : 50,
 			center : [121.61122,29.91092 ],
 		});
+		 //输入提示
+    var autoOptions = {
+        input: "tipinput"
+    };
+    var auto = new AMap.Autocomplete(autoOptions);
+    var placeSearch = new AMap.PlaceSearch({
+        map: map
+    });  //构造地点查询类
+    AMap.event.addListener(auto, "select", select);//注册监听，当选中某条记录时会触发
+    function select(e) {
+        placeSearch.setCity(e.poi.adcode);
+        placeSearch.search(e.poi.name);  //关键字查询查询
+    }
 		/* map.plugin(["AMap.ToolBar"],function(){   //在地图中添加ToolBar插件      
         	toolBar = new AMap.ToolBar();  
         	map.addControl(toolBar);       
@@ -268,7 +287,45 @@
 		var clickEventListener = map.on('click', function(e) {
 			alert(e.lnglat.getLng() + ',' + e.lnglat.getLat());
 		}); 
-	</script>
+	</script> -->
+	<script type="text/javascript">
+/***************************************
+由于Chrome、IOS10等已不再支持非安全域的浏览器定位请求，为保证定位成功率和精度，请尽快升级您的站点到HTTPS。
+***************************************/
+    var map, geolocation;
+    //加载地图，调用浏览器定位服务
+    map = new AMap.Map('allmap', {
+        resizeEnable: true
+    });
+    map.plugin('AMap.Geolocation', function() {
+        geolocation = new AMap.Geolocation({
+            enableHighAccuracy: true,//是否使用高精度定位，默认:true
+            timeout: 10000,          //超过10秒后停止定位，默认：无穷大
+            buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+            zoomToAccuracy: true,      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+            buttonPosition:'RB'
+        });
+        map.addControl(geolocation);
+        geolocation.getCurrentPosition();
+        AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
+        AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
+    });
+    //解析定位结果
+    function onComplete(data) {
+        var str=['定位成功'];
+        str.push('经度：' + data.position.getLng());
+        str.push('纬度：' + data.position.getLat());
+        if(data.accuracy){
+             str.push('精度：' + data.accuracy + ' 米');
+        }//如为IP精确定位结果则没有精度信息
+        str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
+        document.getElementById('tip').innerHTML = str.join('<br>');
+    }
+    //解析定位错误信息
+    function onError(data) {
+        document.getElementById('tip').innerHTML = '定位失败';
+    }
+</script>
 </body>
 
 </html>

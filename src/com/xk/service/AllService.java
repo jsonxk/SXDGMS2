@@ -33,6 +33,10 @@ public class AllService {
 	private SqxxglBLL sqxxglBLL;
 	@Autowired
 	private LinePoleBLL linePoleBLL;
+	@Autowired
+	private DgxlglBLL dgxlglBLL;
+	@Autowired
+	private FaultBLL faultBLL;
  	public UserMapperBLL getuserMapperBLL(){
 		return userMapperBLL;
 	}
@@ -69,5 +73,11 @@ public class AllService {
 	}
 	public LinePoleBLL getLinePoleBLL(){
 		return linePoleBLL;
+	}
+	public DgxlglBLL getDgxlglBLL(){
+		return dgxlglBLL;
+	}
+	public FaultBLL getFaultBLL(){
+		return faultBLL;
 	}
 }

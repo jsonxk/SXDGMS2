@@ -6,6 +6,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import net.sf.json.JSONArray;
+
 import org.apache.cxf.jaxrs.model.UserOperation;
 import org.apache.log4j.Logger;
 import org.junit.Test;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.xk.ActivitiUtil.EnumData;
 import com.xk.DaoImpl.AllDao;
+import com.xk.orm.HangLine;
 import com.xk.orm.PublicEntity;
 import com.xk.orm.Role;
 import com.xk.orm.UserRole;
@@ -57,12 +60,19 @@ public class test2 extends SpringCaseTest{
 			System.out.println(role.getUserid());
 		}*/
 		PublicEntity en=new PublicEntity();
-		en.setStatus(0);
-		en.setOffset(0);
-		en.setPageSize(40);
+		//en.setStatus(0);
+		//en.setOffset(0);
+		//en.setPageSize(40);
 		en.setStarttime("2017-05-01");
 		en.setFinishtime("2017-12-01");
-		en.setUserid(1);
-		allService.getSqxxglBll().SelectApplyAndTask(en);
+		//en.setUserid(1);
+		//en.setUnitid(1);
+		//en.setStarttime("");
+		en.setStatus(0);
+		en.setType(0);
+		//List<HangLine> list=allDao.getHangLineMapperImpl().SelectAllHangLine(en);
+		//System.out.println(JSONArray.fromObject(allService.getFaultBLL().SelectAllFaultInfo(en)));
+		//System.out.println(allDao.getHangLineMapperImpl().SelectAllHangLineCount(en));
+		System.out.println(allService.getLinePoleBLL().SelectAllInfo(""));
 	}
 }

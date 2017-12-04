@@ -16,8 +16,17 @@ public class Unit {
     private Integer dicitemid;
 
     private String memo;
+    private String emailaddress;
+    
+    public String getEmailaddress() {
+		return emailaddress;
+	}
 
-    public Integer getUnitid() {
+	public void setEmailaddress(String emailaddress) {
+		this.emailaddress = emailaddress;
+	}
+
+	public Integer getUnitid() {
         return unitid;
     }
 

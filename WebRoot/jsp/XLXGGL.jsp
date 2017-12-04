@@ -40,7 +40,7 @@
 	href="./treeview/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="./css/tabletitle.css">
 <script
-	src="https://webapi.amap.com/maps?v=1.4.0&key=e8fe2f8a5385cb0c048947ec75738cb0&plugin=AMap.PolyEditor"></script>
+	src="https://webapi.amap.com/maps?v=1.4.0&key=e8fe2f8a5385cb0c048947ec75738cb0&plugin=AMap.PolyEditor,AMap.Autocomplete,AMap.PlaceSearch"></script>
 <script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
 <body>
 	<!-- WRAPPER -->
@@ -181,11 +181,11 @@
 		</div>
 		<div class="clearfix"></div>
 	</div>
-	<!-- modal添加申请弹出框 -->
+	<!-- modal添加线路弹出框 -->
 	<div class="modal fade " id="AddLineModal" tabindex="-1" role="dialog"
 		aria-labelledby="exampleModalLabel">
 		<div class="modal-dialog" role="document">
-			<div class="modal-content" style="width:125%">
+			<div class="modal-content" style="width:125%;margin-left:-10%">
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
@@ -201,13 +201,13 @@
 							<div class="form-group">
 								<div class="form-group LineNameInput">
 									<label for="LineNameInput" class="control-label">线路名称</label> <input
-										type="text" id="LineNameInput" name="LineNameInput"
+										type="text" id="LineNameInput" name="LineNameInput" placeholder="请输入线杆名称"
 										class="form-control" />
 								</div>
 								<div class="form-group LineLength">
 									<label for="LineLength" class="control-label">线路长度</label> <input
 										type="text" id="LineLength" name="LineLength"
-										placeholder="请输入联系人" class="form-control" value="-1" readonly/>
+										placeholder="请输入线路长度" class="form-control" readonly />
 								</div>
 								<div class="form-group LineNumber">
 									<label for="LineNumber" class="control-label">线杆数量</label> <input
@@ -217,8 +217,8 @@
 							</div>
 							<div class="form-group">
 								<div class="form-group LineUnit">
-									<label for="LineUnit" class="control-label">单位名称</label> </br> 
-									<select id="LineUnit" class="form-control">
+									<label for="LineUnit" class="control-label">单位名称</label> </br> <select
+										id="LineUnit" class="form-control">
 									</select>
 								</div>
 								<div class="form-group LineType">
@@ -237,23 +237,23 @@
 									<label for="LineFirstPolelon" class="control-label">线路首杆</label>
 									<input type="text" id="LineFirstPolelon"
 										name="LineFirstPolelon" placeholder="首杆经度"
-										class="form-control" readonly/>
+										class="form-control" readonly />
 								</div>
 								<div class="form-group LineFirstPolelat">
 									<label for="LineFirstPolelat" class="control-label">&nbsp;</label>
 									<input type="text" id="LineFirstPolelat"
 										name="LineFirstPolelat" placeholder="首杆纬度"
-										class="form-control" readonly/>
+										class="form-control" readonly />
 								</div>
 								<div class="form-group LineLastPolelon">
 									<label for="LineLastPolelonlon" class="control-label">线路尾杆</label>
 									<input type="text" id="LineLastPolelon" name="LineLastPolelon"
-										placeholder="尾杆经度" class="form-control" readonly/>
+										placeholder="尾杆经度" class="form-control" readonly />
 								</div>
 								<div class="form-group LineLastPolelat">
 									<label for="LineLastPolelat" class="control-label">&nbsp;</label>
 									<input type="text" id="LineLastPolelat" name="LineLastPolelat"
-										placeholder="尾杆经度" class="form-control" readonly/>
+										placeholder="尾杆经度" class="form-control" readonly />
 								</div>
 							</div>
 							<div class="form-group">
@@ -261,6 +261,11 @@
 									<label for="LineTime" class="control-label">添加时间</label> <input
 										type="text" id="LineTime" name="LineTime" class="form-control"
 										readonly />
+								</div>
+								<div class="form-group LineCode">
+									<label for="LineCode" class="control-label">编码</label>
+									<input type="text" id="LineCode"
+										name="LineCode" class="form-control"  placeholder="请输入编码"/>
 								</div>
 								<div class="form-group LinePlace">
 									<label for="LinePlace" class="control-label">添加地点</label> <input
@@ -270,17 +275,11 @@
 								<div class="form-group LineBtnLocation">
 									<label for="LineBtnLocation" class="control-label">&nbsp;</label>
 									<input type="button" id="LineBtnLocation"
-										name="LineBtnLocation" class="form-control" value="定位" />
-								</div>
-								<div class="form-group LineBtn">
-									<label for="SelectPole" class="control-label">&nbsp;</label> <input
-										type="button" id="SelectPole" name="SelectPole"
-										class="form-control" value="选择线路起止线杆" />
+										name="LineBtnLocation" class="form-control" value="地点定位" />
 								</div>
 							</div>
 							<div class="form-group LineMap" id="LineMap">
-								<div id="mapbtn">
-								</div>
+								<div id="mapbtn"></div>
 							</div>
 							<div id="form-group">
 								<div class="form-group LineMemo">
@@ -301,25 +300,92 @@
 			</div>
 		</div>
 	</div>
-	<!-- END WRAPPER -->
-	<script src="./assets/vendor/jquery/jquery.min.js"></script>
-	<script src="./assets/vendor/bootstrap/js/bootstrap.min.js"></script>
-	<script
-		src="./assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-	<script src="./assets/scripts/klorofil-common.js"></script>
-	<script src="./assets/vendor/bootstrap/js/bootstrap.js"></script>
-	<script src="./js/table/bootstrap-table.js"></script>
-	<script src="./js/table/bootstrap-table-export.js"></script>
-	<script src="./js/table/jquery.base64.js"></script>
-	<script src="./js/table/tableExport.js"></script>
-	<script type="text/javascript">
-		function initIndex() {
-			$(".tzglchild .1tzgl0   a").addClass("active");
-		}
-	</script>
-	<script src="./js/pageInit.js"></script>
-	<script src="./js/table/XLXGGL.js"></script>
-	<script src="./js/table/Linemap.js"></script>
+	<!-- modal添加线杆弹出框 -->
+	<div class="modal fade " id="AddPoleModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="width:125%;margin-left:-10%">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="exampleModalLabel">添加线杆信息</h4>
+				</div>
+				<div class="modal-body">
+					<div>
+						<div id="firstLayer">
+							<label for="PoleNameInput" class="control-label">线杆名称</label> <input
+							type="text" id="PoleNameInput" name="PoleNameInput" placeholder="请输入线杆名称"/>
+
+							<label for="PoleLength" class="control-label">线杆高度</label> <input
+							type="text" id="PoleLength" name="PoleLength"
+							value="17" readonly /> 
+							<label for="PoleStatus" class="control-label">线杆状态</label> 
+							<select id="PoleStatus"></select>
+							<label for="PoleTime" class="control-label">创建时间</label> <input
+							type="text" id="PoleTime" name="PoleTime"  readonly /> 
+						</div>
+						<div id="secondLayer">
+							<label for="PoleUnit" class="control-label">单位名称</label>
+							  <select id="PoleUnit">
+									</select>
+							<label for="PoleType" class="control-label">线杆类型</label>
+							 <select id="PoleType">
+									</select>
+							<label for="PoleLon" class="control-label">经度</label>
+							<input
+							type="text" id="PoleLon" name="PoleLon" />
+							<label for="PoleLat" class="control-label">纬度</label>
+							<input
+							type="text" id="PoleLat" name="PoleLat" />
+							<input type="button" id="addPoleBtn" value="添加线路">
+						</div>
+						<div id="thirdLayer">
+							<div class="thirdLayer0">
+								<label for="PolePre" class="control-label">前一杆</label>
+								<select class="PolePre">
+								
+								</select>
+								<label for="PoleForLine" class="control-label">所属线路</label>
+							    <select class="PoleForLine">
+									</select>
+								<label for="PoleCode" class="control-label">编码</label><input
+								   type="text" class="PoleCode" name="PoleCode" />
+							</div>
+						</div>
+						<div id="mapdiv">
+						
+						</div>
+						<div class="poleModalBtn">
+							<button type="button" class="btn btn-primary cancelPole" data-dismiss="modal">取消</button>
+							<button type="button" class="btn btn-primary OkPole">完成</button>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		</div>
+		<!-- END WRAPPER -->
+		<script src="./assets/vendor/jquery/jquery.min.js"></script>
+		<script src="./assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+		<script
+			src="./assets/vendor/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+		<script src="./assets/scripts/klorofil-common.js"></script>
+		<script src="./assets/vendor/bootstrap/js/bootstrap.js"></script>
+		<script src="./js/table/bootstrap-table.js"></script>
+		<script src="./js/table/bootstrap-table-export.js"></script>
+		<script src="./js/table/jquery.base64.js"></script>
+		<script src="./js/table/tableExport.js"></script>
+		<script type="text/javascript">
+			function initIndex() {
+				$(".tzglchild .1tzgl0   a").addClass("active");
+			}
+		</script>
+		<script src="./js/pageInit.js"></script>
+		<script src="./js/table/XLXGGL.js"></script>
+		<script src="./js/table/Linemap.js"></script>
 </body>
 
 </html>

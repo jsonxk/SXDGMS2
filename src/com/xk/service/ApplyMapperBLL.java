@@ -26,6 +26,8 @@ import com.xk.orm.ApplyDoc;
 import com.xk.orm.ApplyDocTime;
 import com.xk.orm.ApplyMore;
 import com.xk.orm.Doctype;
+import com.xk.orm.HangDetail;
+import com.xk.orm.HangDetailList;
 import com.xk.orm.PublicEntity;
 import com.xk.orm.dicitem;
 import com.xk.orm.dictype;

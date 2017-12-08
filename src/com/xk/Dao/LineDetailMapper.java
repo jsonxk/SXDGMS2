@@ -38,4 +38,10 @@ public interface LineDetailMapper {
 	 * @return
 	 */
 	List<LineDetailList> SelectAllLineIdByPoleid(@Param("poleid")int poleid);
+	/**
+	 * 根据poleid直接查找所有信息
+	 * @param poleid
+	 * @return
+	 */
+	List<LineDetail> selectAllHangDetail(@Param("poleid") int poleid);
 }

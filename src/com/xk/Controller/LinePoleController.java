@@ -129,5 +129,31 @@ public class LinePoleController {
 	public @ResponseBody JSONArray SelectAllInfo(@RequestParam("name")String name){
 		return allservice.getLinePoleBLL().SelectAllInfo(name);
 	}
-	
+	/**
+	 * 查找电力线路信息
+	 * @param lineid
+	 * @return
+	 */
+	@RequestMapping(value="/selectLineInfoByLineId",method=RequestMethod.POST)
+	public @ResponseBody JSONArray SelectLineInfoByLineId(@RequestParam("lineid")int lineid){
+		return allservice.getLinePoleBLL().SelectLineInfoByLineId(lineid);
+	}
+	/**
+	 * 根据名称模糊查找搭挂线杆信息
+	 * @param polename
+	 * @return
+	 */
+	@RequestMapping(value="/selectHangPoleByName",method=RequestMethod.POST)
+	public @ResponseBody JSONArray SelectHangPoleByName(@RequestParam("polename") String polename){
+		return allservice.getLinePoleBLL().SelectHangPoleByName(polename);
+	}
+	/**
+	 * 根据名称精确查找搭挂线杆信息
+	 * @param polename
+	 * @return
+	 */
+	@RequestMapping(value="/selectHangPoleByAllName",method=RequestMethod.POST)
+	public @ResponseBody JSONArray SelectHangPoleByAllName(@RequestParam("polename") String polename){
+		return allservice.getLinePoleBLL().SelectHangPoleByAllName(polename);
+	}
 }

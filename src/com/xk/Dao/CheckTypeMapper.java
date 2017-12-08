@@ -12,4 +12,9 @@ public interface CheckTypeMapper {
 	 * @return
 	 */
 	List<CheckType> SelectFaultType();
+	/**
+	 * 查询线路检查类型
+	 * @return
+	 */
+	List<CheckType> SelectLineChkType();
 }

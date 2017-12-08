@@ -44,4 +44,10 @@ public interface PoleMapper {
 	 * @return
 	 */
 	List<Pole> SelectPoleInfoByName(@Param("name")String name);
+	/**
+	 * 搜索线杆信息精确
+	 * @param name
+	 * @return
+	 */
+	List<Pole> SelectPoleInfoByAllName(@Param("name")String name);
 }

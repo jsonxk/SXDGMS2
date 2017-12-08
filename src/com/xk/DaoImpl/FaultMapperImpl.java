@@ -9,11 +9,13 @@ import com.xk.Dao.CheckDetailMapper;
 import com.xk.Dao.CheckTypeMapper;
 import com.xk.Dao.HangLineMapper;
 import com.xk.Dao.HistoryEmailMapper;
+import com.xk.Dao.LineCheckMapper;
 import com.xk.Dao.PhotoMapper;
 import com.xk.orm.CheckDetail;
 import com.xk.orm.CheckType;
 import com.xk.orm.HangLine;
 import com.xk.orm.HistoryEmail;
+import com.xk.orm.LineCheck;
 import com.xk.orm.Photo;
 import com.xk.orm.PublicEntity;
 
@@ -24,7 +26,7 @@ import com.xk.orm.PublicEntity;
  * 缺陷数据层
  */
 @Repository
-public class FaultMapperImpl implements CheckTypeMapper,CheckDetailMapper,PhotoMapper,HistoryEmailMapper{
+public class FaultMapperImpl implements CheckTypeMapper,CheckDetailMapper,PhotoMapper,HistoryEmailMapper,LineCheckMapper{
 	@Autowired
 	private CheckTypeMapper checkTypeMapper;
 	@Autowired
@@ -33,6 +35,8 @@ public class FaultMapperImpl implements CheckTypeMapper,CheckDetailMapper,PhotoM
 	private PhotoMapper photoMapper;
 	@Autowired
 	private HistoryEmailMapper historyEmailMapper;
+	@Autowired
+	private LineCheckMapper lineCheckMapper;
 	/**
 	 * 查询缺陷类型
 	 * @return
@@ -62,5 +66,21 @@ public class FaultMapperImpl implements CheckTypeMapper,CheckDetailMapper,PhotoM
 	 */
 	public int SubmitRepairInfo(HistoryEmail historyEmail) {
 		return historyEmailMapper.SubmitRepairInfo(historyEmail);
+	}
+	/**
+	 * 新建线路检查信息
+	 * @param linechk
+	 * @return
+	 */
+	public int InsertNewLineChk(LineCheck linechk) {
+		lineCheckMapper.InsertNewLineChk(linechk);
+		return linechk.getLinecheckid();
+	}
+	/**
+	 * 查询搭挂线路线杆检查类型
+	 * @return
+	 */
+	public List<CheckType> SelectLineChkType() {
+		return checkTypeMapper.SelectLineChkType();
 	}
 }

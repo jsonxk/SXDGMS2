@@ -114,4 +114,41 @@ public class HangLineController {
 	public @ResponseBody JSONArray SelectHangLineByPoleid(@RequestParam("poleid") int poleid){
 		return allService.gethangLineBLL().SelectHangLineByPoleid(poleid);
 	}
+	/**
+	 * 根据hanglineid查找搭挂线路信息
+	 * @param hanglineid
+	 * @return
+	 */
+	@RequestMapping(value="/selectHangLineByHangLineid",method=RequestMethod.POST)
+	public @ResponseBody JSONArray SelectHangLineByHangLineId(@RequestParam("hanglineid") int hanglineid){
+		System.out.println(hanglineid+"Effe而访问");
+		return allService.gethangLineBLL().SelectHangLineByHangLineId(hanglineid);
+	}
+	/**
+	 * 根据名称查找搭挂线路
+	 * @param hangname
+	 * @return
+	 */
+	@RequestMapping(value="/selectHangLineByName",method=RequestMethod.POST)
+	public @ResponseBody JSONArray SelectHangLineByName(@RequestParam("hangname") String hangname){
+		return allService.gethangLineBLL().SelectHangLineByName(hangname);
+	}
+	/**
+	 * 根据名称查找搭挂线路精确查找
+	 * @param hangname
+	 * @return
+	 */
+	@RequestMapping(value="/selectHangLineByAllName",method=RequestMethod.POST)
+	public @ResponseBody JSONArray SelectHangLineByALLName(@RequestParam("hangname") String hangname){
+		return allService.gethangLineBLL().SelectHangLineByAllName(hangname);
+	}
+	/**
+	 * 根据hanglineid查找搭挂线杆信息
+	 * @param hanglineid
+	 * @return
+	 */
+	@RequestMapping(value="/selectHangPoleByHangLineid",method=RequestMethod.POST)
+	public @ResponseBody JSONArray SelectHangPoleByHangLineid(@RequestParam("hanglineid") int hanglineid){
+		return allService.gethangLineBLL().SelectHangPoleByHangLineid(hanglineid);
+	}
 }

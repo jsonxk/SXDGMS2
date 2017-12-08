@@ -26,6 +26,9 @@
 		on d1.LineId=powerline.LineId WHERE d1.PoleId=#{poleid} ORDER BY d1.LineId
 		DESC
 	</select>
+	<select id="selectAllHangDetail" resultType="com.xk.orm.LineDetail" parameterType="java.lang.Integer">
+		select * from linedetail where linedetail.PoleId=#{poleid}
+	</select>
 	<insert id="InsertLinePoleDetail" parameterType="com.xk.orm.Pole">
 		insert into
 		linedetail (LineId, PoleId, Code, Name,

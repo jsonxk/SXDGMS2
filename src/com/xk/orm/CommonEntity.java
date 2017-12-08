@@ -103,14 +103,31 @@ public class CommonEntity {
 	private Integer processid;
 	private Integer taskid;
 	private Integer faultid;
-	private List<Pole> poleList;
-	
-	public List<Pole> getPoleList() {
-		return poleList;
+	private String linename;
+	private List<LineDetail> linedetailList;
+	private List<HangDetail > hangList;
+	public List<LineDetail> getLinedetailList() {
+		return linedetailList;
 	}
 
-	public void setPoleList(List<Pole> poleList) {
-		this.poleList = poleList;
+	public void setLinedetailList(List<LineDetail> linedetailList) {
+		this.linedetailList = linedetailList;
+	}
+	
+	public List<HangDetail> getHangList() {
+		return hangList;
+	}
+
+	public void setHangList(List<HangDetail> hangList) {
+		this.hangList = hangList;
+	}
+
+	public String getLinename() {
+		return linename;
+	}
+
+	public void setLinename(String linename) {
+		this.linename = linename;
 	}
 
 	public Integer getPoleid() {

@@ -2,7 +2,7 @@ package com.xk.orm;
 
 import java.util.Date;
 
-public class Fault {
+public class Faultdsd {
     private Integer faultid;
 
     private Integer unitid;

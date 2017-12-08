@@ -18,8 +18,17 @@ public class HangDetail {
     private Integer status;
 
     private String memo;
+    private String polename;
+    
+    public String getPolename() {
+		return polename;
+	}
 
-    public Integer getHanddetailid() {
+	public void setPolename(String polename) {
+		this.polename = polename;
+	}
+
+	public Integer getHanddetailid() {
         return handdetailid;
     }
 

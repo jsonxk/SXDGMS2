@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.xk.orm.HistoryEmail;
+import com.xk.orm.LineCheck;
 import com.xk.orm.PublicEntity;
 import com.xk.service.AllService;
 
@@ -55,7 +56,7 @@ public class FaultController {
 		return allservice.getFaultBLL().SelectAllFaultInfo(publicEntity);
 	}
 	/**
-	 * 根据polei查找单位，搭挂线路信息
+	 * 根据poleid查找单位，搭挂线路信息
 	 * @param poleid
 	 * @return
 	 */
@@ -157,5 +158,78 @@ public class FaultController {
 		} finally {
 			//IOUtils.closeQuietly(writer);
 		}
+	}
+	/**
+	 * 新建线路检查
+	 * @param linechk
+	 * @return jsonarray{"linechkid":value}
+	 */
+	@RequestMapping(value="/insertNewLineChk",method=RequestMethod.POST)
+	public @ResponseBody JSONArray InsertNewLineChk(@RequestBody LineCheck linechk){
+		return allservice.getFaultBLL().InsertNewLineChk(linechk);
+	}
+	/**
+	 * 查找搭挂线路线杆查找类型
+	 * @return{checktype}
+	 */
+	@RequestMapping(value="/selectLineChkType",method=RequestMethod.POST)
+	public @ResponseBody JSONArray selectLineChkType(){
+		return allservice.getFaultBLL().SelectLineChkType();
+	}
+	@RequestMapping(value="/photoUpLoad",method=RequestMethod.POST)
+	public @ResponseBody JSONArray PhotoUpLoad(HttpServletRequest request,HttpServletResponse response) throws IllegalStateException, IOException{
+		String DBPath = "";
+		// 创建一个通用的多部分解析器
+		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
+				request.getSession().getServletContext());
+		// 判断 request 是否有文件上传,即多部分请求
+		if (multipartResolver.isMultipart(request)) {
+			// 转换成多部分request
+			MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+			// 取得request中的所有文件名
+			Iterator<String> iter = multiRequest.getFileNames();
+			while (iter.hasNext()) {
+				// 取得上传文件
+				MultipartFile file = multiRequest.getFile(iter.next());
+				if (file != null) {
+					// 取得当前上传文件的文件名称
+					String myFileName = file.getOriginalFilename();
+					// 如果名称不为"",说明该文件存在，否则说明该文件不存在
+					if (myFileName.trim() != "") {
+						System.out.println(myFileName);
+						// 重命名上传后的文件名
+						String fileName = file.getOriginalFilename();
+						// 定义上传路径
+						String path = System.getProperty("evan.webapp")
+								+ File.separator + "PhotoImg";
+						File filepackage = new File(path);
+						if (!filepackage.exists()) {
+							filepackage.mkdirs();
+						}
+						// String path =
+						// "E:"+File.separator+"test"+File.separator+ fileName;
+						// String path=request.getServletPath();
+						File localFile = new File(path + File.separator
+								+ fileName);
+						file.transferTo(localFile);
+						//DBPath = "http://localhost:8080/SXDGMS2/EmailFile/"+ fileName;
+						/**
+						 * 文件地址
+						 */
+						String localpath=request.getSession().getServletContext().getRealPath("")+"\\PhotoImg"+"\\"+fileName;
+						//String newpath=localpath.replaceAll("\\","\\\\");
+						System.out.println(localpath);
+					}
+				}
+			}
+
+		}
+		try {
+			responseMessage(response);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

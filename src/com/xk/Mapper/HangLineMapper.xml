@@ -10,6 +10,24 @@
 		<result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
 		<result column="Status" property="status" jdbcType="SMALLINT" />
 		<result column="Memo" property="memo" jdbcType="VARCHAR" />
+		<result column="unitname" property="unitname" jdbcType="VARCHAR" />
+		<result column="statusname" property="statusname" jdbcType="VARCHAR" />
+		<result column="typename" property="typename" jdbcType="VARCHAR" />
+		<collection property="hangList" ofType="com.xk.orm.HangDetail"
+			column="HangLineId" javaType="list">
+			<id column="childhangdetailid" property="handdetailid" jdbcType="INTEGER" />
+			<result column="childhanglineid" property="hanglineid"
+				jdbcType="INTEGER" />
+			<result column="childcode" property="code" jdbcType="VARCHAR" />
+			<result column="childpoleid" property="poleid" jdbcType="INTEGER" />
+			<result column="childprevpoleid" property="prevpoleid"
+				jdbcType="INTEGER" />
+			<result column="childnextpoleid" property="nextpoleid"
+				jdbcType="INTEGER" />
+			<result column="childgetmethod" property="getmethod" jdbcType="INTEGER" />
+			<result column="childstatus" property="status" jdbcType="INTEGER" />
+			<result column="childmemo" property="memo" jdbcType="VARCHAR" />
+		</collection>
 	</resultMap>
 	<!-- 查找搭挂线路具体信息 -->
 	<select id="SelectAllHangLine" resultType="com.xk.orm.HangLine"
@@ -38,14 +56,47 @@
 		</if>
 	</select>
 	<!-- 根据poleid查找搭挂线路信息 -->
-	<select id="FaultPoleOfLine" parameterType="java.lang.Integer" resultType="com.xk.orm.HangLine"> 
+	<select id="FaultPoleOfLine" parameterType="java.lang.Integer"
+		resultType="com.xk.orm.HangLine">
 		SELECT
-		hangline.*,unit.UnitName as unitname,hangdetail.PoleId from hangline
-		LEFT JOIN unit on hangline.UnitId=unit.UnitId LEFT JOIN hangdetail ON
-		hangdetail.HangLineId=hangline.HangLineId WHERE hangdetail.PoleId=#{poleid}
+		hangline.*,unit.UnitName as
+		unitname,hangdetail.PoleId from hangline
+		LEFT JOIN unit on
+		hangline.UnitId=unit.UnitId LEFT JOIN hangdetail ON
+		hangdetail.HangLineId=hangline.HangLineId WHERE
+		hangdetail.PoleId=#{poleid}
 	</select>
-	<select id="SelectHangInfoByName" parameterType="java.lang.String" resultType="com.xk.orm.HangLine">
-		select * from hangline where hangline.hangname like "%"#{name}"%"
+	<select id="SelectHangInfoByName" parameterType="java.lang.String"
+		resultType="com.xk.orm.HangLine">
+		select * from hangline where hangline.hangname like
+		"%"#{name}"%"
+	</select>
+	<select id="SelectHangLineByHangLineId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select d1.Item as statusname,d2.Item as
+		typename,Unit.UnitName as unitname,
+		hangline.*,h2.HandDetailId as
+		childhangdetailid,h2.HangLineId as
+		childhanglineid,h2.`Code` as
+		childcode,h2.PoleId as
+		childpoleid,h2.PrevPoleId as
+		childprevpoleid,h2.NextPoleId as
+		childnextpoleid,h2.GetMethod as
+		childgetmethod,h2.`Status` as
+		childstatus,h2.Memo as childmemo from
+		hangline LEFT JOIN hangdetail h2 on hangline.HangLineId=h2.HangLineId
+		LEFT JOIN dicitem d1 on d1.DicItemId=hangline.`Status` LEFT JOIN
+		dicitem d2 ON hangline.Type=d2.DicItemId
+		LEFT JOIN unit on hangline.UnitId=unit.UnitId
+		where hangline.HangLineId=#{hanglineid}
+	</select>
+	<!-- 根据name查找搭挂线路信息 -->
+	<select id="SelectHangLineByName" resultType="com.xk.orm.HangLine">
+		select hangline.* from hangline where hangline.HangName like "%"#{hangname}"%"
+	</select>
+	<!-- 根据name查找搭挂线路信息精确查找 -->
+	<select id="SelectHangLineByAllName" resultType="com.xk.orm.HangLine">
+		select hangline.* from hangline where hangline.HangName=#{hangname}
 	</select>
 	<insert id="insertHangLine" parameterType="com.xk.orm.HangLine">
 		insert into hangline

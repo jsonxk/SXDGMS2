@@ -27,4 +27,10 @@ public interface HangDetailMapper {
 	 * @return
 	 */
 	List<HangDetailList> SelectHangLineByPoleid(@Param("poleid")int poleid);
+	/**
+	 * 根据hanglineid查找线杆信息
+	 * @param hanglineid
+	 * @return
+	 */
+	List<HangDetail> SelectHangPoleByHangLineid(int hanglineid);
 }

@@ -235,4 +235,31 @@ public class LinePoleBLL {
 		jadata.add(jodata);
 		return jadata;
 	}
+	/**
+	 * 根据lineid查找电力线路信息
+	 * @param lineid
+	 * @return
+	 */
+	public JSONArray SelectLineInfoByLineId(int lineid) {
+		List<PowerLine> lineInfo=allDao.getLinePoleMapperImpl().SelectLineInfoByLineId(lineid);
+		return JSONArray.fromObject(lineInfo);
+	}
+	/**
+	 * 查找搭挂线杆信息
+	 * @param polename
+	 * @return
+	 */
+	public JSONArray SelectHangPoleByName(String polename) {
+		List<Pole> poleinfo=allDao.getLinePoleMapperImpl().SelectPoleInfoByName(polename);
+		return JSONArray.fromObject(poleinfo);
+	}
+	/**
+	 * 查找搭挂线杆信息精确
+	 * @param polename
+	 * @return
+	 */
+	public JSONArray SelectHangPoleByAllName(String polename) {
+		List<Pole> poleinfo=allDao.getLinePoleMapperImpl().SelectPoleInfoByAllName(polename);
+		return JSONArray.fromObject(poleinfo);
+	}
 }

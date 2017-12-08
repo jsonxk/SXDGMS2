@@ -105,5 +105,36 @@ public class HangLineMapperImpl implements HangLineMapper,HangDetailMapper{
 	public List<HangLine> SelectHangInfoByName(String name) {
 		return hangLineMapper.SelectHangInfoByName(name);
 	}
-
+	/**
+	 * 根据hanglineid查找搭挂信息
+	 * @param hanglineid
+	 * @return
+	 */
+	public List<HangLine> SelectHangLineByHangLineId(int hanglineid) {
+		return hangLineMapper.SelectHangLineByHangLineId(hanglineid);
+	}
+	/**
+	 * 根据那name查找搭挂线路信息
+	 * @param hangname
+	 * @return
+	 */
+	public List<HangLine> SelectHangLineByName(String hangname) {
+		return hangLineMapper.SelectHangLineByName(hangname);
+	}
+	/**
+	 * 根据那name查找搭挂线路信息精确查找
+	 * @param hangname
+	 * @return
+	 */
+	public List<HangLine> SelectHangLineByAllName(String hangname) {
+		return hangLineMapper.SelectHangLineByAllName(hangname);
+	}
+	/**
+	 * 根据hanglineid查找线杆信息
+	 * @param hanglineid
+	 * @return
+	 */
+	public List<HangDetail> SelectHangPoleByHangLineid(int hanglineid) {
+		return hangDetail.SelectHangPoleByHangLineid(hanglineid);
+	}
 }

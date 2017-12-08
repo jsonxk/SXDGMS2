@@ -73,6 +73,6 @@ public class test2 extends SpringCaseTest{
 		//List<HangLine> list=allDao.getHangLineMapperImpl().SelectAllHangLine(en);
 		//System.out.println(JSONArray.fromObject(allService.getFaultBLL().SelectAllFaultInfo(en)));
 		//System.out.println(allDao.getHangLineMapperImpl().SelectAllHangLineCount(en));
-		System.out.println(allService.getLinePoleBLL().SelectAllInfo(""));
+		System.out.println(allService.getFaultBLL().SelectLineChkType());
 	}
 }

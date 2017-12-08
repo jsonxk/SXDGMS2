@@ -139,11 +139,36 @@ public class LinePoleMapperImpl implements PowerLineMapper,PoleMapper{
 		return poleMapper.SelectPoleInfoByName(name);
 	}
 	/**
+	 * 搜索线杆信息精确
+	 * @param name
+	 * @return
+	 */
+	public List<Pole> SelectPoleInfoByAllName(String name) {
+		return poleMapper.SelectPoleInfoByAllName(name);
+	}
+	/**
 	 * 搜索电力线路信息
 	 * @param name
 	 * @return
 	 */
 	public List<PowerLine> SelectLineInfoByName(String name) {
 		return powerLineMapper.SelectLineInfoByName(name);
+	}
+	/**
+	 * 根据lineid查找电力线路信息
+	 * @param lineid
+	 * @return
+	 */
+	public List<PowerLine> SelectLineInfoByLineId(int lineid) {
+		return powerLineMapper.SelectLineInfoByLineId(lineid);
+	}
+	/**
+	 * 根据poleid直接查找所有信息
+	 * @param poleid
+	 * @return
+	 */
+	public List<LineDetail> selectAllHangDetail(int poleid)
+	{
+		return lineDetailMapper.selectAllHangDetail(poleid);
 	}
 }

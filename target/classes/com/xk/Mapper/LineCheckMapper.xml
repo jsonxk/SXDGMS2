@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xk.Dao.LineCheckMapper" >
+  <resultMap id="BaseResultMap" type="com.xk.orm.LineCheck" >
+    <id column="LineCheckId" property="linecheckid" jdbcType="INTEGER" />
+    <result column="UserId" property="userid" jdbcType="INTEGER" />
+    <result column="ApplyId" property="applyid" jdbcType="INTEGER" />
+    <result column="HangLineId" property="hanglineid" jdbcType="INTEGER" />
+    <result column="CheckTypeId" property="checktypeid" jdbcType="INTEGER" />
+    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+    <result column="CheckDate" property="checkdate" jdbcType="TIMESTAMP" />
+    <result column="CompareTime" property="comparetime" jdbcType="TIMESTAMP" />
+    <result column="Status" property="status" jdbcType="INTEGER" />
+    <result column="Memo" property="memo" jdbcType="VARCHAR" />
+  </resultMap>
+  <insert id="InsertNewLineChk" parameterType="com.xk.orm.LineCheck" useGeneratedKeys="true" keyProperty="linecheckid">
+    insert into linecheck (UserId, ApplyId, 
+      HangLineId, CheckTypeId, CreateTime, 
+      CheckDate, CompareTime, Status, 
+      Memo)
+    values (#{userid,jdbcType=INTEGER}, #{applyid,jdbcType=INTEGER}, 
+      #{hanglineid,jdbcType=INTEGER}, #{checktypeid,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{checkdate,jdbcType=TIMESTAMP}, #{comparetime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}, 
+      #{memo,jdbcType=VARCHAR})
+  </insert>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from linecheck
+    where LineCheckId = #{linecheckid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xk.orm.LineCheck" >
+    insert into linecheck (LineCheckId, UserId, ApplyId, 
+      HangLineId, CheckTypeId, CreateTime, 
+      CheckDate, CompareTime, Status, 
+      Memo)
+    values (#{linecheckid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, #{applyid,jdbcType=INTEGER}, 
+      #{hanglineid,jdbcType=INTEGER}, #{checktypeid,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{checkdate,jdbcType=TIMESTAMP}, #{comparetime,jdbcType=TIMESTAMP}, #{status,jdbcType=SMALLINT}, 
+      #{memo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xk.orm.LineCheck" >
+    insert into linecheck
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="linecheckid != null" >
+        LineCheckId,
+      </if>
+      <if test="userid != null" >
+        UserId,
+      </if>
+      <if test="applyid != null" >
+        ApplyId,
+      </if>
+      <if test="hanglineid != null" >
+        HangLineId,
+      </if>
+      <if test="checktypeid != null" >
+        CheckTypeId,
+      </if>
+      <if test="createtime != null" >
+        CreateTime,
+      </if>
+      <if test="checkdate != null" >
+        CheckDate,
+      </if>
+      <if test="comparetime != null" >
+        CompareTime,
+      </if>
+      <if test="status != null" >
+        Status,
+      </if>
+      <if test="memo != null" >
+        Memo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="linecheckid != null" >
+        #{linecheckid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="applyid != null" >
+        #{applyid,jdbcType=INTEGER},
+      </if>
+      <if test="hanglineid != null" >
+        #{hanglineid,jdbcType=INTEGER},
+      </if>
+      <if test="checktypeid != null" >
+        #{checktypeid,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkdate != null" >
+        #{checkdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="comparetime != null" >
+        #{comparetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xk.orm.LineCheck" >
+    update linecheck
+    <set >
+      <if test="userid != null" >
+        UserId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="applyid != null" >
+        ApplyId = #{applyid,jdbcType=INTEGER},
+      </if>
+      <if test="hanglineid != null" >
+        HangLineId = #{hanglineid,jdbcType=INTEGER},
+      </if>
+      <if test="checktypeid != null" >
+        CheckTypeId = #{checktypeid,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkdate != null" >
+        CheckDate = #{checkdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="comparetime != null" >
+        CompareTime = #{comparetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="memo != null" >
+        Memo = #{memo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where LineCheckId = #{linecheckid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xk.orm.LineCheck" >
+    update linecheck
+    set UserId = #{userid,jdbcType=INTEGER},
+      ApplyId = #{applyid,jdbcType=INTEGER},
+      HangLineId = #{hanglineid,jdbcType=INTEGER},
+      CheckTypeId = #{checktypeid,jdbcType=INTEGER},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      CheckDate = #{checkdate,jdbcType=TIMESTAMP},
+      CompareTime = #{comparetime,jdbcType=TIMESTAMP},
+      Status = #{status,jdbcType=SMALLINT},
+      Memo = #{memo,jdbcType=VARCHAR}
+    where LineCheckId = #{linecheckid,jdbcType=INTEGER}
+  </update>
+</mapper>

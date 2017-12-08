@@ -45,4 +45,22 @@ public interface HangLineMapper {
 	 * @return
 	 */
 	List<HangLine> SelectHangInfoByName(@Param("name")String name);
+	/**
+	 * 根据hanglineid查找搭挂信息
+	 * @param hanglineid
+	 * @return
+	 */
+	List<HangLine> SelectHangLineByHangLineId(@Param("hanglineid")int hanglineid);
+	/**
+	 * 根据name查找搭挂信息
+	 * @param hangname
+	 * @return
+	 */
+	List<HangLine> SelectHangLineByName(@Param("hangname")String hangname);
+	/**
+	 * 根据name查找搭挂信息精确查找
+	 * @param hangname
+	 * @return
+	 */
+	List<HangLine> SelectHangLineByAllName(@Param("hangname")String hangname);
 }

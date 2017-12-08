@@ -44,4 +44,10 @@ public interface PowerLineMapper {
 	 * @return
 	 */
 	List<PowerLine> SelectLineInfoByName(@Param("name")String name);
+	/**
+	 * 根据lineid查找电力线路信息
+	 * @param lineid
+	 * @return
+	 */
+	List<PowerLine> SelectLineInfoByLineId(@Param("lineid")int lineid);
 }

@@ -20,12 +20,39 @@
 			<result column="childmemo" property="memo" jdbcType="VARCHAR" />
 		</collection>
 	</resultMap>
+	<!-- 根据hanglineid查找线杆信息 -->
+	<resultMap id="SelectHangPoleByHangLineidMap" type="com.xk.orm.HangDetailList">
+		<id column="HandDetailId" property="handdetailid" jdbcType="INTEGER" />
+		<result column="HangLineId" property="hanglineid"
+			jdbcType="INTEGER" />
+		<result column="Code" property="code" jdbcType="VARCHAR" />
+		<result column="PoleId" property="poleid" jdbcType="INTEGER" />
+		<result column="PrevPoleId" property="prevpoleid"
+			jdbcType="INTEGER" />
+		<result column="NextPoleId" property="nextpoleid"
+			jdbcType="INTEGER" />
+		<result column="GetMethod" property="getmethod" jdbcType="INTEGER" />
+		<result column="Status" property="status" jdbcType="INTEGER" />
+		<result column="Memo" property="memo" jdbcType="VARCHAR" />
+		<collection property="hangList" ofType="com.xk.orm.HangDetail"
+			column="HangLineId" javaType="list">
+			<result column="newpoleid" property="poleid" jdbcType="INTEGER" />
+			<result column="newpolename" property="polename" jdbcType="INTEGER" />
+		</collection>
+	</resultMap>
+	<!-- 已废弃 -->
 	<select id="selectHangPole" resultType="com.xk.orm.Pole"
 		parameterType="java.lang.Integer">
 		select pole.* from pole WHERE pole.PoleId in (select
 		hangdetail.PoleId from
 		hangdetail WHERE
 		hangdetail.HangLineId=#{hanglineid})
+	</select>
+	<select id="SelectHangPoleByHangLineid" resultMap="SelectHangPoleByHangLineidMap" parameterType="java.lang.Integer">
+		SELECT
+		hangdetail.*,linedetail.`Name` as newpolename,linedetail.PoleId as newpoleid from hangdetail LEFT JOIN
+		linedetail on hangdetail.PoleId=linedetail.PoleId WHERE
+		hangdetail.HangLineId=#{hanglineid}
 	</select>
 	<select id="SelectHangLineByPoleid" resultMap="BaseResultMap"
 		parameterType="java.lang.Integer">

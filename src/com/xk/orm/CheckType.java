@@ -1,13 +1,25 @@
 package com.xk.orm;
 
+import java.util.List;
+
 public class CheckType {
     private Integer checktypeid;
 
     private String name;
 
     private String memo;
+    
+    private List<CheckItem> itemlist;
+    
+    public List<CheckItem> getItemlist() {
+		return itemlist;
+	}
 
-    public Integer getChecktypeid() {
+	public void setItemlist(List<CheckItem> itemlist) {
+		this.itemlist = itemlist;
+	}
+
+	public Integer getChecktypeid() {
         return checktypeid;
     }
 

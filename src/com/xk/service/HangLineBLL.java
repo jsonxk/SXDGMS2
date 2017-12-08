@@ -1,5 +1,6 @@
 package com.xk.service;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import net.sf.json.JSONArray;
@@ -9,7 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xk.DaoImpl.AllDao;
+import com.xk.orm.CheckType;
+import com.xk.orm.HangDetail;
 import com.xk.orm.HangDetailList;
+import com.xk.orm.HangLine;
+import com.xk.orm.LineDetail;
 import com.xk.orm.dicitem;
 import com.xk.orm.dictype;
 
@@ -54,5 +59,56 @@ public class HangLineBLL {
 	public JSONArray SelectHangLineByPoleid(int poleid) {
 		List<HangDetailList> hangdetail=alldao.getHangLineMapperImpl().SelectHangLineByPoleid(poleid);
 		return JSONArray.fromObject(hangdetail);
+	}
+	/**
+	 * 查找搭挂线路信息
+	 * @param hanglineid
+	 * @return
+	 */
+	public JSONArray SelectHangLineByHangLineId(int hanglineid) {
+		List<HangLine> hanglineList=alldao.getHangLineMapperImpl().SelectHangLineByHangLineId(hanglineid);
+		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		List<LineDetail> lineinfo=null;
+		for(HangLine hl:hanglineList)
+		{
+			if(hl.getCreatetime()!=null)
+			{
+				hl.setTimeString(format.format(hl.getCreatetime()));
+			}
+			for(int i=0;i<hl.getHangList().size();i++)
+			{
+				lineinfo=alldao.getLinePoleMapperImpl().selectAllHangDetail(hl.getHangList().get(i).getPoleid());
+				hl.getHangList().get(i).setPolename(lineinfo.get(0).getName());
+			}
+		}
+		return JSONArray.fromObject(hanglineList);
+	}
+	/**
+	 * 根据hangname查找搭挂线路
+	 * @param hangname
+	 * @return
+	 */
+	public JSONArray SelectHangLineByName(String hangname) {
+		List<HangLine> hangdetail=alldao.getHangLineMapperImpl().SelectHangLineByName(hangname);
+		return JSONArray.fromObject(hangdetail);
+	}
+	/**
+	 * 根据hangname查找搭挂线路精确查找
+	 * @param hangname
+	 * @return
+	 */
+	public JSONArray SelectHangLineByAllName(String hangname) {
+		List<HangLine> hangdetail=alldao.getHangLineMapperImpl().SelectHangLineByAllName(hangname);
+		return JSONArray.fromObject(hangdetail);
+	}
+
+	/**
+	 * 根据hanglineid查找poleid
+	 * @param hanglineid
+	 * @return
+	 */
+	public JSONArray SelectHangPoleByHangLineid(int hanglineid) {
+		List<HangDetail> detailinfo=alldao.getHangLineMapperImpl().SelectHangPoleByHangLineid(hanglineid);
+		return JSONArray.fromObject(detailinfo);
 	}
 }

@@ -1,7 +1,5 @@
 package com.xk.orm;
 
-import java.math.BigDecimal;
-import java.util.Date;
 
 public class Pole extends CommonEntity{
     private double longtitude;

@@ -14,6 +14,19 @@
 		<result column="LineLength" property="linelength" jdbcType="DOUBLE" />
 		<result column="Type" property="type" jdbcType="INTEGER" />
 		<result column="Memo" property="memo" jdbcType="VARCHAR" />
+		<result column="statusname" property="statusname" jdbcType="VARCHAR" />
+		<result column="typename" property="typename" jdbcType="VARCHAR" />
+		<result column="unitname" property="unitname" jdbcType="VARCHAR" />
+		<collection property="linedetailList" ofType="com.xk.orm.LineDetail"
+			column="LineId" javaType="list">
+			<id column="childlinedetailid" property="linedetailid" jdbcType="INTEGER" />
+			<result column="childLineId" property="lineid" jdbcType="INTEGER" />
+			<result column="childPoleId" property="poleid" jdbcType="INTEGER" />
+			<result column="childPrePoleId" property="prepoleid" jdbcType="INTEGER" />
+			<result column="childCode" property="code" jdbcType="VARCHAR" />
+			<result column="childName" property="name" jdbcType="VARCHAR" />
+			<result column="childMemo" property="memo" jdbcType="VARCHAR" />
+		</collection>
 	</resultMap>
 	<select id="SelectAllLine" resultType="com.xk.orm.PowerLine"
 		parameterType="com.xk.orm.PublicEntity">
@@ -41,17 +54,35 @@
 	</select>
 	<!-- 加载所有线路信息 -->
 	<select id="selectAllLineName" resultType="com.xk.orm.PowerLine">
-		select * from powerline
+		select * from
+		powerline
 	</select>
 	<!-- 搜索电力线路信息 -->
-	<select id="SelectLineInfoByName" resultType="com.xk.orm.PowerLine" parameterType="java.lang.String">
-		select * from powerline where powerline.name like "%"#{name}"%"
+	<select id="SelectLineInfoByName" resultType="com.xk.orm.PowerLine"
+		parameterType="java.lang.String">
+		select * from powerline where powerline.name like
+		"%"#{name}"%"
+	</select>
+	<select id="SelectLineInfoByLineId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select powerline.*,d1.Item as statusname,d2.Item as
+		typename,Unit.UnitName as unitname,linedetail.LineDetailId as
+		childlinedetailid
+		,linedetail.LineId as childLineId,linedetail.PoleId as childPoleId,linedetail.PrePoleId
+		as childPrePoleId,linedetail.`Code` as childCode,linedetail.`Name` as
+		childName,linedetail.Memo as childMemo from powerline LEFT JOIN
+		dicitem d1 ON
+		powerline.`Status`=d1.DicItemId LEFT JOIN dicitem d2 on
+		powerline.Type=d2.DicItemId left join unit on
+		unit.UnitId=powerline.Unitid LEFT JOIN linedetail on
+		powerline.LineId=linedetail.LineId where powerline.LineId=#{lineid}
 	</select>
 	<!-- 添加line返回主键 -->
-	<insert id="InsertLineInfo" parameterType="com.xk.orm.PowerLine" useGeneratedKeys="true"
-		keyProperty="lineid">
+	<insert id="InsertLineInfo" parameterType="com.xk.orm.PowerLine"
+		useGeneratedKeys="true" keyProperty="lineid">
 		insert into powerline (
-		UnitId, Code,
+		UnitId,
+		Code,
 		Name, CreateTime, FirstPoleId,
 		FinallyPoleId, Status,
 		LineLength,
@@ -59,21 +90,24 @@
 		values (
 		#{unitid,jdbcType=INTEGER},
 		#{code,jdbcType=VARCHAR},
-		#{name,jdbcType=VARCHAR}, #{timeString,jdbcType=TIMESTAMP},
+		#{name,jdbcType=VARCHAR},
+		#{timeString,jdbcType=TIMESTAMP},
 		#{firstpoleid,jdbcType=INTEGER},
 		#{finallypoleid,jdbcType=INTEGER},
 		#{status,jdbcType=SMALLINT},
 		#{linelength,jdbcType=DOUBLE},
-		#{type,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR})
+		#{type,jdbcType=VARCHAR},
+		#{memo,jdbcType=VARCHAR})
 	</insert>
 	<update id="ModifyLinePoleId" parameterType="com.xk.orm.PowerLine">
 		update powerline
-		set 
+		set
 		FirstPoleId =
 		#{firstpoleid,jdbcType=INTEGER},
 		FinallyPoleId =
 		#{finallypoleid,jdbcType=INTEGER}
-		where LineId = #{lineid,jdbcType=INTEGER}
+		where LineId =
+		#{lineid,jdbcType=INTEGER}
 	</update>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from

@@ -2,11 +2,13 @@ package com.xk.service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.TaskService;
@@ -18,9 +20,9 @@ import com.xk.DaoImpl.AllDao;
 import com.xk.Util.SendMailDemo;
 import com.xk.orm.CheckDetail;
 import com.xk.orm.CheckType;
-import com.xk.orm.HangDetail;
 import com.xk.orm.HangLine;
 import com.xk.orm.HistoryEmail;
+import com.xk.orm.LineCheck;
 import com.xk.orm.Photo;
 import com.xk.orm.PublicEntity;
 import com.xk.orm.Unit;
@@ -117,6 +119,32 @@ public class FaultBLL {
 		map.put("type", 1);
 		taskService.complete(historyEmail.getTaskid()+"",map);
 		return null;
+	}
+	/**
+	 * 新建线路检查
+	 * @param linechk
+	 * @return  jsonarray{"linechkid":value}
+	 */
+	public JSONArray InsertNewLineChk(LineCheck linechk) {
+		Date date=new Date();
+		linechk.setCreatetime(date);
+		int linechkid=alldao.getFaultMapperImpl().InsertNewLineChk(linechk);
+		JSONArray ja=new JSONArray();
+		JSONObject jo=new JSONObject();
+		if(linechkid>0)
+		{
+			jo.put("linecheckid", linechkid);
+			ja.add(jo);
+		}
+		return ja;
+	}
+	/**
+	 * 查询搭挂线路线杆查找类型
+	 * @return
+	 */
+	public JSONArray SelectLineChkType() {
+		List<CheckType> chkTypeList=alldao.getFaultMapperImpl().SelectLineChkType();	
+		return JSONArray.fromObject(chkTypeList);
 	}
 	
 }

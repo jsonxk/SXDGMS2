@@ -13,6 +13,12 @@
     from photo
     where photo.CheckDetailId=#{checkdetailid}
   </select>
+  <insert id="InsertPhotoInfo" parameterType="com.xk.orm.CheckInfoCommon">
+  	insert into photo (CheckDetailId, CreateTime, 
+      Description, PhotoPath)
+    values (#{checkdetailid,jdbcType=INTEGER}, #{Stringcreatetime,jdbcType=TIMESTAMP}, 
+      #{description,jdbcType=VARCHAR}, #{photopath,jdbcType=VARCHAR})
+  </insert>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from photo
     where PhotoId = #{photoid,jdbcType=INTEGER}

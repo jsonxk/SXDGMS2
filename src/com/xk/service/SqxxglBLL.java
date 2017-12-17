@@ -3,18 +3,22 @@ package com.xk.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.impl.identity.Authentication;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xk.DaoImpl.AllDao;
+import com.xk.orm.Apply;
 import com.xk.orm.ApplyMore;
 import com.xk.orm.PublicEntity;
 import com.xk.orm.Unit;
@@ -30,6 +34,10 @@ import com.xk.orm.dicitem;
 public class SqxxglBLL {
 	@Autowired
 	private AllDao allDao;
+	@Autowired
+	private ProcessEngine processEngine;
+	@Autowired
+	private TaskService taskService;
 	/**
 	 * 查找正常单位
 	 * @param status
@@ -52,10 +60,6 @@ public class SqxxglBLL {
 	 * @param publicEntity
 	 * @return
 	 */
-	@Autowired
-	private ProcessEngine processEngine;
-	@Autowired
-	private TaskService taskService;
 	public JSONArray SelectApplyAndTask(PublicEntity publicEntity){
 		JSONArray jadata=new JSONArray();
 		JSONObject jodata=new JSONObject();
@@ -100,5 +104,50 @@ public class SqxxglBLL {
 		jadata.add(jodata);
 		System.out.println(jadata);
 		return jadata;
+	}
+	/**
+	 * 处理当前申请任务
+	 * @param applyid
+	 * @param hanglineid
+	 * @param handtype
+	 * @param processid
+	 * @param  
+	 * @return
+	 */
+	public JSONArray HanderApply(int applyid,int userid, int hanglineid, int handtype,
+			int processid,int unitid) {
+		/**
+		 * 获取当前任务
+		 */
+		List<Task> task=null;
+		task=taskService.createTaskQuery().processInstanceId(processid+"").taskCandidateUser(userid+"").list();
+		if(task.size()>0)
+		{
+			Map<String , Object> map=new HashMap<String, Object>();
+			map.put("type", handtype);
+			Authentication.setAuthenticatedUserId(userid+"");
+			taskService.addComment(task.get(0).getId(), processid+"", applyid+"");
+			taskService.setVariable(task.get(0).getId(),"unitid",unitid);
+			taskService.complete(task.get(0).getId(), map);
+			/**
+			 * 修改apply表中申请的状态和hanglineid搭挂线路
+			 */
+			task=taskService.createTaskQuery().processInstanceId(processid+"").list();
+			if(task.size()>0)
+			{
+				System.out.println(task.get(0).getName());
+				List<dicitem> item=allDao.getdicitemMapperImpl().selectItemByName(task.get(0).getName());
+				Apply apply=new Apply();
+				apply.setApplyid(applyid);
+				apply.setHanglineid(hanglineid);
+				System.out.println(item.get(0).getDicitemid()+"fffffff");
+				apply.setStatus(item.get(0).getDicitemid());
+				allDao.getApplyMapperImpl().ModifyProcessInstanceId(apply);
+			}
+			return JSONArray.fromObject("[{'msg':'处理成功'}]");
+		}
+		else{
+			return JSONArray.fromObject("[{'msg':'您没有权限处理此业务'}]");
+		}
 	}
 }

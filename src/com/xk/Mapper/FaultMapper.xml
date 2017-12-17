@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xk.Dao.FaultMapper">
+  <resultMap id="BaseResultMap" type="com.xk.orm.Fault">
+    <id column="FaultId" jdbcType="INTEGER" property="faultid" />
+    <result column="ProcessId" jdbcType="VARCHAR" property="processid" />
+    <result column="TaskId" jdbcType="VARCHAR" property="taskid" />
+    <result column="CorrectCheckDelId" jdbcType="INTEGER" property="correctcheckdelid" />
+    <result column="Status" jdbcType="INTEGER" property="status" />
+    <result column="CreateTime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="Memo" jdbcType="VARCHAR" property="memo" />
+    <result column="FaultChkDtlId" jdbcType="INTEGER" property="faultchkdtlid" />
+  </resultMap>
+ 
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+	*
+    from fault
+    where FaultId = #{faultid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from fault
+    where FaultId = #{faultid,jdbcType=INTEGER}
+  </delete>
+  <insert id="InsertFaultInfo" parameterType="com.xk.orm.Fault" useGeneratedKeys="true" keyProperty="faultid">
+    insert into fault (CreateTime,Memo)
+    values (#{Stringtime,jdbcType=TIMESTAMP}, 
+      #{memo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="qqq" parameterType="com.xk.orm.Fault">
+    insert into fault
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="faultid != null">
+        FaultId,
+      </if>
+      <if test="processid != null">
+        ProcessId,
+      </if>
+      <if test="taskid != null">
+        TaskId,
+      </if>
+      <if test="correctcheckdelid != null">
+        CorrectCheckDelId,
+      </if>
+      <if test="status != null">
+        Status,
+      </if>
+      <if test="createtime != null">
+        CreateTime,
+      </if>
+      <if test="memo != null">
+        Memo,
+      </if>
+      <if test="faultchkdtlid != null">
+        FaultChkDtlId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="faultid != null">
+        #{faultid,jdbcType=INTEGER},
+      </if>
+      <if test="processid != null">
+        #{processid,jdbcType=VARCHAR},
+      </if>
+      <if test="taskid != null">
+        #{taskid,jdbcType=VARCHAR},
+      </if>
+      <if test="correctcheckdelid != null">
+        #{correctcheckdelid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memo != null">
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="faultchkdtlid != null">
+        #{faultchkdtlid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xk.orm.Fault">
+    update fault
+    <set>
+      <if test="processid != null">
+        ProcessId = #{processid,jdbcType=VARCHAR},
+      </if>
+      <if test="taskid != null">
+        TaskId = #{taskid,jdbcType=VARCHAR},
+      </if>
+      <if test="correctcheckdelid != null">
+        CorrectCheckDelId = #{correctcheckdelid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        Status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null">
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memo != null">
+        Memo = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="faultchkdtlid != null">
+        FaultChkDtlId = #{faultchkdtlid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where FaultId = #{faultid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xk.orm.Fault">
+    update fault
+    set ProcessId = #{processid,jdbcType=VARCHAR},
+      TaskId = #{taskid,jdbcType=VARCHAR},
+      CorrectCheckDelId = #{correctcheckdelid,jdbcType=INTEGER},
+      Status = #{status,jdbcType=INTEGER},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      Memo = #{memo,jdbcType=VARCHAR},
+      FaultChkDtlId = #{faultchkdtlid,jdbcType=INTEGER}
+    where FaultId = #{faultid,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,8 +1,10 @@
 package com.xk.service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
+import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -15,6 +17,7 @@ import com.xk.orm.HangDetail;
 import com.xk.orm.HangDetailList;
 import com.xk.orm.HangLine;
 import com.xk.orm.LineDetail;
+import com.xk.orm.Pole;
 import com.xk.orm.dicitem;
 import com.xk.orm.dictype;
 
@@ -110,5 +113,27 @@ public class HangLineBLL {
 	public JSONArray SelectHangPoleByHangLineid(int hanglineid) {
 		List<HangDetail> detailinfo=alldao.getHangLineMapperImpl().SelectHangPoleByHangLineid(hanglineid);
 		return JSONArray.fromObject(detailinfo);
+	}
+	/**
+	 * 查找搭挂线路细节，组装poleid信息
+	 * @return
+	 */
+	public JSONArray selectAllHangAndPole() {
+		List<HangDetailList> hangDtl=alldao.getHangLineMapperImpl().selectAllHangAndPole();
+		//List<Object> liatall=new ArrayList<Object>();
+		List<Pole> poleinfo=null;
+		//JSONArray jadata=new JSONArray();
+		for(int i=0;i<hangDtl.size();i++)
+		{
+			if(hangDtl.get(i).getHangList().size()>0)
+			{
+				for(int j=0;j<hangDtl.get(i).getHangList().size();j++)
+				{
+					poleinfo=alldao.getLinePoleMapperImpl().SelectPoleInfoByPoleId(hangDtl.get(i).getHangList().get(j).getPoleid());
+					hangDtl.get(i).getHangList().get(j).setPoleList(poleinfo);
+				}
+			}
+		}
+		return JSONArray.fromObject(hangDtl);
 	}
 }

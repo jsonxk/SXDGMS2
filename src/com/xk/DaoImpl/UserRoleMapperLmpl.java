@@ -22,6 +22,12 @@ public class UserRoleMapperLmpl {
 	{
 		return userRoleMapper.deleteByuseridRoleid(userrole);
 	}
+	/**
+	 * 根据roleid查找userid
+	 * @param repairId
+	 * @return
+	 *设置流程用户
+	 */
 	public List<UserRole> SelectRepairUsers(int repairId) {
 		return userRoleMapper.SelectRepairUsers(repairId);
 	}

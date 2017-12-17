@@ -315,9 +315,6 @@
 				<div class="modal-body">
 					<div>
 						<div id="firstLayer">
-							<label for="PoleNameInput" class="control-label">线杆名称</label> <input
-							type="text" id="PoleNameInput" name="PoleNameInput" placeholder="请输入线杆名称"/>
-
 							<label for="PoleLength" class="control-label">线杆高度</label> <input
 							type="text" id="PoleLength" name="PoleLength"
 							value="17" readonly /> 

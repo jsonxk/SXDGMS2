@@ -33,4 +33,9 @@ public interface HangDetailMapper {
 	 * @return
 	 */
 	List<HangDetail> SelectHangPoleByHangLineid(int hanglineid);
+	/**
+	 * 查询搭挂线路细节{hanglineid:[{hanglinedetail}]}地图
+	 * @return
+	 */
+	List<HangDetailList> selectAllHangAndPole();
 }

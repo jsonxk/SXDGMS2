@@ -43,4 +43,16 @@ public class SQXXGLController {
 	public @ResponseBody JSONArray SelectApplyAndTask(@RequestBody PublicEntity publicEntity){
 		return allservice.getSqxxglBll().SelectApplyAndTask(publicEntity);
 	}
+	/**
+	 *处理当前申请任务 
+	 * @param applyid
+	 * @param hanglineid
+	 * @param handtype {0：申请驳回，1：当前任务处理通过}
+	 * @param processid
+	 * @return
+	 */
+	@RequestMapping(value="/handerApply",method=RequestMethod.POST)
+	public @ResponseBody JSONArray HanderApply(@RequestParam("applyid") int applyid,@RequestParam("userid") int userid,@RequestParam("hanglineid") int hanglineid,@RequestParam("handtype") int handtype,@RequestParam("processid") int processid,@RequestParam("unitid") int unitid){
+		return allservice.getSqxxglBll().HanderApply(applyid,userid,hanglineid,handtype,processid,unitid);
+	}
 }

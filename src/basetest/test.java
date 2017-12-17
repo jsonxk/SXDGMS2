@@ -61,7 +61,7 @@ public class test extends SpringCaseTest{
 
 		//部署流程定义
 		repositoryService=processEngine.getRepositoryService();
-		Deployment de=repositoryService.createDeployment().addClasspathResource("./Activiti/MyProcess.bpmn").deploy();
+		Deployment de=repositoryService.createDeployment().addClasspathResource("./Activiti/ApplyPrs.bpmn").deploy();
 		/*
 		 * 流程定义类
 		 */
@@ -74,9 +74,9 @@ public class test extends SpringCaseTest{
 		runtimeService=processEngine.getRuntimeService();
 		//默认最新的key启动流程实例
 		//ProcessInstance processInstance=runtimeService.startProcessInstanceById(processDefinitionId)
-		runtimeService.startProcessInstanceByKey("myProcess");
-		taskService=processEngine.getTaskService();
-		List<Task> task=taskService.createTaskQuery().list();
+	//	runtimeService.startProcessInstanceByKey("myProcess");
+		//taskService=processEngine.getTaskService();
+		//List<Task> task=taskService.createTaskQuery().list();
 		/*for(Task t:task)
 		{
 			System.out.println("任务id"+t.getId()+"名称"+t.getName());

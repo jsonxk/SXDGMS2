@@ -35,7 +35,7 @@ public interface PoleMapper {
 	/**
 	 * 根据poleid查找线杆信息
 	 * @param poleid
-	 * @return
+	 * @return [pole,[linedetail]]
 	 */
 	List<Pole> SelectPoleInfoByPoleId(@Param("poleid")int poleid);
 	/**
@@ -50,4 +50,16 @@ public interface PoleMapper {
 	 * @return
 	 */
 	List<Pole> SelectPoleInfoByAllName(@Param("name")String name);
+	/**
+	 * 删除线杆及相关的搭挂，线路详情
+	 * @param poleid
+	 * @return
+	 */
+	int DelPoleByPoleId(@Param("poleid")int poleid);
+	/**
+	 * 根据poleid修改prevpoleid
+	 * @param poleid
+	 * @return
+	 */
+	int ModifyPrevPoleIdByPoleId(@Param("poleid")int poleid);
 }

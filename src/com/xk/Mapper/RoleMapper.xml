@@ -9,12 +9,12 @@
   <sql id="Base_Column_List" >
     RoleId, Name, Memo
   </sql>
-  <select id="selectRoleid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+ <!--  <select id="selectRoleid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     *
     from role
     where RoleId = #{userid,jdbcType=INTEGER}
-  </select>
+  </select> -->
   
   <select id="selectAllRole" resultMap="BaseResultMap">
   	select * from role

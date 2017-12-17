@@ -201,10 +201,11 @@
 							<div id="FaultInfo">
 								<label for="FaultPole" class="control-label">线杆名称</label> <input
 								type="text" id="FaultPole" name="FaultPole" readonly /> 
-								<label for="FaultOfType" class="control-label">检查类型</label> <input
-								type="text" id="FaultOfType" name="FaultOfType"  readonly />
+								<!-- <label for="FaultOfType" class="control-label">检查类型</label> <input
+								type="text" id="FaultOfType" name="FaultOfType"  readonly /> -->
 								<label for="FaultPoleStatus" class="control-label">线杆状态</label> <input
 								type="text" id="FaultPoleStatus" name="FaultPoleStatus"  readonly />
+								</br>
 								<label for="FaultLine" class="control-label">所属线路</label> <input
 								type="text" id="FaultLine" name="FaultLine" readonly/>
 								<label for="FaultOfUnit" class="control-label">单位名称</label> <input
@@ -266,6 +267,47 @@
 										data-dismiss="modal">取消</button>
 									<button type="button" class="btn btn-primary SubmitAdvicebtn">发送</button>
 							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade " id="WarnModal" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content" style="width:40%;margin-top: 50%">
+
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="exampleModalLabel">是否确定处理当前任务?</h4>
+						</div>
+						<div class="modal-body">
+									<button type="button" class="btn btn-default Warncancel"
+										data-dismiss="modal">否</button>
+									<button type="button" class="btn btn-primary WarnOk">是</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 整改是否合格 -->
+			<div class="modal fade " id="RepairModal" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content" style="width:40%;margin-top: 50%">
+
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="exampleModalLabel">整改是够合格?</h4>
+						</div>
+						<div class="modal-body">
+									<button type="button" class="btn btn-default RepatrNoOk"
+										data-dismiss="modal">不合格</button>
+									<button type="button" class="btn btn-primary RepairOk">合格</button>
 						</div>
 					</div>
 				</div>

@@ -137,4 +137,11 @@ public class HangLineMapperImpl implements HangLineMapper,HangDetailMapper{
 	public List<HangDetail> SelectHangPoleByHangLineid(int hanglineid) {
 		return hangDetail.SelectHangPoleByHangLineid(hanglineid);
 	}
+	/**
+	 * 查找搭挂线路信息{hangdetailid：[hangdetailList]}
+	 * @return
+	 */
+	public List<HangDetailList> selectAllHangAndPole() {
+		return hangDetail.selectAllHangAndPole();
+	}
 }

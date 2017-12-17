@@ -11,7 +11,7 @@
 <head>
 <base href="<%=basePath%>">
 
-<title>线路/线杆管理管理</title>
+<title>地图管理</title>
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
@@ -38,9 +38,13 @@
 <!-- treeview -->
 <link rel="stylesheet" type="text/css"
 	href="./treeview/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="http://cache.amap.com/lbs/static/main1119.css" />
 <script
-	src="https://webapi.amap.com/maps?v=1.4.0&key=e8fe2f8a5385cb0c048947ec75738cb0&plugin=AMap.PolyEditor,AMap.Autocomplete,AMap.PlaceSearch"></script>
-<script src="//webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+	src="http://webapi.amap.com/maps?v=1.4.1&key=e8fe2f8a5385cb0c048947ec75738cb0&plugin=AMap.MouseTool"></script>
+<script type="text/javascript"
+	src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+<link rel="stylesheet" type="text/css" href="./css/tabletitle.css">
 <style type="text/css">
 #allmap {
 	width: 100%;
@@ -52,6 +56,43 @@
 	position: absolute;
 	z-index: 1000;
 	margin-top: 30px;
+}
+/* 地图 */
+.markerid {
+	width: 14px;
+	height: 14px;
+	border: 1px solid #E90000;
+	border-radius: 50%;
+	background-color: #2AC845;
+}
+
+.MarkercenterDiv {
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	margin: 3px;
+	background-color: #007AFF;
+}
+
+.handerButton input {
+	border: 1px solid #4A4AFF;
+	background-color: #FFFFFF;
+}
+
+#MapPoleLength, #MapPoleStatus {
+	border-radius: 3px;
+	border: 1px solid #cccccc;
+	height: 5%;
+	width: 20%;
+}
+.panel-default>.panel-heading{
+	background-color: gray
+}
+.markercontent{
+	width:200px;
+}
+.markercontent span{
+	font-weight: 600;
 }
 </style>
 <body>
@@ -153,26 +194,17 @@
 								<div style="width:100%;height:68%">
 									<div id="allmap">
 										<div class="handerButton">
-											<select>
-												<option>1</option><option>1</option>
-											</select>
-											<input type="button" class="button" value="添加线路"
-												onClick="editor.startEditLine()" /> <input type="button"
-												class="button" value="添加线杆" onClick="editor.closeEditLine()" />
-											<input type="button" class="button" value="添加搭挂线路"
-												onClick="editor.dingwei()" /> <input type="button"
-												class="button" value="编辑线杆位置" onClick="editor.dingwei()" />
-											<input type="button" class="button" value="删除线杆"
-												onClick="editor.dingwei()" /> <input type="button"
-												class="button" value="关闭操作" onClick="editor.dingwei()" /> <input
+											<input type="button" class="button" value="添加线路" onclick="" />
+											<input type="button" class="button AddPoleBtn" value="添加线杆"
+												onclick="" /> <input type="button" class="button AddHangLine"
+												value="添加搭挂线路"/> <input type="button"
+												class="openEditPole" value="编辑线杆" /> <input type="button"
+												class="openDelPole" value="删除线杆" onclick="" /> <input
+												type="button" class="button" value="关闭操作" onclick="" /> <input
 												type="button" class="button" value="点击定位"
-												onClick="editor.dingwei()" />
-												<input
-												type="text" class="button" id="tipinput"
-												/>
+												onclick="PositionFunc()" />
 										</div>
 									</div>
-									<div id="tip"></div>
 								</div>
 							</div>
 							<!-- END BASIC TABLE -->
@@ -181,11 +213,104 @@
 				</div>
 				<!-- END MAIN CONTENT -->
 			</div>
+			<!-- 选择是否删除线杆pole -->
+			<div class="modal fade " id="DelPoleModal" tabindex="-1"
+				role="dialog" aria-labelledby="exampleModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content" style="width:40%;margin-top: 50%">
+
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="exampleModalLabel">是否删除当前线杆?</h4>
+						</div>
+						<div class="modal-body">
+							<button type="button" class="btn btn-default DelPoleCancel"
+								data-dismiss="modal">否</button>
+							<button type="button" class="btn btn-primary " id="DelPoleOk">是</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 删除提示信息 -->
+			<div class="modal fade " id="DelRtnModal" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content" style="width:40%;margin-top: 50%">
+
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body delInfo">
+							<h4></h4>
+						</div>
+					</div>
+				</div>
+			</div>
 			<!-- END MAIN -->
 			<div class="userinfo" style="display:none">
 				<span><%=session.getAttribute("userid")%></span>
 			</div>
 			<div class="clearfix"></div>
+		</div>
+		<!-- modal地图添加线杆弹出框 -->
+		<div class="modal fade " id="MapAddPoleModal" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" style="width:125%;margin-left:-10%">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="exampleModalLabel">添加线杆信息</h4>
+					</div>
+					<div class="modal-body">
+						<div>
+							<div id="firstLayer">
+								<label for="MapPoleLength" class="control-label">线杆高度</label> <input
+									type="text" id="MapPoleLength" name="PoleLength" value="17"
+									readonly /> <label for="MapPoleStatus" class="control-label">线杆状态</label>
+								<select id="MapPoleStatus"></select> <label for="PoleTime"
+									class="control-label">创建时间</label> <input type="text"
+									id="PoleTime" name="PoleTime" readonly />
+							</div>
+							<div id="secondLayer">
+								<label for="PoleUnit" class="control-label">单位名称</label> <select
+									id="PoleUnit">
+								</select> <label for="PoleType" class="control-label">线杆类型</label> <select
+									id="PoleType">
+								</select> <label for="PoleLon" class="control-label">经度</label> <input
+									type="text" id="PoleLon" name="PoleLon" /> <label
+									for="PoleLat" class="control-label">纬度</label> <input
+									type="text" id="PoleLat" name="PoleLat" /> <input
+									type="button" id="addPoleBtn" value="添加线路">
+							</div>
+							<div id="thirdLayer">
+								<div class="thirdLayer0">
+									<label for="PolePre" class="control-label">前一杆</label> <select
+										class="PolePre">
+
+									</select> <label for="PoleForLine" class="control-label">所属线路</label> <select
+										class="PoleForLine">
+									</select> <label for="PoleCode" class="control-label">编码</label><input
+										type="text" class="PoleCode" name="PoleCode" />
+								</div>
+							</div>
+							<div class="poleModalBtn">
+								<button type="button" class="btn btn-primary cancelPole"
+									data-dismiss="modal">取消</button>
+								<button type="button" class="btn btn-primary OkPole">完成</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<!-- END WRAPPER -->
@@ -205,127 +330,7 @@
 		}
 	</script>
 	<script src="./js/pageInit.js"></script>
-<!-- <script type="text/javascript">
-		//创建地图
-		var map, geolocation;
-		map = new AMap.Map('allmap', {
-			resizeEnable : true,
-			zoom : 50,
-			center : [121.61122,29.91092 ],
-		});
-		 //输入提示
-    var autoOptions = {
-        input: "tipinput"
-    };
-    var auto = new AMap.Autocomplete(autoOptions);
-    var placeSearch = new AMap.PlaceSearch({
-        map: map
-    });  //构造地点查询类
-    AMap.event.addListener(auto, "select", select);//注册监听，当选中某条记录时会触发
-    function select(e) {
-        placeSearch.setCity(e.poi.adcode);
-        placeSearch.search(e.poi.name);  //关键字查询查询
-    }
-		/* map.plugin(["AMap.ToolBar"],function(){   //在地图中添加ToolBar插件      
-        	toolBar = new AMap.ToolBar();  
-        	map.addControl(toolBar);       
-    	});  */
-		//解析定位结果
-		function onComplete(data) {
-			var str = [ '定位成功' ];
-			str.push('经度：' + data.position.getLng());
-			str.push('纬度：' + data.position.getLat());
-			if (data.accuracy) {
-				str.push('精度：' + data.accuracy + ' 米');
-			}//如为IP精确定位结果则没有精度信息
-			str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
-			document.getElementById('tip').innerHTML = str.join('<br>');
-		}
-		//解析定位错误信息
-		function onError(data) {
-			document.getElementById('tip').innerHTML = '定位失败';
-		}
-		//在地图上绘制折线
-		var editor = {};
-		editor._line = (function() {
-			var lineArr = [ [ 116.37, 39.91 ], [ 116.38, 39.90 ],
-					[ 116.39, 39.91 ], [ 116.39, 39.90 ] ];
-			return new AMap.Polyline({
-				map : map,
-				path : lineArr,
-				strokeColor : "#FF33FF",//线颜色
-				strokeOpacity : 1,//线透明度
-				strokeWeight : 3,//线宽
-				strokeStyle : "solid"//线样式
-			});
-		})();
-		map.setFitView();
-		editor._lineEditor = new AMap.PolyEditor(map, editor._line);
-		editor.startEditLine = function() {
-			editor._lineEditor.open();
-		}
-		editor.closeEditLine = function() {
-			editor._lineEditor.close();
-		}
-		editor.dingwei = function() {
-			 map.plugin('AMap.Geolocation', function() {
-				geolocation = new AMap.Geolocation({
-					enableHighAccuracy: true,//是否使用高精度定位，默认:true
-           	 		timeout: 10000,          //超过10秒后停止定位，默认：无穷大
-            		buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-            		zoomToAccuracy: true,      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-            		uttonPosition:'RB',
-					panToLocation : true,
-				});
-				map.addControl(geolocation);
-				geolocation.getCurrentPosition();
-				AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
-				AMap.event.addListener(geolocation, 'error', onError); //返回定位出错信息
-			}); 
-		};
-		//为地图注册click事件获取鼠标点击出的经纬度坐标
-		var clickEventListener = map.on('click', function(e) {
-			alert(e.lnglat.getLng() + ',' + e.lnglat.getLat());
-		}); 
-	</script> -->
-	<script type="text/javascript">
-/***************************************
-由于Chrome、IOS10等已不再支持非安全域的浏览器定位请求，为保证定位成功率和精度，请尽快升级您的站点到HTTPS。
-***************************************/
-    var map, geolocation;
-    //加载地图，调用浏览器定位服务
-    map = new AMap.Map('allmap', {
-        resizeEnable: true
-    });
-    map.plugin('AMap.Geolocation', function() {
-        geolocation = new AMap.Geolocation({
-            enableHighAccuracy: true,//是否使用高精度定位，默认:true
-            timeout: 10000,          //超过10秒后停止定位，默认：无穷大
-            buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-            zoomToAccuracy: true,      //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
-            buttonPosition:'RB'
-        });
-        map.addControl(geolocation);
-        geolocation.getCurrentPosition();
-        AMap.event.addListener(geolocation, 'complete', onComplete);//返回定位信息
-        AMap.event.addListener(geolocation, 'error', onError);      //返回定位出错信息
-    });
-    //解析定位结果
-    function onComplete(data) {
-        var str=['定位成功'];
-        str.push('经度：' + data.position.getLng());
-        str.push('纬度：' + data.position.getLat());
-        if(data.accuracy){
-             str.push('精度：' + data.accuracy + ' 米');
-        }//如为IP精确定位结果则没有精度信息
-        str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
-        document.getElementById('tip').innerHTML = str.join('<br>');
-    }
-    //解析定位错误信息
-    function onError(data) {
-        document.getElementById('tip').innerHTML = '定位失败';
-    }
-</script>
+	<script src="./js/table/DTGL.js"></script>
 </body>
 
 </html>

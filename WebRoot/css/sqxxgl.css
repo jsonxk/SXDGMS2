@@ -1,0 +1,44 @@
+#HM_ApplyUser, #HM_ApplyUnit, #HM_ApplyContract, #HM_ApplyPhone,
+	#HM_ApplyHang, #HM_ApplyCode, #HM_ApplyTime, #HM_ApplyStatus,
+	.HM_SelectHang {
+	border-radius: 3px;
+	border: 1px solid #cccccc;
+	height: 4%;
+	width: 33%
+}
+
+.HM_ApplyUnit, .HM_ApplyPhone, .HM_ApplyCode, .HM_ApplyStatus {
+	margin: 2% 0 0 8%;
+}
+
+.HM_ApplyUser, .HM_ApplyHang, .HM_ApplyTime {
+	margin: 2% 0 0 2%;
+}
+
+.HM_ApplyContract {
+	margin: 2% 0 0 4%;
+}
+
+.HM_ApplyMemo {
+	margin: 2% 0 0 2%;
+}
+
+#HM_ApplyMemo {
+	border-radius: 3px;
+	border: 1px solid #cccccc;
+	height: 6%;
+	width: 94%;
+	margin: 1% 0 0 2%;
+}
+
+.HM_SelectHang {
+	display: none;
+}
+
+#HM_ApplyHang {
+	display: none;
+}
+
+#HM_BottonBtn {
+	margin: 0% 0 0 70%;
+}

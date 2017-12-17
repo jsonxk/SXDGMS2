@@ -23,6 +23,9 @@ SQXXGLTable.prototype = {
 	 */
 	TableUnitInfo : function(status) {
 		SelectUnitInfo(status);
+	},
+	SelectAllHangLineInfo:function(){
+		selectAllHangLineInfo();
 	}
 };
 
@@ -32,10 +35,16 @@ var sqxxtable = new SQXXGLTable();
 var userid = $(".userinfo span").text();
 // 偏移量
 var fset = 0;
+var ProcessId=0;
+var ApplyId=0;
+var ApplyUnitId=0;
+var HangLineid=0;
+var ApplyStatus="";
 $(function() {
 	TodayTime();
 	sqxxtable.TableStatus("申请状态");
 	sqxxtable.TableUnitInfo("正常");
+	sqxxtable.SelectAllHangLineInfo();
 })
 /**
  * 初始化加载申请信息表格
@@ -79,9 +88,9 @@ function tableinit() {
 						pageSize : params.limit,
 						offset : params.offset,
 						"status" : Number(status),
-						"timestatus" : Number($("#TimeType").val()),
+						//"timestatus" : Number($("#TimeType").val()),
 						"userid" : Number(userid),
-						"unitid" : Number($("#ApplyUnittype").val()),
+						//"unitid" : Number($("#ApplyUnittype").val()),
 					};
 					for ( var key in timeinfo) {
 						param[key] = timeinfo[key];
@@ -207,7 +216,51 @@ window.operateEvents = {
 	},
 };
 function HanderApply(row) {
+	/**
+	 * 处理的弹窗
+	 */
 	$("#HanderModal").modal("show");
+	/**
+	 * 加载申请信息
+	 */
+	$("#HM_ApplyUser").val(row.username);
+	$("#HM_ApplyUnit").val(row.unitname);
+	$("#HM_ApplyContract").val(row.contactperson);
+	$("#HM_ApplyPhone").val(row.contactphone);
+	//$("#HM_ApplyHang").val(row.hangname);
+	$("#HM_ApplyCode").val(row.num);
+	$("#HM_ApplyTime").val(row.applystringtime);
+	$("#HM_ApplyStatus").val(row.statusname);
+	$("#HM_ApplyMemo").text(row.description);
+	if(row.statusname=="申请受理")
+		{
+			$(".HM_SelectHang").css("display","inline");
+			$("#HM_ApplyHang").css("display","none");
+		}
+	else{
+		$(".HM_SelectHang").css("display","none");
+		$("#HM_ApplyHang").css("display","inline");
+		$("#HM_ApplyHang").val(row.hangname);
+		HangLineid=row.hanglineid;
+	}
+	if(row.statusname=="现场查勘"||row.statusname=="签证发放"||row.statusname=="施工"||row.statusname=="整改")
+		{
+			$(".HM_NoOK").css("visibility","hidden");
+			$(".HM_OK").css("visibility","visible");
+		}
+	else if(row.statusname=="完成")
+		{
+			$(".HM_NoOK").css("visibility","hidden");
+			$(".HM_OK").css("visibility","hidden");
+		}
+	else{
+		$(".HM_NoOK").css("visibility","visible");
+		$(".HM_OK").css("visibility","visible");
+	}
+	ProcessId=row.processid;
+	ApplyId=row.applyid;
+	ApplyUnitId=row.unitid;
+	ApplyStatus=row.statusname;
 	/*$.ajax({
 		type : "post",
 		url : "",
@@ -219,6 +272,50 @@ function HanderApply(row) {
 		success : function(data) {
 		}
 	})*/
+}
+/**
+ * 点击处理后点击通过
+ */
+$(".HM_OK").click(function(){
+	/**
+	 * 处理申请信息
+	 */
+	ApplyHander(1);
+});
+/**
+ * 点击处理点击驳回
+ */
+$(".HM_NoOK").click(function(){
+	ApplyHander(0);
+});
+function ApplyHander(handflag){
+	var hangid=0;
+	if(ApplyStatus=="申请受理")
+		{
+			hangid=$(".HM_SelectHang").val();
+		}
+	else{
+		hangid=HangLineid;
+	}
+	$.ajax({
+		type : "post",
+		url : "SQXXGL/handerApply.spring",
+		data : {
+			"processid" : ProcessId,
+			"applyid":ApplyId,
+			"hanglineid":Number(hangid),
+			"handtype":handflag,
+			"userid":Number(userid),
+			"unitid":ApplyUnitId,
+		},
+		datatype : "json",
+		success : function(data) {
+			$("#HanderModal").modal("hide");
+			$('#sqxxgltable').bootstrapTable("refresh");
+			alert(data[0].msg);
+		}
+	})
+	
 }
 /**
  * 加载搭挂申请状态类型
@@ -287,6 +384,23 @@ function SelectUnitInfo(status) {
 								+ data[i].unitname + "</option>");
 			}
 			sqxxtable.TableInit();
+		}
+	});
+}
+/**
+ * 查询所有的搭挂线路
+ */
+function selectAllHangLineInfo(){
+	$.ajax({
+		type : "post",
+		url : "DGXLGL/selectAllHangLineName.spring",
+		datatype : "json",
+		success : function(data) {
+			for (var i = 0; i < data.length; i++) {
+				$(".HM_SelectHang").append(
+						"<option value='" + data[i].hanglineid + "'>"
+								+ data[i].hangname + "</option>");
+			}
 		}
 	});
 }

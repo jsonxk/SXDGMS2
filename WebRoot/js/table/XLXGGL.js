@@ -550,7 +550,7 @@ function LinePoleDetailObject(index,poleid){
  */
 function PoleInfoObject(){
 	var poleinfo={};
-	poleinfo["name"]=$("#PoleNameInput").val();
+	//poleinfo["name"]=$("#PoleNameInput").val();
 	poleinfo["unitid"]=$("#PoleUnit").val();
 	poleinfo["timeString"]=$("#PoleTime").val();
 	poleinfo["longtitude"]=$("#PoleLon").val();

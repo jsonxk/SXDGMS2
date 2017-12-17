@@ -39,6 +39,7 @@
 <link rel="stylesheet" type="text/css"
 	href="./treeview/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="./css/tabletitle.css">
+<link rel="stylesheet" type="text/css" href="./css/sqxxgl.css">
 <style>
 #fileToUpload2 {
 	display: none;
@@ -189,7 +190,7 @@
 				</div>
 				<!-- END MAIN CONTENT -->
 			</div>
-			<!-- 点击处理按钮 弹出modal-->
+			<!-- 处理申请 -->
 			<div class="modal fade " id="HanderModal" tabindex="-1" role="dialog"
 				aria-labelledby="exampleModalLabel">
 				<div class="modal-dialog" role="document">
@@ -200,13 +201,84 @@
 								aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
-							<h4 class="modal-title" id="exampleModalLabel">添加申请信息</h4>
+							<h4 class="modal-title" id="exampleModalLabel">处理申请信息</h4>
 						</div>
-
 						<div class="modal-body">
-							
-								
-							
+							<div class="panel-group" id="accordion">
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h6 class="panel-title" style="font-size: 15px;margin:-8px;">
+											<a data-toggle="collapse" data-parent="#accordion"
+												href="#collapseOne"> 申请信息 &nbsp;<i class="lnr lnr-user"></i></a>
+										</h6>
+									</div>
+									<div id="collapseOne" class="panel-collapse collapse in">
+										<div style="margin-top: 2%">
+											<label for="HM_ApplyUser" class="control-label HM_ApplyUser">申请用户:</label> <input
+											type="text" id="HM_ApplyUser" name="HM_ApplyUser" readonly>
+											<label for="HM_ApplyUnit" class="control-label HM_ApplyUnit">申请单位:</label> <input
+											type="text" id="HM_ApplyUnit" name="HM_ApplyUnit" readonly>
+											</br>
+											<label for="HM_ApplyContract" class="control-label HM_ApplyContract">联系人:</label> <input
+											type="text" id="HM_ApplyContract" name="HM_ApplyContract" readonly>
+											<label for="HM_ApplyPhone" class="control-label HM_ApplyPhone">单位电话:</label> <input
+											type="text" id="HM_ApplyPhone" name="HM_ApplyPhone" readonly>
+											</br>
+											<label for="HM_ApplyHang" class="control-label HM_ApplyHang">搭挂线路:</label> 
+											<select class="HM_SelectHang">
+											</select>
+											<input
+											type="text" id="HM_ApplyHang" name="HM_ApplyHang" readonly>
+											<label for="HM_ApplyCode" class="control-label HM_ApplyCode">申请单号:</label> <input
+											type="text" id="HM_ApplyCode" name="HM_ApplyCode" readonly>
+											</br>
+											<label for="HM_ApplyTime" class="control-label HM_ApplyTime">申请日期:</label> <input
+											type="text" id="HM_ApplyTime" name="HM_ApplyTime" readonly>
+											<label for="HM_ApplyStatus" class="control-label HM_ApplyStatus">申请状态:</label> <input
+											type="text" id="HM_ApplyStatus" name="HM_ApplyStatus" readonly>
+											</br>
+											<label for="HM_ApplyMemo" class="control-label HM_ApplyMemo">申请描述:</label>
+											</br>
+											<textarea rows="2"
+												 id="HM_ApplyMemo" name="HM_ApplyMemo" readonly></textarea>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h6 class="panel-title" style="font-size: 15px;margin:-8px; ">
+											<a data-toggle="collapse" data-parent="#accordion"
+												href="#collapseTwo"> 查勘信息  &nbsp;<i class="lnr lnr-layers"></i></a>
+										</h6>
+									</div>
+									<div id="collapseTwo" class="panel-collapse collapse">
+										<div class="panel-body">Nihil anim keffiyeh helvetica,
+											craft beer labore wes anderson cred nesciunt sapiente ea
+											proident. Ad vegan excepteur butcher vice lomo.</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h6 class="panel-title" style="font-size: 15px;margin:-8px;">
+											<a data-toggle="collapse" data-parent="#accordion"
+												href="#collapseThree"> 审核信息 &nbsp;<i class=" lnr lnr-database"></i></a>
+										</h6>
+									</div>
+									<div id="collapseThree" class="panel-collapse collapse">
+										<div class="panel-body">Nihil anim keffiyeh helvetica,
+											craft beer labore wes anderson cred nesciunt sapiente ea
+											proident. Ad vegan excepteur butcher vice lomo.</div>
+									</div>
+								</div>
+							</div  >
+										<!-- HM   Modal底部按钮 -->
+										<div id="HM_BottonBtn">
+											<button type="button" class="btn btn-primary HM_NoOK"
+												>驳回</button>
+											<button type="button" class="btn btn-default HM_OK">通过</button>
+											<button type="button" class="btn btn-default HM_Cancel" data-dismiss="modal"
+												>取消</button>
+										</div>				​
 							
 						</div>
 					</div>

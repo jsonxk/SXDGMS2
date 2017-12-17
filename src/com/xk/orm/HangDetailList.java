@@ -11,7 +11,7 @@ import java.util.List;
 public class HangDetailList extends HangDetail{
 	private String hangname;
 	private List<HangDetail> hangList;
-
+	
 	public List<HangDetail> getHangList() {
 		return hangList;
 	}

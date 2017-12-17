@@ -38,6 +38,12 @@ public class ApplyMapperImpl implements ApplyMapper{
 	public int SelectApplyCount(PublicEntity publicEntity) {
 		return applymapper.SelectApplyCount(publicEntity);
 	}
+	/**
+	 * 修改申请apply表中的status，hanglineid
+	 * @param dicitemid
+	 * @param hanglineid
+	 * @param applyid
+	 */
 	public int ModifyProcessInstanceId(Apply apply) {
 		return applymapper.ModifyProcessInstanceId(apply);
 	}
@@ -51,4 +57,13 @@ public class ApplyMapperImpl implements ApplyMapper{
 		// TODO Auto-generated method stub
 		return applymapper.SelectApplyALLCount(publicEntity);
 	}
+	/**
+	 * 修改申请apply表中的status，hanglineid
+	 * @param dicitemid
+	 * @param hanglineid
+	 * @param applyid
+	 */
+	/*public int ModifyApplyStatus(Integer dicitemid, int hanglineid, int applyid) {
+		return applymapper.ModifyApplyStatus(dicitemid,hanglineid,applyid);
+	}*/
 }

@@ -42,4 +42,10 @@ public class DicitemMapperImpl {
 	public int DelDicItem(int itemid) {
 		return dicitemMapper.DelDicItem(itemid);
 	}
+	/**
+	 * 根据name查找item
+	 */
+	public List<dicitem> selectItemByName(String name){
+		return dicitemMapper.selectItemByName(name);
+	}
 }

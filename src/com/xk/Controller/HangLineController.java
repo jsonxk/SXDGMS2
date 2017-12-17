@@ -25,7 +25,7 @@ import com.xk.service.AllService;
  * @author: xk
  * @date:2017年11月8日 下午11:05:30
  * @version :
- * 申请 信息管理
+ * 申请信息管理
  */
 @Controller
 @RequestMapping("/HangLine")
@@ -121,7 +121,6 @@ public class HangLineController {
 	 */
 	@RequestMapping(value="/selectHangLineByHangLineid",method=RequestMethod.POST)
 	public @ResponseBody JSONArray SelectHangLineByHangLineId(@RequestParam("hanglineid") int hanglineid){
-		System.out.println(hanglineid+"Effe而访问");
 		return allService.gethangLineBLL().SelectHangLineByHangLineId(hanglineid);
 	}
 	/**
@@ -150,5 +149,13 @@ public class HangLineController {
 	@RequestMapping(value="/selectHangPoleByHangLineid",method=RequestMethod.POST)
 	public @ResponseBody JSONArray SelectHangPoleByHangLineid(@RequestParam("hanglineid") int hanglineid){
 		return allService.gethangLineBLL().SelectHangPoleByHangLineid(hanglineid);
+	}
+	/**
+	 * 查找所有的搭挂线路信息以及上一杆
+	 * @return{hangdetail}
+	 */
+	@RequestMapping(value="/selectAllHangAndPole",method=RequestMethod.POST)
+	public @ResponseBody JSONArray SelectAllHangAndPole(){
+		return allService.gethangLineBLL().selectAllHangAndPole();
 	}
 }

@@ -13,36 +13,54 @@
 		<result column="Description" property="description" jdbcType="VARCHAR" />
 	</resultMap>
 	<select id="SelectAllFaultInfo" parameterType="com.xk.orm.PublicEntity"
-		resultType="com.xk.orm.CheckDetail">
-		SELECT
-		checkitem.`Name` as typename,checkdetail.CheckDetailId,checkdetail.LineCheckId,checkdetail.CheckItemId,checkdetail.HangDetailId,checkdetail.PoleId,fault.ProcessId,fault.CreateTime
-		as
-		createtime,fault.FaultId,fault.Memo,fault.`Status`,fault.TaskId,fault.UnitId,dicitem.Item
-		as
-		statusname,pole.`Name` as name from
-		checkdetail LEFT JOIN checkitem on
-		checkdetail.CheckItemId=checkitem.CheckItemId LEFT JOIN fault on
-		checkdetail.FaultId=fault.FaultId LEFT JOIN dicitem ON
-		dicitem.DicItemId=fault.`Status` LEFT JOIN pole on
-		pole.PoleId=checkdetail.PoleId 
- 		where checkdetail.FaultId=fault.FaultId
-		<if test="type!=0">
-			and checkdetail.CheckItemId in
-			(SELECT
-			check1.CheckItemId from checkitem as check1 WHERE
-			check1.CheckTypeId=#{type})
-		</if>
+		resultType="com.xk.orm.CheckDtlNotice">
+		SELECT checkdetail.*,notice.CorrentChkDtlId,notice.CreateTime as
+		createtime1,notice.FaultId as faultid1,notice.ProccessId as
+		processid1,notice.`Status` as status1,notice.UnitId,dicitem.Item as
+		statusname
+		from checkdetail LEFT JOIN notice on
+		notice.FaultId=checkdetail.FaultId LEFT JOIN dicitem on
+		dicitem.DicItemId=notice.`Status` WHERE checkdetail.FaultId!=0
 		<if
 			test="starttime!=null and starttime!='' and finishtime!=null and finishtime!=''">
-			and fault.CreateTime &gt;=#{starttime} and
-			fault.CreateTime
+			and checkdetail.CreateTime &gt;=#{starttime} and
+			checkdetail.CreateTime
 			&lt;=#{finishtime}
 		</if>
-		<if test="status!=0">
-			and fault.`Status`=#{status}
+		<if test="status!=0 and status!=''">
+			and notice.Status=#{status}
 		</if>
-		and checkitem.CheckItemId=checkdetail.CheckItemId
+		<if test="type!=0 and type!=''">
+			and checkdetail.CheckItemId in (SELECT
+			checkitem.CheckItemId FROM checkitem WHERE
+			checkitem.CheckTypeId=#{type})
+		</if>
 	</select>
+	<insert id="InsertPoleChkDtl" parameterType="com.xk.orm.CheckInfoCommon"
+		useGeneratedKeys="true" keyProperty="checkdetailid">
+		insert into checkdetail
+		(LineCheckId, CheckItemId,
+		HangDetailId, PoleId,
+		ProcessId,
+		CreateTime,
+		Status, FaultId,
+		Description,TaskId)
+		values
+		(#{linechkid},
+		#{checkitemid,jdbcType=INTEGER},
+		#{hangdetailid,jdbcType=INTEGER},
+		#{poleid,jdbcType=INTEGER}, #{processid,jdbcType=INTEGER},
+		#{StringchkDtlCreatetime,jdbcType=TIMESTAMP},
+		#{chkDtlstatus,jdbcType=INTEGER},
+		#{faultid,jdbcType=INTEGER},
+		#{chkDtlDescription,jdbcType=VARCHAR},#{taskid})
+	</insert>
+	<!--  修改checkedtail中processid-->
+	<update id="ModifyCheckDtlProcess" parameterType="java.lang.Integer">
+		update checkdetail
+		set ProcessId=#{processid,jdbcType=INTEGER}
+		 where CheckDetailId = #{checkdetailid,jdbcType=INTEGER} and FaultId=#{faultid}
+	</update>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from
 		checkdetail

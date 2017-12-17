@@ -193,7 +193,15 @@
 	<update id="ModifyProcessInstanceId" parameterType="com.xk.orm.Apply">
 		update apply
 		set
-		ProcessId = #{processid,jdbcType=VARCHAR},apply.`Status`=#{status}
+		<if test="status != null ">
+			Status = #{status,jdbcType=INTEGER}
+		</if>
+		<if test="processid != null">
+			,ProcessId = #{processid,jdbcType=VARCHAR}
+		</if>
+		<if test="hanglineid != null">
+			,HangLineId = #{hanglineid,jdbcType=INTEGER}
+		</if>
 		where
 		apply.ApplyId=#{applyid}
 	</update>

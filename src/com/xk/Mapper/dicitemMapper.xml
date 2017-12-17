@@ -15,6 +15,12 @@
  	<!-- 查找所有项目 -->
  	<select id="selectAllItem" resultMap="BaseResultMap">
  		select * from dicitem
+ 	</select>
+ 	<select id="selectItemByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+ 		select * from dicitem 
+		<if test="name!=null and name!=''">
+			 where dicitem.Item=#{name}
+		</if>
  	</select>	
  	<!-- 添加项目 -->
  	<insert id="InsertDicItem" parameterType="com.xk.orm.dicitem">

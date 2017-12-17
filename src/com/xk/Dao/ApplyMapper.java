@@ -50,4 +50,12 @@ public interface ApplyMapper {
 	 * @return
 	 */
 	int SelectApplyALLCount(PublicEntity publicEntity);
+	/**
+	 * 修改hanglineid,status
+	 * @param dicitemid
+	 * @param hanglineid
+	 * @param applyid
+	 * @return
+	 */
+	//int ModifyApplyStatus(Integer dicitemid, int hanglineid, int applyid);
 }

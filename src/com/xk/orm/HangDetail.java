@@ -1,5 +1,7 @@
 package com.xk.orm;
 
+import java.util.List;
+
 public class HangDetail {
     private Integer handdetailid;
 
@@ -19,8 +21,17 @@ public class HangDetail {
 
     private String memo;
     private String polename;
-    
-    public String getPolename() {
+	private List<Pole> poleList;
+	
+    public List<Pole> getPoleList() {
+		return poleList;
+	}
+
+	public void setPoleList(List<Pole> poleList) {
+		this.poleList = poleList;
+	}
+
+	public String getPolename() {
 		return polename;
 	}
 

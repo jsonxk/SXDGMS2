@@ -30,4 +30,10 @@ public interface dicitemMapper {
 	int InsertDicItem(dicitem item);
 	//删除项目
 	int DelDicItem(@Param("itemid")int itemid);
+	/**
+	 * 根据name查找item信息
+	 * @param name
+	 * @return
+	 */
+	List<dicitem> selectItemByName(@Param("name")String name);
 }

@@ -22,13 +22,41 @@ public class HistoryEmail {
      */
     private Integer type;
     private Integer taskid;
+    private Integer processid;
+    private Integer faultid;
+    private Integer status;
     
-    public Integer gettype() {
+
+	public Integer getFaultid() {
+		return faultid;
+	}
+
+	public void setFaultid(Integer faultid) {
+		this.faultid = faultid;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public Integer getType() {
 		return type;
 	}
 
-	public void settype(Integer type) {
+	public void setType(Integer type) {
 		this.type = type;
+	}
+
+	public Integer getProcessid() {
+		return processid;
+	}
+
+	public void setProcessid(Integer processid) {
+		this.processid = processid;
 	}
 
 	public Integer getTaskid() {

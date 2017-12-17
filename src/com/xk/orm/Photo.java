@@ -8,7 +8,9 @@ public class Photo {
     private Integer checkdetailid;
 
     private Date createtime;
-
+    
+    private String Stringcreatetime;
+    
     private String description;
 
     private String photopath;
@@ -20,8 +22,16 @@ public class Photo {
     public void setPhotoid(Integer photoid) {
         this.photoid = photoid;
     }
+    
+    public String getStringcreatetime() {
+		return Stringcreatetime;
+	}
 
-    public Integer getCheckdetailid() {
+	public void setStringcreatetime(String stringcreatetime) {
+		Stringcreatetime = stringcreatetime;
+	}
+
+	public Integer getCheckdetailid() {
         return checkdetailid;
     }
 

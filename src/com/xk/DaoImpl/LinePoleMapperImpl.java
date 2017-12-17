@@ -171,4 +171,19 @@ public class LinePoleMapperImpl implements PowerLineMapper,PoleMapper{
 	{
 		return lineDetailMapper.selectAllHangDetail(poleid);
 	}
+	/**
+	 * 删除线杆及相关的搭挂，线路详情
+	 * @param poleid
+	 * @return
+	 */
+	public int DelPoleByPoleId(int poleid) {
+		return poleMapper.DelPoleByPoleId(poleid);
+	}
+	/**
+	 * 根据poleid修改prevpoleid,
+	 * @param poleid
+	 */
+	public int ModifyPrevPoleIdByPoleId(int poleid) {
+		return poleMapper.ModifyPrevPoleIdByPoleId(poleid);
+	}
 }

@@ -4,10 +4,16 @@ package basetest;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.sf.json.JSONArray;
 
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
+import org.activiti.engine.task.Task;
 import org.apache.cxf.jaxrs.model.UserOperation;
 import org.apache.log4j.Logger;
 import org.junit.Test;
@@ -15,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.xk.ActivitiUtil.EnumData;
 import com.xk.DaoImpl.AllDao;
+import com.xk.orm.CheckInfoCommon;
 import com.xk.orm.HangLine;
 import com.xk.orm.PublicEntity;
 import com.xk.orm.Role;
@@ -32,6 +39,10 @@ public class test2 extends SpringCaseTest{
 	private AllService allService;
 	@Autowired
 	private AllDao allDao;
+	@Autowired
+	private RuntimeService runtimeService;
+	@Autowired
+	private TaskService taskService;
 	Logger log=Logger.getLogger(test2.class);
 	@Test
 	public void  test() throws ParseException {
@@ -64,7 +75,7 @@ public class test2 extends SpringCaseTest{
 		//en.setOffset(0);
 		//en.setPageSize(40);
 		en.setStarttime("2017-05-01");
-		en.setFinishtime("2017-12-01");
+		en.setFinishtime("2017-12-10");
 		//en.setUserid(1);
 		//en.setUnitid(1);
 		//en.setStarttime("");
@@ -73,6 +84,37 @@ public class test2 extends SpringCaseTest{
 		//List<HangLine> list=allDao.getHangLineMapperImpl().SelectAllHangLine(en);
 		//System.out.println(JSONArray.fromObject(allService.getFaultBLL().SelectAllFaultInfo(en)));
 		//System.out.println(allDao.getHangLineMapperImpl().SelectAllHangLineCount(en));
-		System.out.println(allService.getFaultBLL().SelectLineChkType());
+		/*CheckInfoCommon c=new CheckInfoCommon();
+		c.setCheckitemid(1);
+		//c.setLinecheckid(1);
+		c.setPhotoid(1);
+		c.setPoleid(1);
+		c.setChecktypeid(2);
+		c.setChkDtlstatus(1);
+		Date d=new Date();
+		c.setChkDtlCreatetime(d);
+		PublicEntity p=new PublicEntity();
+		p.setStatus(0);
+		p.setType(0);
+		p.setStarttime("2017-05-01");
+		p.setFinishtime("2017-12-9");
+		List<Task> task=taskService.createTaskQuery().processInstanceId(50001+"").list();
+		Map<String, Object> map=new HashMap<String, Object>();
+		for(Task t:task)
+		{
+			taskService.complete(t.getId()+"");
+			
+		}
+		task=taskService.createTaskQuery().processInstanceId(50001+"").list();
+		taskService.setVariable(task.get(0).getId(), "unitid", 1);
+		
+		System.out.println(taskService.getVariable(task.get(0).getId(),"unitid"));*/
+		//Map<String , Object> map=new HashMap<String, Object>();
+		//map.put("type",1);
+		//taskService.complete(task.get(0).getId());
+		//taskService.setVariable(task.get(0).getId(),"unitid",1);
+		
+		//Integer unitid=(Integer) taskService.getVariable(task.get(0).getId(), "unitid");
+		System.out.println(JSONArray.fromObject(allDao.getHangLineMapperImpl().selectAllHangAndPole()));
 	}
 }

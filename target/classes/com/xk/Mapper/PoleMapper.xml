@@ -39,6 +39,7 @@
 		linedetail.PoleId
 		from linedetail WHERE linedetail.LineId=#{lineid})
 	</select>
+	<!-- 根据poleid查找pole信息 -->
 	<select id="SelectPoleInfoByPoleId" parameterType="java.lang.Integer"
 		resultMap="BaseResultMap">
 		select powerline.`Name` as linename,pole.*,linedetail.LineId
@@ -108,6 +109,21 @@
 		#{latitude,jdbcType=DOUBLE}
 		where
 		PoleId = #{poleid,jdbcType=INTEGER}
+	</update>
+	<!-- 删除poleid,hangdetail，linedetail -->
+	<delete id="DelPoleByPoleId" parameterType="java.lang.Integer">
+		DELETE
+		pole.*,linedetail.*,hangdetail.* from pole LEFT JOIN linedetail ON
+		pole.PoleId=linedetail.PoleId LEFT JOIN hangdetail on
+		pole.PoleId=hangdetail.PoleId where pole.PoleId=#{poleid}
+	</delete>
+	<!-- 修改linedetail和hangdetail中prepoleid和prevpoleid为null -->
+	<update id="ModifyPrevPoleIdByPoleId" parameterType="java.lang.Integer">
+		UPDATE pole
+		LEFT JOIN hangdetail ON pole.PoleId=hangdetail.PoleId LEFT JOIN
+		linedetail ON pole.PoleId=linedetail.PoleId SET
+		linedetail.PrePoleId=NULL,hangdetail.PrevPoleId=NULL WHERE
+		pole.PoleId=#{poleid}
 	</update>
 	<insert id="insert" parameterType="com.xk.orm.Pole">
 		insert into pole (PoleId,

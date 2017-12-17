@@ -118,8 +118,9 @@ function DGInit() {
 				pageSize : params.limit,
 				offset : params.offset,
 				"status" : Number(status),
-				"timestatus" : Number($("#TimeType").val()),
+				//"timestatus" : Number($("#TimeType").val()),
 				"userid":Number(userid),
+				"unitid":Number(unitid),
 			};
 			for ( var key in timeinfo) {
 				param[key] = timeinfo[key];
@@ -226,8 +227,7 @@ function operateFormatter(value, row, index) {
 			'<button type="button" class="checkApply btn btn-default  btn-sm" style="margin-right:15px;">查看</button>',
 			'<button type="button" class="delapply btn btn-default  btn-sm" style="margin-right:15px;">删除</button>' ];
 	if (row.statusname == "提交申请") {
-		opvalue
-				.push('<button type="button" class="Upapply btn btn-default  btn-sm" style="margin-right:15px;">提交</button>');
+		opvalue.push('<button type="button" class="Upapply btn btn-default  btn-sm" style="margin-right:15px;">提交</button>');
 	}
 	return opvalue.join('');
 }
@@ -242,11 +242,18 @@ window.operateEvents = {
 	},
 };
 /**
- * 提交按钮
+ * 表单提交按钮
  * @param row{基本信息applyid,applystringtime,applytime,buildcontact,buildphone,contactphone,,hanglineid,文件信息applydocid,docname,docpath}
  */
 function SubmitApply(row) {
+	/**
+	 * 一条申请的applyid主键
+	 */
 	ApplyId=row.applyid;
+	/**
+	 * nextsubmit 表示第一次添加（新建一条信息）
+	 * nextsubmit2 表示修改信息
+	 */
 	$(".cancel").css("display", "block");
 	$("#NextSubmit").css("display", "none");
 	$("#NextSubmit2").css("display", "block");
@@ -267,6 +274,7 @@ function SubmitApply(row) {
 	$("#ApplyMemo").val(row.description);
 	/**
 	 * 设置建设类型
+	 *	选中返回的某一个
 	 */
 	var select = document.getElementById("ApplyBuildType");
 	for (var i = 0; i < select.options.length; i++) {
@@ -348,7 +356,7 @@ var eventFun = {
 	 * @param index
 	 *            下一页参数
 	 * @param flag
-	 *            判断第一次下一步还是第二次
+	 *            判断第一次下一步还是第二次{0：表示添加申请，1：表示修改信息}
 	 */
 	next : function(index, flag) {
 		var bv = form.data('bootstrapValidator');
@@ -372,6 +380,9 @@ var eventFun = {
 					datatype : "json",
 					contentType : 'application/json',
 					success : function(data) {
+						/**
+						 * 添加一个申请返回的applyid主键
+						 */
 						ApplyId = data[0].Insert;
 					},
 				});
@@ -384,6 +395,7 @@ var eventFun = {
 					datatype : "json",
 					contentType : 'application/json',
 					success : function(data) {
+						
 					},
 				});
 
@@ -412,11 +424,18 @@ var eventFun = {
 	},
 	/**
 	 * 完成输入
+	 * 上传文件信息
 	 */
 	complete : function() {
+		/**
+		 * 判断必须文件是否都有
+		 */
 		fileflag = 0;
 		// 所有文件信息
 		var fileinfo = document.getElementsByName("tablefiles");
+		/**
+		 * 文件名称
+		 */
 		var filename =document.getElementsByName("filenameInfo")
 		// 文件信息的标记Must是否必选
 		var FileMust = document.getElementsByName("FileMust");
@@ -432,6 +451,9 @@ var eventFun = {
 			$("#FilePromet").css("display", "block");
 		} else {
 			for (var j = 0; j < fileinfo.length; j++) {
+				/**
+				 * 上传文件
+				 */
 				if (fileinfo[j].value != "") {
 					FileUpload(j);
 				}
@@ -462,7 +484,9 @@ var eventFun = {
 			data:JSON.stringify(param),
 			datatype:"json",
 			contentType : 'application/json',
-			success:function(){},	
+			success:function(){
+				
+			},	
 		});
 	}
 };

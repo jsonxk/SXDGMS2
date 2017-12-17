@@ -7,8 +7,11 @@ var ImgCount=0;
 var ImgWidth=$("#FaultPhoto").width();
 var num=0;
 var FaultMenage=function(){}; 
-//流程任务Id
-var TaskId=0;
+//流程实例Id
+var ProcessId=0;
+//错误id
+var Faultid=0;
+var Status=0;
 var userid=$(".userinfo span").text();
 //var unitid=$(".userinfo #p3").text();
 //var loginname=$(".userinfo #p1").text();
@@ -55,7 +58,7 @@ FaultMenage.prototype={
  */
 var faultinit=new FaultMenage();
 $(function(){
-	$(".fromtimeFault1").val(getBeforeDate(7));
+	$(".fromtimeFault1").val(getBeforeDate(30));
 	$(".dateFinishFault1").val(getBeforeDate(0));
 	faultinit.FaultType();
 })
@@ -106,12 +109,12 @@ function faultInfoInit(){
 								return index+ 1;
 							}
 						}, {
-							field : "name",
+							field : "polename",
 							title : "线杆名称",
 							align : "center",
 							valign : "middle",
 						},{
-							field : "timeString",
+							field : "stringtime",
 							title : "上报时间",
 							align : "center",
 							valign : "middle",
@@ -160,10 +163,37 @@ function faultInfoInit(){
 	});
 }
 function operateFormatter(value, row, index) {
-	var opvalue = [
-			'<button type="button" class="checkApply btn btn-default  btn-sm" style="margin-right:15px;">查看</button>',
-			'<button type="button" class="delapply btn btn-default  btn-sm" style="margin-right:15px;">删除</button>',
-			'<button type="button" class="Submitapply btn btn-default  btn-sm" style="margin-right:15px;">发送通知</button>'];
+	var opvalue;
+	/**
+	 * 当前缺陷状态
+	 * {0：缺陷上报，1}
+	 */
+	if(row.statusname=='缺陷上报')
+		{
+		opvalue = [
+					'<button type="button" class="checkApply btn btn-default  btn-sm" style="margin-right:15px;">查看</button>',
+					'<button type="button" class="delapply btn btn-default  btn-sm" style="margin-right:15px;">删除</button>',
+					'<button type="button" class="startRepairAct btn btn-default  btn-sm" style="margin-right:15px;">开启整改流程</button>'];
+		}
+	else if(row.statusname=='发送整改通知书'){
+		opvalue = [
+					'<button type="button" class="checkApply btn btn-default  btn-sm" style="margin-right:15px;">查看</button>',
+					'<button type="button" class="delapply btn btn-default  btn-sm" style="margin-right:15px;">删除</button>',
+					'<button type="button" class="Submitapply btn btn-default  btn-sm" style="margin-right:15px;">发送通知</button>'];
+	}
+	else if(row.statusname=="整改完成")
+		{
+		opvalue = [
+					'<button type="button" class="checkApply btn btn-default  btn-sm" style="margin-right:15px;">查看</button>',
+					'<button type="button" class="delapply btn btn-default  btn-sm" style="margin-right:15px;">删除</button>',];
+		}
+	else{
+		opvalue = [
+					'<button type="button" class="checkApply btn btn-default  btn-sm" style="margin-right:15px;">查看</button>',
+					'<button type="button" class="delapply btn btn-default  btn-sm" style="margin-right:15px;">删除</button>',
+					'<button type="button" class="HandFault btn btn-default  btn-sm" style="margin-right:15px;">处理</button>'];
+	}
+	
 	return opvalue.join('');
 }
 // 表格操作的按钮事件
@@ -182,15 +212,145 @@ window.operateEvents = {
 		 * 缺陷搭挂线路信息
 		 */
 		faultinit.FaultPoleOfLine(row.poleid);
-		TaskId=row.taskid;
 	},
 	'click .delapply' : function(e, value, row, index) {
 	},
 	'click .Submitapply' : function(e, value, row, index) {
+		/**
+		 * 发送通知
+		 */
 		$("#SubmitRepairModal").modal("show");
+		ProcessId=row.processid;
+		Faultid=row.faultid;
+		Status=row.status1;
 		faultinit.FaultPoleOfLine(row.poleid);
+	},
+	'click .startRepairAct':function(e,value,row,index)
+	{
+		/**
+		 * 开启整改流程
+		 */
+		//alert(row.unitid);
+		StartRepairAct(row.checkdetailid,row.faultid,row.poleid,row.status1);
+	},
+	'click .HandFault':function(e,value,row,index)
+	{
+		/**
+		 * 处理整改流程
+		 */
+		ProcessId=row.processid;
+		Faultid=row.faultid;
+		Status=row.status1;
+		if(row.statusname=="整改验收")
+			{
+				$("#RepairModal").modal("show");
+			}
+		else{
+				$("#WarnModal").modal("show");
+		}
 	}
 };
+/**
+ * 开启审批流程
+ * @param checkdetailid
+ * @param faultid
+ * @param poleid
+ */
+function StartRepairAct(checkdetailid,faultid,poleid,status){
+	faultinit.FaultPoleOfLine(poleid);
+	setTimeout(function(){
+		var poleunitid=$("#AdviceUnit").val();
+		$.ajax({
+			type:"post",
+			url:"FaultMS/startRepairAct.spring",
+			data:{
+				"userid":userid,
+				"faultid":faultid,
+				"checkdetailid":checkdetailid,
+				"unitid":poleunitid,
+				"status":status,
+			},
+			datatype:"json",
+			success:function(data){
+				faultinit.FaultInfoInit();
+				alert(data[0].msg);
+			}
+		});
+	},100);
+	
+}
+/**
+ * 处理流程
+ * @param hangtype 1表示ok；0表示finish
+ */
+function HandRepairAct(handtype){
+	$.ajax({
+		type : "post",
+		url : "FaultMS/handerRepairAct.spring",
+		data : {
+			"userid" : userid,
+			"processid":ProcessId,
+			"handtype":handtype,
+			"faultid":Number(Faultid),
+			"status":Number(Status),
+		},
+		datatype : "json",
+		success : function(data) {
+			$("#WarnModal").modal("hide");
+			faultinit.FaultInfoInit();
+			alert(data[0].msg);
+		}
+	});
+}
+/**
+ * 点击处理弹窗
+ */
+$(".WarnOk").click(function(){
+	HandRepairAct(1);
+});
+$(".Warncancel").click(function(){
+	$("#WarnModal").modal("hide");
+});
+/**
+ * 整改验收弹窗
+ */
+$(".RepairOk").click(function(){
+	$("#RepairModal").modal("hide");
+	HandRepairAct(1);
+	
+});
+$(".RepatrNoOk").click(function(){
+	$("#RepairModal").modal("hide");
+	HandRepairAct(0);
+});
+/**
+ * modal点击发送通知
+ */
+$(".SubmitAdvicebtn").click(function(){
+	$.ajaxFileUpload({
+		url : 'FaultMS/submitRepairInfo.spring',
+		type : "post",
+		secureuri : false,
+		data : {
+			"type":$("#AdviceType").val(),
+			"unitid":$("#AdviceUnit").val(),
+			"subject":$("#AdviceHeader").val(),
+			"context":$("#AdviceMemo").val(),
+			//"taskid":TaskId,
+			"userid":userid,
+			"processid":ProcessId,
+			"faultid":Faultid,
+			"status":Status,
+		},
+		fileElementId : "adviceFile",
+		dataType : 'JSON',
+		success : function(data) {
+			$("#SubmitRepairModal").modal("hide");
+			faultinit.FaultInfoInit();
+			alert("邮件发送成功");
+		},
+	});
+})
 /**
  * 查询缺陷状态
  */
@@ -265,8 +425,10 @@ function faultPoleOfLine(poleid){
 					unitdata.push(data[i].unitname);
 					$("#AdviceUnit").append("<option value="+data[i].unitid+">"+data[i].unitname+"</option>");
 				}
+				$("#FaultPole").val(data[0].name);
 				$("#FaultLine").val(linedata);
 				$("#FaultOfUnit").val(unitdata);
+				
 			}
 	});
 }
@@ -283,35 +445,25 @@ function faultPhoto(checkdtlId){
 		},
 		datatype : "json",
 		success : function(data) {
-				for (var i = 0; i < data.length; i++) {
-					$("#FaultPhoto ul").append("<li><img src='"+data[i].photopath+"'></li>");
+			$("#FaultPhoto ul").text("");
+				if(data.length>0)
+					{
+						for (var i = 0; i < data.length; i++) {
+							$("#FaultPhoto ul").append("<li><img src='"+data[i].photopath+"'></li>");
+						}
+					}
+				else{
+					$("#FaultPhoto ul").append("<li><img alt='没有相关图片'></li>");
 				}
 				ImgCount=data.length;
 			}
 	});
 }
 /**
- * 点击发送通知
+ * 查询
  */
-$(".SubmitAdvicebtn").click(function(){
-	$.ajaxFileUpload({
-		url : 'FaultMS/submitRepairInfo.spring',
-		type : "post",
-		secureuri : false,
-		data : {
-			"type":$("#AdviceType").val(),
-			"unitid":$("#AdviceUnit").val(),
-			"subject":$("#AdviceHeader").val(),
-			"context":$("#AdviceMemo").val(),
-			"taskid":TaskId,
-			"userid":userid,
-		},
-		fileElementId : "adviceFile",
-		dataType : 'JSON',
-		success : function(data) {
-			$("#CheckFaultModal").modal("hide");
-		},
-	});
+$("#FaultSearch").click(function(){
+	$('#Faulttable').bootstrapTable('refresh');
 })
 $('.fromtimeFault').datetimepicker({
 	defaultDate : new Date(),

@@ -165,6 +165,15 @@ public class LinePoleBLL {
 	 * @return
 	 */
 	public boolean insertPoleLineDetail(LineDetail lineDetail) {
+		List<PowerLine> alllineLines=allDao.getLinePoleMapperImpl().selectAllLineName();
+		for(PowerLine line:alllineLines)
+		{
+			if(line.getLineid()==lineDetail.getLineid())
+			{
+				lineDetail.setName(line.getName()+"#"+lineDetail.getCode());
+			}
+		}
+		//lineDetail.setName(lineDetail);
 		int i=allDao.getLinePoleMapperImpl().insertPoleLineDetail(lineDetail);
 		if(i>0)
 		{
@@ -261,5 +270,28 @@ public class LinePoleBLL {
 	public JSONArray SelectHangPoleByAllName(String polename) {
 		List<Pole> poleinfo=allDao.getLinePoleMapperImpl().SelectPoleInfoByAllName(polename);
 		return JSONArray.fromObject(poleinfo);
+	}
+	/**
+	 * 删除线杆并删除相关的搭挂详情和线路详情
+	 * @param poleid
+	 * @return
+	 */
+	public JSONArray DelPoleByPoleId(int poleid) {
+		/**
+		 * 删除线杆并删除相关的搭挂详情和线路详情
+		 */
+		int i=allDao.getLinePoleMapperImpl().DelPoleByPoleId(poleid);
+		if(i>0)
+		{
+			/**
+			 * 修改hangdetail中所有prevpoleid为空
+			 * linedetail
+			 */
+			allDao.getLinePoleMapperImpl().ModifyPrevPoleIdByPoleId(poleid);
+			return JSONArray.fromObject("[{'msg':'删除线杆成功'}]");
+		}
+		else{
+			return JSONArray.fromObject("[{'msg':'删除线杆失败'}]");
+		}
 	}
 }

@@ -85,7 +85,6 @@ public class LinePoleController {
 	 */
 	@RequestMapping(value="/insertPoleLineDetail",method=RequestMethod.POST)
 	public @ResponseBody boolean insertPoleLineDetail(@RequestBody LineDetail lineDetail){
-		//System.out.println(lineDetail.getName()+"ddskcsd未付款疯狂减肥 ");
 		return allservice.getLinePoleBLL().insertPoleLineDetail(lineDetail);
 	}
 	/**
@@ -155,5 +154,14 @@ public class LinePoleController {
 	@RequestMapping(value="/selectHangPoleByAllName",method=RequestMethod.POST)
 	public @ResponseBody JSONArray SelectHangPoleByAllName(@RequestParam("polename") String polename){
 		return allservice.getLinePoleBLL().SelectHangPoleByAllName(polename);
+	}
+	/**
+	 * 删除线杆并删除相关的搭挂详情和线路详情
+	 * @param poleid
+	 * @return
+	 */
+	@RequestMapping(value="/delPoleByPoleId",method=RequestMethod.POST)
+	public @ResponseBody JSONArray DelPoleByPoleId(@RequestParam("poleid") int poleid){
+		return allservice.getLinePoleBLL().DelPoleByPoleId(poleid);
 	}
 }

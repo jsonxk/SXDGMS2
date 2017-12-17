@@ -7,7 +7,7 @@ import com.xk.orm.HistoryEmail;
 public class SendMailDemo {
 	
 	
-	 public void run(HistoryEmail historyEmail) {
+	 public void run(HistoryEmail historyEmail,String localpath) {
 		  // 设置邮件服务器信息
 		  MailSenderInfo mailInfo = new MailSenderInfo();
 		  mailInfo.setMailServerHost(EnumData.serverHost);
@@ -30,7 +30,8 @@ public class SendMailDemo {
 		  //buffer.append("报警公司名: " + acompany + "\n报警主机名: " + asite + "\n报警类型: " + type);
 		  mailInfo.setContent(historyEmail.getContext());
 		  //附件
-		  mailInfo.setAttachFileNames(historyEmail.getSenddocpath());
+		  mailInfo.setAttachFileNames(localpath);
+		  //mailInfo.setAttachFileNames(historyEmail.getSenddocpath());
 	      // 发送邮件
 	 	 SimpleMailSender sms = new SimpleMailSender();
 	 	 sms.sendAttahchMail(mailInfo);
@@ -46,8 +47,9 @@ public class SendMailDemo {
 		email.setToaddress(EnumData.SendAddress);
 		email.setSubject("test");
 		email.setContext("qqqqq");
-		email.setSenddocpath("E:\\myeclipse 2015\\workspace\\.metadata\\.me_tcat7\\webapps\\SXDGMS2\\EmailFile\\artifacts.xml");
-		System.out.println();
-		new SendMailDemo().run(email);
+		//email.setSenddocpath("E:\\myeclipse 2015\\workspace\\.metadata\\.me_tcat7\\webapps\\SXDGMS2\\EmailFile\\artifacts.xml");
+		//email
+		//System.out.println();
+		//new SendMailDemo().run(email);
 	}
 	} 

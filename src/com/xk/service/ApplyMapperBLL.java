@@ -128,8 +128,8 @@ public class ApplyMapperBLL {
 	/**
 	 * 根据上传信息查找申请信息
 	 * 
-	 * @param publicentity
-	 * @return
+	 * @param publicentity{pagesize,status,userid,unitid,offset}
+	 * @return 
 	 * 
 	 */
 	public JSONArray SelectApplyInfo(PublicEntity publicentity) {
@@ -138,8 +138,9 @@ public class ApplyMapperBLL {
 		List<ApplyDoc> applydoc=null;
 		JSONArray jsondata = new JSONArray();
 		JSONObject jodata = new JSONObject();
-		/*
-		 * 根据时间查找
+		/**
+		 * 查找申请信息
+		 * unitid，userid，status{申请类型}
 		 */
 		applyinfo = alldao.getApplyMapperImpl().SelectApplyInfoAll(publicentity);
 		SimpleDateFormat formart = new SimpleDateFormat("yyyy-MM-dd");
@@ -183,29 +184,32 @@ public class ApplyMapperBLL {
 	private TaskService taskService;
 	@Autowired
 	private IdentityService identityService;
+	/**
+	 * 开启审批流程
+	 * @param apply
+	 * @return
+	 */
 	public JSONArray SubmitApply(Apply apply) {
 		runtimeService=processEngine.getRuntimeService();
 		taskService=processEngine.getTaskService();
+		/**
+		 * 处理的userid
+		 */
 		String useridInfo=apply.getUserid()+"";
-		List<dicitem> itemdata=alldao.getdicitemMapperImpl().selectAllItem();
-		for(dicitem  item:itemdata)
-		{
-			if(item.getItem().equals("申请受理"))
-			{
-				apply.setStatus(item.getDicitemid());
-			}
-		}
 		Map<String, Object> map=new HashMap<String, Object>();
 		/**
 		 * 设置提交申请的用户
 		 */
-		map.put("apply", useridInfo);
+		map.put("applyuserid", useridInfo);
 		identityService=processEngine.getIdentityService();
-		ProcessInstance processInstance=runtimeService.startProcessInstanceByKey(EnumData.processKey, map);
+		ProcessInstance processInstance=runtimeService.startProcessInstanceByKey(EnumData.ApplyprocessKey, map);
 		/**
 		 * 当前任务
 		 */
 		List<Task> task=taskService.createTaskQuery().processInstanceId(processInstance.getId()).list();
+		/**
+		 * 完成第一个提交申请的任务
+		 */
 		for(Task t:task){
 			taskService.complete(t.getId());
 		};
@@ -213,8 +217,17 @@ public class ApplyMapperBLL {
 		/**
 		 * 修改申请表中ProcessId和status状态
 		 */
+		task=taskService.createTaskQuery().processInstanceId(processInstance.getId()).list();
+		List<dicitem> dicitem=alldao.getdicitemMapperImpl().selectItemByName(task.get(0).getName());
+		apply.setStatus(dicitem.get(0).getDicitemid());
 		int i=ModifyProcessInstanceId(apply);
-		return null;
+		if(i>0)
+		{
+			return JSONArray.fromObject("[{'msg':'提交申请成功'}]");
+		}
+		else{
+			return JSONArray.fromObject("[{'msg':'提交申请失败'}]");
+		}
 	}
 	/**
 	 * xiugai Apply Table zhong processid 

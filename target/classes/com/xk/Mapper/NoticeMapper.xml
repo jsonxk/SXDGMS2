@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xk.Dao.NoticeMapper" >
+  <resultMap id="BaseResultMap" type="com.xk.orm.Notice" >
+    <id column="NoticeId" property="noticeid" jdbcType="INTEGER" />
+    <result column="FaultId" property="faultid1" jdbcType="INTEGER" />
+    <result column="UnitId" property="unitid1" jdbcType="INTEGER" />
+    <result column="ProccessId" property="proccessid1" jdbcType="INTEGER" />
+    <result column="Status" property="status1" jdbcType="INTEGER" />
+    <result column="CreateTime" property="createtime1" jdbcType="TIMESTAMP" />
+    <result column="CorrentChkDtlId" property="correntchkdtlid" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+   *
+    from notice
+    where NoticeId = #{noticeid,jdbcType=INTEGER}
+  </select>
+  <!-- 添加notice处理错误记录 -->
+  <insert id="InsertNewNotice" parameterType="com.xk.orm.Notice">
+  	 insert into notice (FaultId, UnitId, 
+      ProccessId, Status, CreateTime, 
+      CorrentChkDtlId)
+    values (#{faultid1,jdbcType=INTEGER}, #{unitid1,jdbcType=INTEGER}, 
+      #{proccessid1,jdbcType=INTEGER}, #{status1,jdbcType=INTEGER}, #{createtime1,jdbcType=TIMESTAMP}, 
+      #{correntchkdtlid,jdbcType=INTEGER})
+  </insert>
+  <update id="MofidyNoticeStatus" parameterType="java.lang.Integer">
+  	update notice set Status=#{status} where FaultId=#{faultid}
+  </update>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from notice
+    where NoticeId = #{noticeid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xk.orm.Notice" >
+    insert into notice (NoticeId, FaultId, UnitId, 
+      ProccessId, Status, CreateTime, 
+      CorrentChkDtlId)
+    values (#{noticeid,jdbcType=INTEGER}, #{faultid,jdbcType=INTEGER}, #{unitid,jdbcType=INTEGER}, 
+      #{proccessid,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
+      #{correntchkdtlid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xk.orm.Notice" >
+    insert into notice
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="noticeid != null" >
+        NoticeId,
+      </if>
+      <if test="faultid != null" >
+        FaultId,
+      </if>
+      <if test="unitid != null" >
+        UnitId,
+      </if>
+      <if test="proccessid != null" >
+        ProccessId,
+      </if>
+      <if test="status != null" >
+        Status,
+      </if>
+      <if test="createtime != null" >
+        CreateTime,
+      </if>
+      <if test="correntchkdtlid != null" >
+        CorrentChkDtlId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="noticeid != null" >
+        #{noticeid,jdbcType=INTEGER},
+      </if>
+      <if test="faultid != null" >
+        #{faultid,jdbcType=INTEGER},
+      </if>
+      <if test="unitid != null" >
+        #{unitid,jdbcType=INTEGER},
+      </if>
+      <if test="proccessid != null" >
+        #{proccessid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="correntchkdtlid != null" >
+        #{correntchkdtlid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xk.orm.Notice" >
+    update notice
+    <set >
+      <if test="faultid != null" >
+        FaultId = #{faultid,jdbcType=INTEGER},
+      </if>
+      <if test="unitid != null" >
+        UnitId = #{unitid,jdbcType=INTEGER},
+      </if>
+      <if test="proccessid != null" >
+        ProccessId = #{proccessid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        Status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createtime != null" >
+        CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="correntchkdtlid != null" >
+        CorrentChkDtlId = #{correntchkdtlid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where NoticeId = #{noticeid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xk.orm.Notice" >
+    update notice
+    set FaultId = #{faultid,jdbcType=INTEGER},
+      UnitId = #{unitid,jdbcType=INTEGER},
+      ProccessId = #{proccessid,jdbcType=INTEGER},
+      Status = #{status,jdbcType=INTEGER},
+      CreateTime = #{createtime,jdbcType=TIMESTAMP},
+      CorrentChkDtlId = #{correntchkdtlid,jdbcType=INTEGER}
+    where NoticeId = #{noticeid,jdbcType=INTEGER}
+  </update>
+</mapper>

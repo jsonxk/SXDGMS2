@@ -23,14 +23,11 @@
 	<!-- 根据hanglineid查找线杆信息 -->
 	<resultMap id="SelectHangPoleByHangLineidMap" type="com.xk.orm.HangDetailList">
 		<id column="HandDetailId" property="handdetailid" jdbcType="INTEGER" />
-		<result column="HangLineId" property="hanglineid"
-			jdbcType="INTEGER" />
+		<result column="HangLineId" property="hanglineid" jdbcType="INTEGER" />
 		<result column="Code" property="code" jdbcType="VARCHAR" />
 		<result column="PoleId" property="poleid" jdbcType="INTEGER" />
-		<result column="PrevPoleId" property="prevpoleid"
-			jdbcType="INTEGER" />
-		<result column="NextPoleId" property="nextpoleid"
-			jdbcType="INTEGER" />
+		<result column="PrevPoleId" property="prevpoleid" jdbcType="INTEGER" />
+		<result column="NextPoleId" property="nextpoleid" jdbcType="INTEGER" />
 		<result column="GetMethod" property="getmethod" jdbcType="INTEGER" />
 		<result column="Status" property="status" jdbcType="INTEGER" />
 		<result column="Memo" property="memo" jdbcType="VARCHAR" />
@@ -48,9 +45,24 @@
 		hangdetail WHERE
 		hangdetail.HangLineId=#{hanglineid})
 	</select>
-	<select id="SelectHangPoleByHangLineid" resultMap="SelectHangPoleByHangLineidMap" parameterType="java.lang.Integer">
+	<!-- 查找搭挂线路细节信息 -->
+	<select id="selectAllHangAndPole" resultMap="BaseResultMap">
 		SELECT
-		hangdetail.*,linedetail.`Name` as newpolename,linedetail.PoleId as newpoleid from hangdetail LEFT JOIN
+		hangline.HangLineId,hangline.HangName as
+		hangname,hangdetail.HandDetailId as
+		childhangdetailid,hangdetail.HangLineId as
+		childhanglineid,hangdetail.`Code` as childcode,hangdetail.PoleId as
+		childpoleid,hangdetail.PrevPoleId as
+		childprevpoleid,hangdetail.GetMethod as
+		childgetmethod,hangdetail.`Status` as childstatus,hangdetail.Memo as
+		childmemo from hangline LEFT JOIN hangdetail on
+		hangline.HangLineId=hangdetail.HangLineId
+	</select>
+	<select id="SelectHangPoleByHangLineid" resultMap="SelectHangPoleByHangLineidMap"
+		parameterType="java.lang.Integer">
+		SELECT
+		hangdetail.*,linedetail.`Name` as
+		newpolename,linedetail.PoleId as newpoleid from hangdetail LEFT JOIN
 		linedetail on hangdetail.PoleId=linedetail.PoleId WHERE
 		hangdetail.HangLineId=#{hanglineid}
 	</select>

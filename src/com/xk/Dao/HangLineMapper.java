@@ -63,4 +63,16 @@ public interface HangLineMapper {
 	 * @return
 	 */
 	List<HangLine> SelectHangLineByAllName(@Param("hangname")String hangname);
+	/**
+	 * 修改搭挂线路信息
+	 * @param hangline
+	 * @return
+	 */
+	int ModifyHangLine(HangLine hangline);
+	/**
+	 * 删除搭挂线路信息
+	 * @param hanglineid
+	 * @return
+	 */
+	int DelHangLine(@Param("hanglineid")int hanglineid);
 }

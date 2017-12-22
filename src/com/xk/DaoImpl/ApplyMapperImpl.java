@@ -66,4 +66,12 @@ public class ApplyMapperImpl implements ApplyMapper{
 	/*public int ModifyApplyStatus(Integer dicitemid, int hanglineid, int applyid) {
 		return applymapper.ModifyApplyStatus(dicitemid,hanglineid,applyid);
 	}*/
+	/**
+	 * 删除apply以及相关applydoc
+	 * @param applyid
+	 * @return
+	 */
+	public int DelApplyAndApplyDoc(int applyid) {
+		return applymapper.DelApplyAndApplyDoc(applyid);
+	}
 }

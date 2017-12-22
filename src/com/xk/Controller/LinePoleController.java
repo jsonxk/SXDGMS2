@@ -164,4 +164,40 @@ public class LinePoleController {
 	public @ResponseBody JSONArray DelPoleByPoleId(@RequestParam("poleid") int poleid){
 		return allservice.getLinePoleBLL().DelPoleByPoleId(poleid);
 	}
+	/**
+	 * 地图上添加电力电路信息，pole，linedetail
+	 * @param pLine
+	 * @return
+	 */
+	@RequestMapping(value="/insertNewLineAndDetail",method=RequestMethod.POST)
+	public @ResponseBody JSONArray InsertNewLineAndDetail(@RequestBody PowerLine pLine){
+		return allservice.getLinePoleBLL().InsertNewLineAndDetail(pLine);
+	}
+	/**
+	 * 修改线路信息{name,status,type,unitid}
+	 * @param pLine
+	 * @return
+	 */
+	@RequestMapping(value="/modifyLineInfo",method=RequestMethod.POST)
+	public  @ResponseBody boolean ModifyLineInfo(@RequestBody PowerLine pLine){
+		return allservice.getLinePoleBLL().ModifyLineInfo(pLine);
+	}
+	/**
+	 * 删除电力线路信息
+	 * @param lineid
+	 * @return
+	 */
+	@RequestMapping(value="/delLineInfo",method=RequestMethod.POST)
+	public @ResponseBody boolean DelLineInfo(@RequestParam("lineid") int lineid){
+		return allservice.getLinePoleBLL().DelLineInfo(lineid);
+	}
+	/**
+	 * 根据poleid查找相关图片信息
+	 * @param poleid
+	 * @return
+	 */
+	@RequestMapping(value="/selectPolePhoto",method=RequestMethod.POST)
+	public @ResponseBody JSONArray SelectPolePhoto(@RequestParam("poleid") int poleid){
+		return allservice.getLinePoleBLL().SelectPolePhoto(poleid);
+	}
 }

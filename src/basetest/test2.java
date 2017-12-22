@@ -115,6 +115,7 @@ public class test2 extends SpringCaseTest{
 		//taskService.setVariable(task.get(0).getId(),"unitid",1);
 		
 		//Integer unitid=(Integer) taskService.getVariable(task.get(0).getId(), "unitid");
-		System.out.println(JSONArray.fromObject(allDao.getHangLineMapperImpl().selectAllHangAndPole()));
+		//System.out.println(JSONArray.fromObject(allDao.getHangLineMapperImpl().selectAllHangAndPole()));
+		System.out.println(JSONArray.fromObject(allService.getLinePoleBLL().SelectPoleInfoByPoleid(161)));
 	}
 }

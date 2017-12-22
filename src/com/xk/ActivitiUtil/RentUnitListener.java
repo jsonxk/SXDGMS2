@@ -47,7 +47,7 @@ public class RentUnitListener implements TaskListener{
 			{
 				if(unitid.getValue(task).equals(ui.getUnitid()))
 				{
-					System.out.println(ui.getUserid()+"Regee而发给你看见男人看见你看妇女节g");
+					//System.out.println(ui.getUserid()+"Regee而发给你看见男人看见你看妇女节g");
 					task.addCandidateUser(ui.getUserid()+"");
 				}
 			}

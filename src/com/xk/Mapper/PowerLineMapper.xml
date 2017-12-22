@@ -30,9 +30,10 @@
 	</resultMap>
 	<select id="SelectAllLine" resultType="com.xk.orm.PowerLine"
 		parameterType="com.xk.orm.PublicEntity">
-		select powerline.*,d1.Item as statusname,d2.Item as typename from
+		select powerline.*,d1.Item as statusname,d2.Item as typename,unit.UnitName as unitname  from
 		powerline LEFT JOIN dicitem d1 ON powerline.`Status`=d1.DicItemId LEFT
-		JOIN dicitem d2 ON powerline.Type=d2.DicItemId
+		JOIN dicitem d2 ON powerline.Type=d2.DicItemId LEFT JOIN unit ON 
+		unit.UnitId=powerline.UnitId 
 		where
 		<if test="unitid!=0">
 			powerline.UnitId=#{unitid}
@@ -54,13 +55,13 @@
 	</select>
 	<!-- 加载所有线路信息 -->
 	<select id="selectAllLineName" resultType="com.xk.orm.PowerLine">
-		select * from
-		powerline
+		select * from powerline
 	</select>
 	<!-- 搜索电力线路信息 -->
 	<select id="SelectLineInfoByName" resultType="com.xk.orm.PowerLine"
 		parameterType="java.lang.String">
-		select * from powerline where powerline.name like
+		select
+		powerline.* from powerline where powerline.name like
 		"%"#{name}"%"
 	</select>
 	<select id="SelectLineInfoByLineId" resultMap="BaseResultMap"
@@ -68,9 +69,12 @@
 		select powerline.*,d1.Item as statusname,d2.Item as
 		typename,Unit.UnitName as unitname,linedetail.LineDetailId as
 		childlinedetailid
-		,linedetail.LineId as childLineId,linedetail.PoleId as childPoleId,linedetail.PrePoleId
-		as childPrePoleId,linedetail.`Code` as childCode,linedetail.`Name` as
-		childName,linedetail.Memo as childMemo from powerline LEFT JOIN
+		,linedetail.LineId as childLineId,linedetail.PoleId
+		as childPoleId,linedetail.PrePoleId
+		as childPrePoleId,linedetail.`Code`
+		as childCode,linedetail.`Name` as
+		childName,linedetail.Memo as
+		childMemo from powerline LEFT JOIN
 		dicitem d1 ON
 		powerline.`Status`=d1.DicItemId LEFT JOIN dicitem d2 on
 		powerline.Type=d2.DicItemId left join unit on
@@ -109,7 +113,44 @@
 		where LineId =
 		#{lineid,jdbcType=INTEGER}
 	</update>
-	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+	<!--修改电力线路信息 -->
+	<update id="ModifyLineInfo" parameterType="com.xk.orm.PowerLine">
+		update powerline
+		<set>
+			<if test="unitid != null">
+				UnitId = #{unitid,jdbcType=INTEGER},
+			</if>
+			<if test="code != null">
+				Code = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				Name = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="createtime != null">
+				CreateTime = #{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="firstpoleid != null">
+				FirstPoleId = #{firstpoleid,jdbcType=INTEGER},
+			</if>
+			<if test="finallypoleid != null">
+				FinallyPoleId = #{finallypoleid,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				Status = #{status,jdbcType=SMALLINT},
+			</if>
+			<if test="linelength != null">
+				LineLength = #{linelength,jdbcType=DOUBLE},
+			</if>
+			<if test="type != null">
+				Type = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="memo != null">
+				Memo = #{memo,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where LineId = #{lineid,jdbcType=INTEGER}
+	</update>
+	<delete id="DelLineInfo" parameterType="java.lang.Integer">
 		delete from
 		powerline
 		where LineId = #{lineid,jdbcType=INTEGER}

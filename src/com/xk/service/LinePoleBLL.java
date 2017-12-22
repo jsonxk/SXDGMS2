@@ -17,6 +17,7 @@ import com.xk.DaoImpl.AllDao;
 import com.xk.orm.HangLine;
 import com.xk.orm.LineDetail;
 import com.xk.orm.LineDetailList;
+import com.xk.orm.Photo;
 import com.xk.orm.Pole;
 import com.xk.orm.PowerLine;
 import com.xk.orm.PublicEntity;
@@ -40,13 +41,15 @@ public class LinePoleBLL {
 	public JSONArray SelectAllLine(PublicEntity searchinfo) {
 		int count=allDao.getLinePoleMapperImpl().SelectAllLineCount(searchinfo);
 		List<PowerLine> lineList=allDao.getLinePoleMapperImpl().SelectAllLine(searchinfo);
-		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:MM:SS");
 		for(PowerLine line:lineList)
 		{
 			if(line.getCreatetime()!=null)
 			{
 				line.setTime(format.format(line.getCreatetime()).toString());
 			}
+			int  polecount=allDao.getLinePoleMapperImpl().SelectPoleCount(line.getLineid());
+			line.setLineNum(polecount+"");
 		}
 		JSONArray jadata=new JSONArray();
 		JSONObject jodata=new JSONObject();
@@ -149,7 +152,7 @@ public class LinePoleBLL {
 	 * @return
 	 */
 	public JSONArray selectAllPole() {
-		List<Pole> listPole=allDao.getLinePoleMapperImpl().selectAllPole();
+		List<Pole> listPole=allDao.getLinePoleMapperImpl().SelectPoleInfo(0);
 		return JSONArray.fromObject(listPole);
 	}
 	/**
@@ -216,6 +219,28 @@ public class LinePoleBLL {
 	 */
 	public JSONArray SelectPoleInfoByPoleid(int poleid) {
 		List<Pole> poleinfo=allDao.getLinePoleMapperImpl().SelectPoleInfoByPoleId(poleid);
+		List<Pole> listPole=allDao.getLinePoleMapperImpl().SelectPoleInfo(0);
+		System.out.println(JSONArray.fromObject(listPole));
+		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:MM:SS");
+		for(Pole pole:poleinfo)
+		{
+			if(pole.getCreatetime()!=null)
+			{
+				pole.setTimeString(format.format(pole.getCreatetime()));
+			}
+			for(int i=0;i<pole.getLinedetailList().size();i++)
+			{
+				for(Pole p:listPole)
+				{
+					System.out.println(pole.getLinedetailList().get(i).getPrepoleid()+"ffff"+p.getPoleid());
+					if(p.getPoleid().equals(pole.getLinedetailList().get(i).getPrepoleid()))
+					{
+						pole.getLinedetailList().get(i).setPrepolename(p.getLinedetailList().get(0).getName());
+						return JSONArray.fromObject(poleinfo);
+					}
+				}
+			}
+		}
 		return JSONArray.fromObject(poleinfo);
 	}
 	/**
@@ -293,5 +318,121 @@ public class LinePoleBLL {
 		else{
 			return JSONArray.fromObject("[{'msg':'删除线杆失败'}]");
 		}
+	}
+	/**
+	 * 地图上添加电力线路及相关poleid和linedetail
+	 * @param pLine
+	 * @return
+	 */
+	public JSONArray InsertNewLineAndDetail(PowerLine pLine) {
+		Pole pole=new Pole();
+		/**
+		 * 电力线路细节信息
+		 */
+		List<LineDetail> linedetail=new ArrayList<LineDetail>();
+		//List<Integer> polelist=new ArrayList<Integer>(); 
+		if(pLine.getPoleList().size()>0)
+		{
+			pole.setUnitid(pLine.getUnitid());
+			pole.setTimeString(pLine.getTimeString());
+			pole.setPositionmethod(0);
+			pole.setHeight(17);
+			pole.setType(23);
+			pole.setStatus(pLine.getPolestatus());
+			for(int i=0;i<pLine.getPoleList().size();i++)
+			{
+				/**
+				 * 添加线杆信息返回主键
+				 */
+				pole.setCode(pLine.getPoleList().get(i).getCode());
+				pole.setLongtitude(pLine.getPoleList().get(i).getLongtitude());
+				pole.setLatitude(pLine.getPoleList().get(i).getLatitude());
+				int RtnPoleid=allDao.getLinePoleMapperImpl().InsertPoleInfo(pole);
+				/**
+				 * 设置返回的主键poleid
+				 * List加入对象是因为加入的是引用地址所以需要一个对象
+				 */
+				LineDetail lDetail=new LineDetail();
+				lDetail.setPoleid(RtnPoleid);
+				System.out.println(lDetail.getPoleid());
+				lDetail.setCode(pLine.getPoleList().get(i).getCode());
+				lDetail.setName(pLine.getPoleList().get(i).getName());
+				linedetail.add(lDetail);
+			}
+			System.out.println(JSONArray.fromObject(linedetail));
+			pLine.setFirstpoleid(linedetail.get(0).getPoleid());
+			pLine.setFinallypoleid(linedetail.get(linedetail.size()-1).getPoleid());
+			/**
+			 * 添加电力线路
+			 */
+			int RtnLineid=allDao.getLinePoleMapperImpl().InsertLineInfo(pLine);
+			System.out.println(RtnLineid);
+			for(int j=0;j<linedetail.size();j++)
+			{
+				linedetail.get(j).setLineid(RtnLineid);
+				System.out.println(linedetail.get(j).getLineid());
+				if(j>0)
+				{
+					/**
+					 * 设置前一杆prepoleid
+					 */
+					linedetail.get(j).setPrepoleid(linedetail.get(j-1).getPoleid());
+				}
+			}
+			System.out.println(JSONArray.fromObject(linedetail));
+			/**
+			 * 批量添加电力线路细节
+			 */
+			LineDetailList detailList=new LineDetailList();
+			detailList.setLineList(linedetail);
+			int lDetailId=allDao.getLinePoleMapperImpl().InsertLineDetailList(detailList);
+			if(lDetailId>0)
+			{
+				return JSONArray.fromObject("[{'msg':'添加线路成功'}]");
+			}
+		}
+		return null;
+	}
+	/**
+	 * 修改电力线路信息
+	 * @param pLine
+	 * @return boolean
+	 */
+	public boolean ModifyLineInfo(PowerLine pLine) {
+		int i=allDao.getLinePoleMapperImpl().ModifyLineInfo(pLine);
+		if(i>0)
+		{
+			return true;
+		}
+		else
+			return false;
+	}
+	/**
+	 * 删除电力线路信息
+	 * @param lineid
+	 * @return
+	 */
+	public boolean DelLineInfo(int lineid) {
+		int i=allDao.getLinePoleMapperImpl().DelLineInfo(lineid);
+		if(i>0)
+		{
+			return true;
+		}
+		else
+			return false;
+	}
+	/**
+	 * 根据poleid查找线杆信息
+	 * @param poleid
+	 * @return
+	 */
+	public JSONArray SelectPolePhoto(int poleid) {
+		List<Photo> photoList=allDao.getFaultMapperImpl().SelectPolePhoto(poleid);
+		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+		for(Photo p:photoList)
+		{
+			p.setStringcreatetime(format.format(p.getCreatetime()));
+		}
+		return JSONArray.fromObject(photoList);
 	}
 }

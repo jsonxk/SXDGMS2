@@ -21,10 +21,15 @@ import com.xk.service.AllService;
 public class MSInitController {
 	@Autowired
 	private AllService allService;
+	/**
+	 * 根还有userid查找信息
+	 * @param userid
+	 * @return
+	 */
 	@RequestMapping(value="/init",method=RequestMethod.POST)
 	public  @ResponseBody JSONArray MSInit(@RequestParam(value="userid",required=true) String userid){
 		Integer parentid=0;
-		JSONArray funlist=allService.getfunctionBLL().selectOnUserid(Integer.parseInt(userid), 0);
+		JSONArray funlist=allService.getfunctionBLL().selectOnUserid(Integer.parseInt(userid), parentid);
 		return funlist;
 	}
 	@RequestMapping(value="/page",method=RequestMethod.POST)

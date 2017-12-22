@@ -85,14 +85,51 @@
 	height: 5%;
 	width: 20%;
 }
-.panel-default>.panel-heading{
+
+.panel-default>.panel-heading {
 	background-color: gray
 }
-.markercontent{
-	width:200px;
+
+.markercontent {
+	width: 200px;
 }
-.markercontent span{
+
+.markercontent span {
 	font-weight: 600;
+}
+
+.poleTab {
+	width: 95%;
+	position: absolute;
+	display: none;
+}
+
+.main-content {
+	padding: 20px 10px 10px 5px;
+}
+
+.panel {
+	margin-bottom: 0px;
+}
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover
+	{
+	background-color: rgba(43, 52, 61, 1);
+	color: white;
+}
+
+.SaveHang {
+	background-color: #3887fc;
+	color: white;
+	border: 1px solid gray;
+	margin-left: 5px;
+}
+
+.CancelHang {
+	background-color: #fc1270;
+	color: #FFFFFF;
+	border: 1px solid gray;
+	margin: 5px 0 0 5px;
 }
 </style>
 <body>
@@ -118,13 +155,17 @@
 							class="btn btn-primary">Go</button></span>
 				</div>
 			</form>
-			<div class="navbar-btn navbar-btn-right">
-				<a class="btn btn-success update-pro"
-					href="#downloads/klorofil-pro-bootstrap-admin-dashboard-template/?utm_source=klorofil&utm_medium=template&utm_campaign=KlorofilPro"
-					title="Upgrade to Pro" target="_blank"><i class="fa fa-rocket"></i>
-					<span>UPGRADE TO PRO</span></a>
+			<div id="navbar-menu">
+				<ul class="nav navbar-nav navbar-right userOp">
+					<li class="dropdown">
+							<a class="dropdown-toggle dropdown userNameSpan" data-toggle="dropdown"><img src="assets/img/user.png" class="img-circle" alt="Avatar"> <span></span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+							<ul class="dropdown-menu dropUserInfo">
+								<li><a href="#"><i class="lnr lnr-user"></i> <span>修改信息</span></a></li>
+								<li><a href="jsp/Quit.jsp"><i class="lnr lnr-exit"></i> <span>退出登录</span></a></li>
+							</ul>
+					</li>
+				</ul>
 			</div>
-			<div id="navbar-menu"></div>
 		</div>
 		</nav>
 		<!-- END NAVBAR -->
@@ -133,7 +174,7 @@
 			<div class="sidebar-scroll">
 				<nav>
 				<ul class="nav">
-					<li><a href="jsp/index.jsp"><i class="lnr lnr-home"></i> <span>首页</span></a></li>
+					<li class="indexpage"><a href="jsp/index.jsp"><i class="lnr lnr-home"></i> <span>首页</span></a></li>
 					<li class="sqgl"><a href="#subPages" data-toggle="collapse"
 						class="collapsed"><i class="lnr lnr-file-empty"></i> <span></span>
 							<i class="icon-submenu lnr lnr-chevron-left"></i></a>
@@ -191,18 +232,35 @@
 						<div class="col-md-12">
 							<!-- BASIC TABLE -->
 							<div class="panel">
-								<div style="width:100%;height:68%">
+								<div style="width:100%;height:78%">
 									<div id="allmap">
 										<div class="handerButton">
-											<input type="button" class="button" value="添加线路" onclick="" />
-											<input type="button" class="button AddPoleBtn" value="添加线杆"
-												onclick="" /> <input type="button" class="button AddHangLine"
-												value="添加搭挂线路"/> <input type="button"
-												class="openEditPole" value="编辑线杆" /> <input type="button"
-												class="openDelPole" value="删除线杆" onclick="" /> <input
-												type="button" class="button" value="关闭操作" onclick="" /> <input
+											<input type="button" class="button AddLineBtn" value="添加线路" />
+											<input type="button" class="button AddPoleBtn" value="添加线杆" />
+											<input type="button" class="button AddHangLine"
+												value="添加搭挂线路" /> <input type="button" class="openEditPole"
+												value="编辑线杆" /> <input type="button" class="openDelPole"
+												value="删除线杆" onclick="" />  <input
 												type="button" class="button" value="点击定位"
 												onclick="PositionFunc()" />
+										</div>
+									</div>
+									<div class="poleTab">
+										<ul id="PoleMarkerClick" class="nav nav-tabs">
+											<li><a data-toggle="tab">x</a></li>
+											<li class="active"><a href="#home" data-toggle="tab">
+													菜鸟教程 </a></li>
+											<li><a href="#ios" data-toggle="tab">iOS</a></li>
+										</ul>
+										<div id="PoleMarkerClickCont" class="tab-content">
+											<div class="tab-pane fade in active" id="home">
+												<p>菜鸟教程是一个提供最新的web技术站点，本站免费提供了建站相关的技术文档，帮助广大web技术爱好者快速入门并建立自己的网站。菜鸟先飞早入行——学的不仅是技术，更是梦想。</p>
+											</div>
+											<div class="tab-pane fade" id="ios">
+												<p>iOS 是一个由苹果公司开发和发布的手机操作系统。最初是于 2007 年首次发布 iPhone、iPod
+													Touch 和 Apple TV。iOS 派生自 OS X，它们共享 Darwin 基础。OS X
+													操作系统是用在苹果电脑上，iOS 是苹果的移动版本。</p>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -253,9 +311,6 @@
 				</div>
 			</div>
 			<!-- END MAIN -->
-			<div class="userinfo" style="display:none">
-				<span><%=session.getAttribute("userid")%></span>
-			</div>
 			<div class="clearfix"></div>
 		</div>
 		<!-- modal地图添加线杆弹出框 -->
@@ -312,6 +367,155 @@
 				</div>
 			</div>
 		</div>
+		<div class="modal fade " id="AddLineModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" style="width:125%;margin-left:-10%">
+
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="exampleModalLabel">添加线路详情信息</h4>
+					</div>
+
+					<div class="modal-body">
+						<div style="width:100%;height:340px;">
+							<form id="LineForm">
+								<div class="form-group">
+									<div class="form-group LineNameInput">
+										<label for="LineNameInput" class="control-label">线路名称</label>
+										<input type="text" id="LineNameInput" name="LineNameInput"
+											placeholder="请输入线路名称" class="form-control" />
+									</div>
+									<div class="form-group LineLength">
+										<label for="LineLength" class="control-label">线路长度</label> <input
+											type="text" id="LineLength" name="LineLength"
+											placeholder="请输入线路长度" class="form-control" readonly />
+									</div>
+									<div class="form-group LineNumber">
+										<label for="LineNumber" class="control-label">线杆数量</label> <input
+											type="text" id="LineNumber" name="LineNumber"
+											placeholder="请输入产生线杆数量" class="form-control" />
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="form-group LineUnit">
+										<label for="LineUnit" class="control-label">单位名称</label> </br> <select
+											id="LineUnit" class="form-control">
+										</select>
+									</div>
+									<div class="form-group LineType">
+										<label for="LineType" class="control-label">线路类型</label> </br> <select
+											id="LineType" class="form-control">
+										</select>
+									</div>
+									<div class="form-group LineStatus">
+										<label for="LineStatus" class="control-label">线路状态</label> </br> <select
+											id="LineStatus" class="form-control">
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="form-group LineTime">
+										<label for="LineTime" class="control-label">添加时间</label> <input
+											type="text" id="LineTime" name="LineTime"
+											class="form-control" readonly />
+									</div>
+									<div class="form-group LineCode">
+										<label for="LineCode" class="control-label">编码</label> <input
+											type="text" id="LineCode" name="LineCode"
+											class="form-control" placeholder="请输入编码" />
+									</div>
+									<div class="form-group LinePoleStatus">
+										<label for="LinePolestatus" class="control-label">线杆类型</label> </br> <select
+											id="LinePolestatus" class="form-control">
+										</select>
+									</div>
+								</div>
+								<div id="form-group">
+									<div class="form-group LineMemo">
+										<label for="LineMemo" class="control-label">线路描述</label>
+										<textarea class="form-control textarea1" rows="2"
+											placeholder="项目描述" id="LineMemo" name="LineMemo"></textarea>
+									</div>
+								</div>
+								<div class="text-right modalbutton">
+									<button type="button" class="btn btn-default LineModalcancel"
+										data-dismiss="modal">取消</button>
+									<button id="LineOK" type="button" class="btn btn-primary"
+										onclick="">完成</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- modal添加搭挂线路弹出框 -->
+		<div class="modal fade " id="HangLineModal" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" style="width:80%;height:450px">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="exampleModalLabel">添加搭挂线路信息</h4>
+					</div>
+					<div class="modal-body">
+						<form id="AddHangLineform">
+							<div class="form-group Hanglinename">
+								<label for="Hanglinename" class="control-label">搭挂线路名称</label> <input
+									type="text" id="Hanglinename" name="Hanglinename"
+									class="form-control" placeholder="搭挂线路名称" />
+							</div>
+							<div class="form-group HanglineUnit1">
+								<label class="control-label">选择单位</label> <select
+									class="form-control HanglineUnit">
+
+								</select>
+							</div>
+							<div class="form-group HanglineTime">
+								<label class="control-label" for="HanglineTime">创建时间</label> <input
+									type="text" id="HanglineTime" name="HanglineTime"
+									class="form-control" readonly />
+							</div>
+							<div class="form-group HanglineCode">
+								<label class="control-label" for="HanglineCode">编号</label> <input
+									type="text" id="HanglineCode" name="HanglineCode"
+									class="form-control" placeholder="搭挂线路编号" />
+							</div>
+							<div class="form-group HanglineType1">
+								<label class="control-label">选择类型</label> <select
+									class="form-control HanglineType">
+
+								</select>
+							</div>
+							<div class="form-group HanglineStatus1">
+								<label class="control-label">选择状态</label> <select
+									class="form-control HanglineStatus">
+
+								</select>
+							</div>
+							<div class="form-group HanglineMemo">
+								<label for="HanglineMemo" class="control-label">搭挂线路描述</label>
+								<textarea class="form-control textarea1" rows="3"
+									placeholder="搭挂线路描述" id="HanglineMemo" name="HanglineMemo"></textarea>
+							</div>
+							<div class="text-right HanglinemodalBtn">
+								<span id="returnMessage" class="glyphicon"> </span>
+								<button id="HangLineCancel" type="button"
+									class="btn btn-default right" data-dismiss="modal">取消</button>
+								<button id="HangLineOK" type="button" class="btn btn-primary">完成</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<!-- END WRAPPER -->
 	<script src="./assets/vendor/jquery/jquery.min.js"></script>
@@ -328,8 +532,35 @@
 		function initIndex() {
 			$(".dtglchild .3dtgl0   a").addClass("active");
 		}
+		$(".userOp").mouseover(function(){
+			$(".dropUserInfo").css("display","block");
+		})
+		$(".userOp").mouseout(function(){
+			$(".dropUserInfo").css("display","none");
+		})
 	</script>
 	<script src="./js/pageInit.js"></script>
+	<div class="userinfo" style="display:none">
+				<%
+					if (session.getAttribute("userid") == null) {
+						%>
+							<script type="text/javascript">
+								window.location.href="jsp/login.jsp";
+							</script>
+						<%
+					} else {
+				%>
+				<script type="text/javascript">
+					$(".userNameSpan span").text("<%=session.getAttribute("loginname")%>");
+				</script>
+				<span><%=session.getAttribute("userid")%></span>
+				<p id="p1"><%=session.getAttribute("loginname").toString()%></p>
+				<p id="p2"><%=session.getAttribute("unitname").toString()%></p>
+				<p id="p3"><%=session.getAttribute("unitid").toString()%></p>
+				<%
+					}
+				%>
+	</div>
 	<script src="./js/table/DTGL.js"></script>
 </body>
 

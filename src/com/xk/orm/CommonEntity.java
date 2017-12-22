@@ -26,7 +26,6 @@ public class CommonEntity {
 	private double lineLastPolelon;
 	private double lineLastPolelat;
 	private String lineNum;
-
 	public int getType() {
 		return type;
 	}
@@ -93,6 +92,7 @@ public class CommonEntity {
 
 	private int type;
 	private int status;
+	private int polestatus;
 	private String memo;
 	private Integer lineid;
 	private Integer unitid;
@@ -106,6 +106,24 @@ public class CommonEntity {
 	private String linename;
 	private List<LineDetail> linedetailList;
 	private List<HangDetail > hangList;
+	private List<EasyPole> poleList;
+	
+	public List<EasyPole> getPoleList() {
+		return poleList;
+	}
+
+	public void setPoleList(List<EasyPole> poleList) {
+		this.poleList = poleList;
+	}
+
+	public int getPolestatus() {
+		return polestatus;
+	}
+
+	public void setPolestatus(int polestatus) {
+		this.polestatus = polestatus;
+	}
+
 	public List<LineDetail> getLinedetailList() {
 		return linedetailList;
 	}

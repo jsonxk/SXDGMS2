@@ -2,6 +2,8 @@ package com.xk.Dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.xk.orm.Apply;
 import com.xk.orm.ApplyMore;
 import com.xk.orm.PublicEntity;
@@ -58,4 +60,10 @@ public interface ApplyMapper {
 	 * @return
 	 */
 	//int ModifyApplyStatus(Integer dicitemid, int hanglineid, int applyid);
+	/**
+	 * 删除apply以及相关applydoc
+	 * @param applyid
+	 * @return
+	 */
+	int DelApplyAndApplyDoc(@Param("applyid")int applyid);
 }

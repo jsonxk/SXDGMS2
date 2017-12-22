@@ -105,8 +105,14 @@ public class FaultBLL {
 			{
 				ListChkDtl.get(j).setCreatetime1(date);
 			}
+			/**
+			 * 查询错误线杆的名称
+			 */
 			linedetail=alldao.getLinePoleMapperImpl().selectAllHangDetail(ListChkDtl.get(j).getPoleid());
-			ListChkDtl.get(j).setPolename(linedetail.get(0).getName());
+			if(linedetail.size()>0)
+			{
+				ListChkDtl.get(j).setPolename(linedetail.get(0).getName());
+			}
 		}
 		return JSONArray.fromObject(ListChkDtl);
 	}

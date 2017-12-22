@@ -46,6 +46,17 @@
 		#{poleid,jdbcType=INTEGER},#{prepoleid,jdbcType=INTEGER},
 		#{code,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR})
 	</insert>
+	<!-- 批量添加电力线路细节 -->
+	<insert id="InsertLineDetailList" parameterType="com.xk.orm.LineDetailList">
+		insert into
+		linedetail (LineId, PoleId,prepoleid,Code,Name)
+		values
+		<foreach  collection="lineList" item="item" index="index" separator=",">
+			(#{item.lineid,jdbcType=INTEGER},
+			#{item.poleid,jdbcType=INTEGER},#{item.prepoleid,jdbcType=INTEGER},
+			#{item.code,jdbcType=VARCHAR},#{item.name,jdbcType=VARCHAR})
+		</foreach>
+	</insert>
 	<insert id="insertSelective" parameterType="com.xk.orm.LineDetail">
 		insert into linedetail
 		<trim prefix="(" suffix=")" suffixOverrides=",">

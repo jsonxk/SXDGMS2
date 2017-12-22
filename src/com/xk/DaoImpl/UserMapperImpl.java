@@ -27,4 +27,7 @@ public class UserMapperImpl {
 	{
 		return userMapper.deleteByUserid(userid);
 	}
+	public List<UserInfo> SelectUserByUserId(int userid){
+		return userMapper.SelectUserByUserId(userid);
+	}
 }

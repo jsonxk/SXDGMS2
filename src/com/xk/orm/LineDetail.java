@@ -8,14 +8,31 @@ public class LineDetail {
     private Integer poleid;
 
     private Integer prepoleid;
-
+    private String prepolename;
+    private String linename;
     private String code;
 
     private String name;
 
     private String memo;
 
-    public Integer getLinedetailid() {
+	public String getPrepolename() {
+		return prepolename;
+	}
+	
+	public String getLinename() {
+		return linename;
+	}
+
+	public void setLinename(String linename) {
+		this.linename = linename;
+	}
+
+	public void setPrepolename(String prepolename) {
+		this.prepolename = prepolename;
+	}
+
+	public Integer getLinedetailid() {
         return linedetailid;
     }
 

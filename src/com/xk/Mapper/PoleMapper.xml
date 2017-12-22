@@ -24,20 +24,35 @@
 			<id column="childlinedetailid" property="linedetailid" jdbcType="INTEGER" />
 			<result column="childLineId" property="lineid" jdbcType="INTEGER" />
 			<result column="childPrePoleId" property="prepoleid" jdbcType="INTEGER" />
+			<result column="childLinename" property="linename" jdbcType="VARCHAR" />
 			<result column="childCode" property="code" jdbcType="VARCHAR" />
 			<result column="childName" property="name" jdbcType="VARCHAR" />
 			<result column="childMemo" property="memo" jdbcType="VARCHAR" />
 		</collection>
 	</resultMap>
+	<!-- 根据lineid查找线杆信息 -->
 	<select id="SelectPoleInfo" parameterType="java.lang.Integer"
-		resultType="com.xk.orm.Pole">
-		select pole.*,d1.Item as statusname,d2.Item as typename
-		from pole LEFT JOIN
-		dicitem d1 ON pole.`Status`=d1.DicItemId LEFT JOIN
+		resultMap="BaseResultMap">
+		select pole.*,unit.UnitName as unitname,d1.Item as statusname,d2.Item as
+		typename,linedetail.LineDetailId as
+		childlinedetailid,linedetail.LineId as childlineid,linedetail.PoleId
+		as childpoleid,linedetail.`Name` as childname,linedetail.`Code` as
+		childcode,linedetail.PrePoleId as childprepoleid,linedetail.Memo as
+		childmemo from pole LEFT JOIN
+		dicitem d1 ON pole.`Status`=d1.DicItemId
+		LEFT JOIN
 		dicitem d2 ON
-		pole.Type=d2.DicItemId WHERE pole.PoleId in (SELECT
-		linedetail.PoleId
-		from linedetail WHERE linedetail.LineId=#{lineid})
+		pole.Type=d2.DicItemId LEFT JOIN linedetail ON
+		pole.PoleId=linedetail.PoleId 
+		LEFT JOIN  unit ON pole.UnitId=unit.UnitId
+		<if test="lineid!=null and lineid!=0">
+			WHERE pole.PoleId in (SELECT
+			linedetail.PoleId
+			from linedetail WHERE linedetail.LineId=#{lineid})
+		</if>
+	</select>
+	<select id="SelectPoleCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select COUNT(*) from linedetail WHERE linedetail.LineId=#{lineid}
 	</select>
 	<!-- 根据poleid查找pole信息 -->
 	<select id="SelectPoleInfoByPoleId" parameterType="java.lang.Integer"
@@ -46,7 +61,7 @@
 		as
 		childLineId,linedetail.`Name` as childname,linedetail.Code as
 		childCode,linedetail.Memo as childMemo,linedetail.LineDetailId as
-		childdetailid,linedetail.PrePoleId as childPrePoleId,d1.Item as
+		childdetailid,linedetail.PrePoleId as childprepoleid,pline.`Name` as childLinename,d1.Item as
 		statusname,d2.Item as typename,unit.UnitName as unitname
 		from pole LEFT
 		JOIN
@@ -58,7 +73,9 @@
 		on
 		powerline.LineId=linedetail.LineId
 		LEFT JOIN unit on
-		pole.UnitId=unit.UnitId WHERE pole.PoleId=#{poleid}
+		pole.UnitId=unit.UnitId 
+		LEFT JOIN powerline as pline ON pline.LineId=linedetail.LineId 
+		WHERE pole.PoleId=#{poleid}
 	</select>
 	<!-- 所有pole -->
 	<select id="selectAllPole" resultType="com.xk.orm.Pole">

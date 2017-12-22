@@ -2,6 +2,7 @@ package com.xk.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.identity.User;
+import org.activiti.engine.impl.identity.Authentication;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -157,7 +159,7 @@ public class ApplyMapperBLL {
 			apply.setApplystringtime(formart.format(apply.getApplytime()));
 			// apply.setPermitStringtime(formart.format(permitdate));
 			/*
-			 * 根据appid查找文件信息 
+			 * 根据applyid查找文件信息 
 			 */
 			applydoc=alldao.getApplyDocMapperImpl().SelectDocByApplyId(apply.getApplyid());
 			if(applydoc!=null)
@@ -196,6 +198,8 @@ public class ApplyMapperBLL {
 		 * 处理的userid
 		 */
 		String useridInfo=apply.getUserid()+"";
+		Date nowdate=new Date();
+		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		Map<String, Object> map=new HashMap<String, Object>();
 		/**
 		 * 设置提交申请的用户
@@ -211,6 +215,8 @@ public class ApplyMapperBLL {
 		 * 完成第一个提交申请的任务
 		 */
 		for(Task t:task){
+			Authentication.setAuthenticatedUserId(useridInfo);
+			taskService.addComment(t.getId(),processInstance.getId(), format.format(nowdate));
 			taskService.complete(t.getId());
 		};
 		apply.setProcessid(processInstance.getId());
@@ -238,5 +244,20 @@ public class ApplyMapperBLL {
 	{
 		int i=alldao.getApplyMapperImpl().ModifyProcessInstanceId(publicentity);
 		return i;
+	}
+	/**
+	 * 删除搭挂申请以及相关申请信息{Apply，applydoc}
+	 * @param applyid
+	 * @return
+	 */
+	public JSONArray DelHangLineApply(int applyid) {
+		int DelApplyAndApplyDoc=alldao.getApplyMapperImpl().DelApplyAndApplyDoc(applyid);
+		if(DelApplyAndApplyDoc>0)
+		{
+			return JSONArray.fromObject("[{'msg':'删除信息成功'}]");
+		}
+		else{
+			return JSONArray.fromObject("[{'msg':'删除信息失败'}]");
+		}
 	}
 }

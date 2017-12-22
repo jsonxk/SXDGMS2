@@ -31,6 +31,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!-- ICONS -->
 	<link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
 	<link rel="icon" type="image/png" sizes="96x96" href="./assets/img/favicon.png">
+	<style type="text/css">
+		.leftIndex li{
+			display: none;
+		}
+	</style>
   </head>
   
   <body>
@@ -51,48 +56,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<span class="input-group-btn"><button type="button" class="btn btn-primary">Go</button></span>
 					</div>
 				</form>
-				<div class="navbar-btn navbar-btn-right">
-					<a class="btn btn-success update-pro" href="#downloads/klorofil-pro-bootstrap-admin-dashboard-template/?utm_source=klorofil&utm_medium=template&utm_campaign=KlorofilPro" title="Upgrade to Pro" target="_blank"><i class="fa fa-rocket"></i> <span>UPGRADE TO PRO</span></a>
-				</div>
 				<div id="navbar-menu">
-					<ul class="nav navbar-nav navbar-right">
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle icon-menu" data-toggle="dropdown">
-								<i class="lnr lnr-alarm"></i>
-								<span class="badge bg-danger">5</span>
-							</a>
-							<ul class="dropdown-menu notifications">
-								<li><a href="#" class="notification-item"><span class="dot bg-warning"></span>System space is almost full</a></li>
-								<li><a href="#" class="notification-item"><span class="dot bg-danger"></span>You have 9 unfinished tasks</a></li>
-								<li><a href="#" class="notification-item"><span class="dot bg-success"></span>Monthly report is available</a></li>
-								<li><a href="#" class="notification-item"><span class="dot bg-warning"></span>Weekly meeting in 1 hour</a></li>
-								<li><a href="#" class="notification-item"><span class="dot bg-success"></span>Your request has been approved</a></li>
-								<li><a href="#" class="more">See all notifications</a></li>
+					<ul class="nav navbar-nav navbar-right userOp">
+					<li class="dropdown">
+							<a class="dropdown-toggle dropdown userNameSpan" data-toggle="dropdown"><img src="assets/img/user.png" class="img-circle" alt="Avatar"> <span></span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+							<ul class="dropdown-menu dropUserInfo">
+								<li><a href="#"><i class="lnr lnr-user"></i> <span>修改信息</span></a></li>
+								<li><a href="jsp/Quit.jsp"><i class="lnr lnr-exit"></i> <span>退出登录</span></a></li>
 							</ul>
-						</li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="lnr lnr-question-circle"></i> <span>Help</span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
-							<ul class="dropdown-menu">
-								<li><a href="#">Basic Use</a></li>
-								<li><a href="#">Working With Data</a></li>
-								<li><a href="#">Security</a></li>
-								<li><a href="#">Troubleshooting</a></li>
-							</ul>
-						</li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="assets/img/user.png" class="img-circle" alt="Avatar"> 
-							<span><%=session.getAttribute("username") %></span> 
-							<i class="icon-submenu lnr lnr-chevron-down"></i></a>
-							<ul class="dropdown-menu">
-								<li><a href="#"><i class="lnr lnr-user"></i> <span>My Profile</span></a></li>
-								<li><a href="#"><i class="lnr lnr-envelope"></i> <span>Message</span></a></li>
-								<li><a href="#"><i class="lnr lnr-cog"></i> <span>Settings</span></a></li>
-								<li><a href="#"><i class="lnr lnr-exit"></i> <span>Logout</span></a></li>
-							</ul>
-						</li>
-						<!-- <li>
-							<a class="update-pro" href="#downloads/klorofil-pro-bootstrap-admin-dashboard-template/?utm_source=klorofil&utm_medium=template&utm_campaign=KlorofilPro" title="Upgrade to Pro" target="_blank"><i class="fa fa-rocket"></i> <span>UPGRADE TO PRO</span></a>
-						</li> -->
+					</li>
 					</ul>
 				</div>
 			</div>
@@ -103,7 +75,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="sidebar-scroll">
 				<nav>
 					<ul class="nav">
-						<li><a href="jsp/index.jsp" class="active"><i class="lnr lnr-home"></i> <span>首页</span></a></li>
+						<li class="indexpage"><a href="jsp/index.jsp" class="active"><i class="lnr lnr-home"></i> <span>首页</span></a></li>
 						<li class="sqgl">
 							<a href="#subPages" data-toggle="collapse" class="collapsed"><i class="lnr lnr-file-empty"></i> <span></span> <i class="icon-submenu lnr lnr-chevron-left"></i></a>
 							<div id="subPages" class="collapse ">
@@ -204,9 +176,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- END MAIN CONTENT -->
 		</div>
 		<!-- END MAIN -->
-		<div class="userinfo">
-			<span><%=session.getAttribute("userid") %></span>
-		</div>
 		<div class="clearfix"></div>
 		<footer>
 			<div class="container-fluid">
@@ -223,7 +192,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script src="./js/pageInit.js"></script>
 	<script type="text/javascript">
 		function initIndex(){}
+		$(".userOp").mouseover(function(){
+			$(".dropUserInfo").css("display","block");
+		})
+		$(".userOp").mouseout(function(){
+			$(".dropUserInfo").css("display","none");
+		})
 	</script>
+	<div class="userinfo" style="display:none">
+				<%
+					if (session.getAttribute("userid") == null) {
+						response.sendRedirect("login.jsp");
+					} else {
+				%>
+				<script type="text/javascript">
+					$(".userNameSpan span").text("<%=session.getAttribute("loginname")%>");
+				</script>
+				<span><%=session.getAttribute("userid")%></span>
+				<p id="p1"><%=session.getAttribute("loginname").toString()%></p>
+				<p id="p2"><%=session.getAttribute("unitname").toString()%></p>
+				<p id="p3"><%=session.getAttribute("unitid").toString()%></p>
+				<%
+					}
+				%>
+	</div>
 </body>
 
 </html>

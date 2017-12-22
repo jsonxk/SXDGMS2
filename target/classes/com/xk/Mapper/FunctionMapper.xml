@@ -18,112 +18,140 @@
 			<result column="childmemo" property="memo" jdbcType="VARCHAR" />
 		</collection>
 	</resultMap>
-	<!-- 根据用户获取所有信息 -->
-	<select id="selectOnUserid" resultMap="BaseResultMap"
-		parameterType="java.lang.Integer">
-		SELECT f.*,f2.FunctionId AS childid,f2.`Name` as childname,f2.`index` as
-		childindex,f2.ParentId as childparent,f2.URL AS childurl,f2.Memo as
-		childmemo FROM `user` u LEFT JOIN userrole ur ON u.UserId=ur.UserId
-		LEFT JOIN role ON ur.RoleId=role.RoleId
-		LEFT JOIN rolefunction rf on role.RoleId=rf.RoleId
-		LEFT JOIN `function` f on rf.FunctionId=f.FunctionId
-		LEFT JOIN `function` f2 ON f.FunctionId=f2.ParentId WHERE u.UserId=#{userid} and
-		f.ParentId=#{parentid}
-	</select>
-	<!-- 根据角色获取该用户功能 -->
-	<select id="selectFuncByRoleid" resultType="com.xk.orm.Function" parameterType="java.lang.Integer">
-		select f1.* from rolefunction rf,function f1 where rf.FunctionId= f1.functionid and rf.roleid=#{roleid}
-	</select>
-	<!-- 获取所有的信息 -->
-	<select id="selectallFunction" resultMap="BaseResultMap">
-		SELECT f1.*,f2.FunctionId AS childid,f2.`Name` as childname,f2.`index` as
-		childindex,f2.ParentId as childparent,f2.URL AS childurl,f2.Memo as
-		childmemo from `function` f1,`function` f2 where f2.ParentId=f1.FunctionId
-	</select>
-	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from function
-		where FunctionId = #{functionid,jdbcType=INTEGER}
-	</delete>
-	<insert id="insert" parameterType="com.xk.orm.Function">
-		insert into function (FunctionId, Name, index,
-		ParentId, URL, Memo
-		)
-		values (#{functionid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
-		#{index,jdbcType=INTEGER},
-		#{parentid,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}
-		)
-	</insert>
-	<insert id="insertSelective" parameterType="com.xk.orm.Function">
-		insert into function
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="functionid != null">
-				FunctionId,
-			</if>
-			<if test="name != null">
-				Name,
-			</if>
-			<if test="index != null">
-				index,
-			</if>
-			<if test="parentid != null">
-				ParentId,
-			</if>
-			<if test="url != null">
-				URL,
-			</if>
-			<if test="memo != null">
-				Memo,
-			</if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="functionid != null">
-				#{functionid,jdbcType=INTEGER},
-			</if>
-			<if test="name != null">
-				#{name,jdbcType=VARCHAR},
-			</if>
-			<if test="index != null">
-				#{index,jdbcType=INTEGER},
-			</if>
-			<if test="parentid != null">
-				#{parentid,jdbcType=INTEGER},
-			</if>
-			<if test="url != null">
-				#{url,jdbcType=VARCHAR},
-			</if>
-			<if test="memo != null">
-				#{memo,jdbcType=VARCHAR},
-			</if>
-		</trim>
-	</insert>
-	<update id="updateByPrimaryKeySelective" parameterType="com.xk.orm.Function">
-		update function
-		<set>
-			<if test="name != null">
-				Name = #{name,jdbcType=VARCHAR},
-			</if>
-			<if test="index != null">
-				index = #{index,jdbcType=INTEGER},
-			</if>
-			<if test="parentid != null">
-				ParentId = #{parentid,jdbcType=INTEGER},
-			</if>
-			<if test="url != null">
-				URL = #{url,jdbcType=VARCHAR},
-			</if>
-			<if test="memo != null">
-				Memo = #{memo,jdbcType=VARCHAR},
-			</if>
-		</set>
-		where FunctionId = #{functionid,jdbcType=INTEGER}
-	</update>
-	<update id="updateByPrimaryKey" parameterType="com.xk.orm.Function">
-		update function
-		set Name = #{name,jdbcType=VARCHAR},
-		index = #{index,jdbcType=INTEGER},
-		ParentId = #{parentid,jdbcType=INTEGER},
-		URL = #{url,jdbcType=VARCHAR},
-		Memo = #{memo,jdbcType=VARCHAR}
-		where FunctionId = #{functionid,jdbcType=INTEGER}
-	</update>
-</mapper>
+	<resultMap id="selectFuncByUserid" type="com.xk.orm.FunctionList">
+			<id column="FunctionId" property="functionid" jdbcType="INTEGER" />
+			<result column="Name" property="name" jdbcType="VARCHAR" />
+			<result column="index" property="index" jdbcType="INTEGER" />
+			<result column="ParentId" property="parentid" jdbcType="INTEGER" />
+			<result column="URL" property="url" jdbcType="VARCHAR" />
+			<result column="Memo" property="memo" jdbcType="VARCHAR" />
+			<collection property="funList" ofType="com.xk.orm.Function"
+				javaType="list">
+				<id column="childid" property="functionid" jdbcType="INTEGER" />
+				<result column="childname" property="name" jdbcType="VARCHAR" />
+				<result column="childindex" property="index" jdbcType="INTEGER" />
+				<result column="childparent" property="parentid" jdbcType="INTEGER" />
+				<result column="childurl" property="url" jdbcType="VARCHAR" />
+				<result column="childmemo" property="memo" jdbcType="VARCHAR" />
+				<result column="RoleId" property="roleid" jdbcType="VARCHAR" />
+			</collection>
+		</resultMap>
+		<!-- 根据用户获取所有信息 -->
+		<!-- <select id="selectOnUserid" resultMap="BaseResultMap" parameterType="java.lang.Integer"> 
+			SELECT f.*,f2.FunctionId AS childid,f2.`Name` as childname,f2.`index` as 
+			childindex,f2.ParentId as childparent,f2.URL AS childurl,f2.Memo as childmemo 
+			FROM `user` u LEFT JOIN userrole ur ON u.UserId=ur.UserId LEFT JOIN role 
+			ON ur.RoleId=role.RoleId LEFT JOIN rolefunction rf on role.RoleId=rf.RoleId 
+			LEFT JOIN `function` f on rf.FunctionId=f.FunctionId LEFT JOIN `function` 
+			f2 ON f.FunctionId=f2.ParentId WHERE u.UserId=#{userid} and f.ParentId=#{parentid} 
+			</select> -->
+		<select id="selectOnUserid" resultMap="selectFuncByUserid"
+			parameterType="java.lang.Integer">
+			SELECT f1.*,f2.FunctionId AS childid,f2.`Name` as childname,f2.`index` as
+			childindex,f2.ParentId as childparent,f2.URL AS childurl,f2.Memo as
+			childmemo,rolefunction.RoleId from `function` as f1 LEFT JOIN
+			`function` as f2 on f1.FunctionId=f2.ParentId INNER JOIN rolefunction
+			ON rolefunction.FunctionId = f2.FunctionId where f1.ParentId=#{parentid} and
+			rolefunction.RoleId in (SELECT userrole.RoleId from userrole WHERE
+			userrole.UserId=#{userid})
+		</select>
+		<!-- 根据角色获取该用户功能 -->
+		<select id="selectFuncByRoleid" resultType="com.xk.orm.Function"
+			parameterType="java.lang.Integer">
+			select f1.* from rolefunction rf,function f1 where rf.FunctionId=
+			f1.functionid and rf.roleid=#{roleid}
+		</select>
+		<!-- 获取所有的信息 -->
+		<select id="selectallFunction" resultMap="BaseResultMap">
+			SELECT f1.*,f2.FunctionId AS childid,f2.`Name` as childname,f2.`index` as
+			childindex,f2.ParentId as childparent,f2.URL AS childurl,f2.Memo as
+			childmemo from `function` f1,`function` f2 where
+			f2.ParentId=f1.FunctionId
+		</select>
+		<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+			delete from function
+			where FunctionId = #{functionid,jdbcType=INTEGER}
+		</delete>
+		<insert id="insert" parameterType="com.xk.orm.Function">
+			insert into function (FunctionId, Name, index,
+			ParentId, URL, Memo
+			)
+			values (#{functionid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},
+			#{index,jdbcType=INTEGER},
+			#{parentid,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}
+			)
+		</insert>
+		<insert id="insertSelective" parameterType="com.xk.orm.Function">
+			insert into function
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="functionid != null">
+					FunctionId,
+				</if>
+				<if test="name != null">
+					Name,
+				</if>
+				<if test="index != null">
+					index,
+				</if>
+				<if test="parentid != null">
+					ParentId,
+				</if>
+				<if test="url != null">
+					URL,
+				</if>
+				<if test="memo != null">
+					Memo,
+				</if>
+			</trim>
+			<trim prefix="values (" suffix=")" suffixOverrides=",">
+				<if test="functionid != null">
+					#{functionid,jdbcType=INTEGER},
+				</if>
+				<if test="name != null">
+					#{name,jdbcType=VARCHAR},
+				</if>
+				<if test="index != null">
+					#{index,jdbcType=INTEGER},
+				</if>
+				<if test="parentid != null">
+					#{parentid,jdbcType=INTEGER},
+				</if>
+				<if test="url != null">
+					#{url,jdbcType=VARCHAR},
+				</if>
+				<if test="memo != null">
+					#{memo,jdbcType=VARCHAR},
+				</if>
+			</trim>
+		</insert>
+		<update id="updateByPrimaryKeySelective" parameterType="com.xk.orm.Function">
+			update function
+			<set>
+				<if test="name != null">
+					Name = #{name,jdbcType=VARCHAR},
+				</if>
+				<if test="index != null">
+					index = #{index,jdbcType=INTEGER},
+				</if>
+				<if test="parentid != null">
+					ParentId = #{parentid,jdbcType=INTEGER},
+				</if>
+				<if test="url != null">
+					URL = #{url,jdbcType=VARCHAR},
+				</if>
+				<if test="memo != null">
+					Memo = #{memo,jdbcType=VARCHAR},
+				</if>
+			</set>
+			where FunctionId = #{functionid,jdbcType=INTEGER}
+		</update>
+		<update id="updateByPrimaryKey" parameterType="com.xk.orm.Function">
+			update function
+			set Name = #{name,jdbcType=VARCHAR},
+			index = #{index,jdbcType=INTEGER},
+			ParentId = #{parentid,jdbcType=INTEGER},
+			URL = #{url,jdbcType=VARCHAR},
+			Memo = #{memo,jdbcType=VARCHAR}
+			where FunctionId = #{functionid,jdbcType=INTEGER}
+		</update>
+	</mapper>

@@ -136,4 +136,45 @@ public class HangLineBLL {
 		}
 		return JSONArray.fromObject(hangDtl);
 	}
+	/**
+	 * 添加搭挂线路信息及详情
+	 * @param hangline
+	 * @return
+	 */
+	public JSONArray InsertHangLineAndDetail(HangLine hangline) {
+		/*
+		 * 1.添加搭挂线路返回主键id
+		 * 2.添加搭挂详情
+		 */
+		int i=alldao.getHangLineMapperImpl().insertHangLine(hangline);
+		System.out.println(i+"dd");
+		if(i>0)
+		{
+			/*for(int j=0;j<hangline.getHangList().size();j++)
+			{
+				hangline.getHangList().get(j).setHanglineid(i);
+				hangline.getHangList().get(j).setGetmethod(24);
+				hangline.getHangList().get(j).setStatus(32);
+				alldao.getHangLineMapperImpl().InsertHangDetailList(hangline);
+			}*/
+			for(HangDetail hangdetail:hangline.getHangList())
+			{
+				hangdetail.setHanglineid(i);
+				hangdetail.setGetmethod(24);
+				hangdetail.setStatus(32);
+			}
+			System.out.println(JSONArray.fromObject(hangline.getHangList()));
+			int j=alldao.getHangLineMapperImpl().InsertHangDetailList(hangline);
+			if(j>0)
+			{
+				return JSONArray.fromObject("[{'msg':'添加搭挂信息成功'}]");
+			}
+			else{
+				return null;
+			}
+		}
+		else{
+			return null;
+		}
+	}
 }

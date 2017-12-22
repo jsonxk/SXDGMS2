@@ -11,10 +11,6 @@ import com.xk.orm.UserInfo;
  * 用户
  */
 public interface UserMapper {
-    int insert(User record);
-
-    int insertSelective(User record);
-
     User LoginJudgy(@Param("username")String username,@Param("password") String password);
     
     /*
@@ -29,6 +25,10 @@ public interface UserMapper {
      * 删除某个用户
      */
     int deleteByUserid(@Param("userid")Integer userid);
-
-    int updateByPrimaryKey(User record);
+    /**
+     * 根据userid查找信息
+     * @param userid
+     * @return
+     */
+    List<UserInfo> SelectUserByUserId(@Param("userid") int userid);
 }

@@ -5,6 +5,11 @@ var userid=$(".userinfo span").text();
 var unitid=$(".userinfo #p3").text();
 var loginname=$(".userinfo #p1").text();
 var unitname=$(".userinfo #p2").text();
+var ProcessId=0;
+var ApplyId=0;
+var ApplyUnitId=0;
+var HangLineid=0;
+var ApplyStatus="";
 var DGSQTableInit = function() {
 
 }
@@ -223,24 +228,166 @@ function DGInit() {
  * @returns
  */
 function operateFormatter(value, row, index) {
-	var opvalue = [
-			'<button type="button" class="checkApply btn btn-default  btn-sm" style="margin-right:15px;">查看</button>',
-			'<button type="button" class="delapply btn btn-default  btn-sm" style="margin-right:15px;">删除</button>' ];
+	var opvalue = [];
 	if (row.statusname == "提交申请") {
 		opvalue.push('<button type="button" class="Upapply btn btn-default  btn-sm" style="margin-right:15px;">提交</button>');
+		opvalue.push('<button type="button" class="delapply btn btn-default  btn-sm" style="margin-right:15px;">删除</button>');
+	}
+	else if(row.statusname=="退回申请"||row.statusname=="施工"||row.statusname=="整改"){
+		var opvalue = ['<button type="button" class="Handerapply btn btn-default  btn-sm" style="margin-right:15px;">处理</button>' ];
+	}
+	else{
+		opvalue=['<button type="button" class="checkApply btn btn-default  btn-sm" style="margin-right:15px;">查看</button>'];
 	}
 	return opvalue.join('');
 }
 // 表格操作的按钮事件
 window.operateEvents = {
 	'click .checkApply' : function(e, value, row, index) {
+		HanderApply(row);
 	},
 	'click .delapply' : function(e, value, row, index) {
+			$("#DelRtnModal").modal("show");
+			var delthisApply=document.getElementById("DelThisApply");
+			delthisApply.onclick=function(){
+				DelThisApply(row.applyid);
+			}
 	},
 	'click .Upapply' : function(e, value, row, index) {
 		init.SubmitApplyInfo(row);
 	},
+	'click .Handerapply' : function(e, value, row, index) {
+		HanderApply(row);
+	},
 };
+function HanderApply(row) {
+	/**
+	 * 处理的弹窗
+	 */
+	$("#CheckApplyModal").modal("show");
+	/**
+	 * 加载申请信息
+	 */
+	$("#HM_ApplyUser").val(row.username);
+	$("#HM_ApplyUnit").val(row.unitname);
+	$("#HM_ApplyContract").val(row.contactperson);
+	$("#HM_ApplyPhone").val(row.contactphone);
+	$("#HM_ApplyCode").val(row.num);
+	$("#HM_ApplyTime").val(row.applystringtime);
+	$("#HM_ApplyStatus").val(row.statusname);
+	$("#HM_ApplyMemo").text(row.description);
+	HangLineid=row.hanglineid;
+	if(row.statusname=="退回申请"||row.statusname=="施工"||row.statusname=="整改")
+		{
+			$(".HM_OK").css("visibility","visible");
+		}
+	else{
+		$(".HM_OK").css("visibility","hidden");
+	}
+	ProcessId=row.processid;
+	ApplyId=row.applyid;
+	ApplyUnitId=row.unitid;
+	ApplyStatus=row.statusname;
+	selectHistoryTask(ProcessId);
+}
+/**
+ * 点击处理后点击通过
+ */
+$(".HM_OK").click(function(){
+	/**
+	 * 点击处理申请信息
+	 */
+	ApplyHander(1);
+});
+function ApplyHander(handflag){
+	var hangid=HangLineid;
+	$.ajax({
+		type : "post",
+		url : "SQXXGL/handerApply.spring",
+		data : {
+			"processid" : ProcessId,
+			"applyid":ApplyId,
+			"hanglineid":Number(hangid),
+			"handtype":handflag,
+			"userid":Number(userid),
+			"unitid":ApplyUnitId,
+		},
+		datatype : "json",
+		success : function(data) {
+			$("#CheckApplyModal").modal("hide");
+			$('#hanglinetable').bootstrapTable("refresh");
+			alert(data[0].msg);
+		}
+	})
+}
+/**
+ * 查询申请的审核信息
+ * 通过processid查找 
+ */
+function selectHistoryTask(processid){
+	$('#hangdertable').bootstrapTable("destroy");
+	$('#hangdertable').bootstrapTable(
+			{
+				url : 'SQXXGL/selectHistoryTask.spring',
+				method : 'post',
+				cache : false,
+				striped : true,
+				pagination : true,
+				pageSize : 10,
+				pageNumber : 1,
+				sidePagination : "client",
+				queryParams : function queryParams(params) {
+					var param = {
+						"processid" :processid,
+					};
+					return param;
+				},
+				paginationPreText : "上一页",
+				paginationNextText : "下一页",
+				columns : [ {
+					title : "序号",
+					align : "center",
+					valign : "middle",
+					formatter : function(value, row, index) {
+						return index +1;
+					}
+				}, {
+					field : "handertask",
+					title : "审核任务",
+					align : "center",
+					valign : "middle",
+				}, {
+					field : "handertime",
+					title : "审核时间",
+					align : "center",
+					valign : "middle",
+				}, {
+					field : "handeruser",
+					title : "审核人",
+					align : "center",
+					valign : "middle",
+				}, {
+					field : "handerresult",
+					title : "审核结果",
+					align : "center",
+					valign : "middle",
+				}, {
+					field : "handeruserPhone",
+					title : "联系电话",
+					align : "center",
+					valign : "middle",
+				}],
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				onPageChange : function(size, number) {
+				},
+				formatNoMatches : function() {
+					return '没有找到信息';
+				},
+			});
+	$(window).resize(function() {
+		$('#hangdertable').bootstrapTable('resetView');
+	});
+}
 /**
  * 表单提交按钮
  * @param row{基本信息applyid,applystringtime,applytime,buildcontact,buildphone,contactphone,,hanglineid,文件信息applydocid,docname,docpath}
@@ -278,7 +425,7 @@ function SubmitApply(row) {
 	 */
 	var select = document.getElementById("ApplyBuildType");
 	for (var i = 0; i < select.options.length; i++) {
-		if (select.options[i] == row.buildtype) {
+		if (select.options[i].value == row.buildtype) {
 			select.options[i].selected = true;
 		}
 	}
@@ -289,6 +436,29 @@ function SubmitApply(row) {
 		{
 			$('.tablefiles'+row.listDoc[j].doctypeid).val(row.listDoc[j].docname);
 		}
+}
+/**
+ * 根据applyid删除申请信息以及相关上传文件信息
+ * @param applyid
+ */
+function DelThisApply(applyid)
+{
+	//alert(applyid);
+	$.ajax({
+		type:"post",
+		data:{
+			applyid:applyid
+		},
+		url:"HangLine/delHangLineApply.spring",
+		datatype:"json",
+		success:function(data)
+		{
+			$("#DelRtnModal").modal("hide");
+			$("#TS_Modal").modal("show");
+			$(".TS_Modal h4").text(data[0].msg);
+			$('#hanglinetable').bootstrapTable("refresh");		
+		}
+	});
 }
 /**
  * 加载搭挂申请状态类型
@@ -455,17 +625,8 @@ var eventFun = {
 				 * 上传文件
 				 */
 				if (fileinfo[j].value != "") {
-					FileUpload(j);
+					FileUpload(j,fileinfo.length);
 				}
-			}
-			$("#HangModal").modal("hide");
-			/*
-			 * 延迟加载等待文件上传完成
-			 */
-			if (setTimeout(Filereturndata == "success", 100)) {
-				alert("上传成功");
-			} else {
-				alert("上传失败");
 			}
 		}
 	},
@@ -484,8 +645,10 @@ var eventFun = {
 			data:JSON.stringify(param),
 			datatype:"json",
 			contentType : 'application/json',
-			success:function(){
-				
+			success:function(data){
+				alert(data[0].msg);
+				$("#HangModal").modal("hide");
+				$('#hanglinetable').bootstrapTable("refresh");
 			},	
 		});
 	}
@@ -495,7 +658,7 @@ var eventFun = {
  * 
  * @param IdInfo(用于查找dictypeid)
  */
-function FileUpload(IdInfo) {
+function FileUpload(IdInfo,filelength) {
 	var dictypeid = $('.doctypeid' + IdInfo).val();
 	$.ajaxFileUpload({
 		url : 'ApplyFile/UploadFile.spring',
@@ -509,7 +672,13 @@ function FileUpload(IdInfo) {
 		fileElementId : "tablefiles" + dictypeid,
 		dataType : 'JSON',
 		success : function(data) {
-			Filereturndata = data;
+			if (IdInfo==(filelength-1)) {
+				alert("上传成功");
+				$("#HangModal").modal("hide");
+				$('#hanglinetable').bootstrapTable("refresh");
+				//$('.DocTypeTable').bootstrapTable("refresh");
+				DocTypeTable();
+			}
 		},
 	});
 }
@@ -675,9 +844,9 @@ function modalApply() {
 						message : '联系人不能为空'
 					},
 					stringLength : {
-						min : 3,
+						min : 2,
 						max : 10,
-						message : '请输入3到10个字符'
+						message : '请输入2到10个字符'
 					},
 					regexp : {
 						regexp : /^[a-zA-Z0-9_\. \u4e00-\u9fa5 ]+$/,
@@ -747,7 +916,7 @@ $('#HangModal').on('hidden.bs.modal', function() {
 function TodayTime() {
 	var today = new Date();
 	$(".timevalue").val(getBeforeDate(7));
-	$(".finishtime").val(getBeforeDate(0));
+	$(".finishtime").val(getBeforeDate(-1));
 	var time1 = $(".timevalue").val();
 	var time2 = $(".finishtime").val();
 	if (time1 > time2) {

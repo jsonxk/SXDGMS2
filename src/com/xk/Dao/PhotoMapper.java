@@ -21,5 +21,11 @@ public interface PhotoMapper {
 	 * @return
 	 */
 	int InsertPhotoInfo(CheckInfoCommon checkinfocommon);
+	/**
+	 * 根据poleid查找相关信息
+	 * @param poleid
+	 * @return
+	 */
+	List<Photo> SelectPolePhoto(@Param("poleid")int poleid);
   
 }

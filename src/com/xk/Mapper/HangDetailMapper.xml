@@ -37,6 +37,29 @@
 			<result column="newpolename" property="polename" jdbcType="INTEGER" />
 		</collection>
 	</resultMap>
+	<resultMap type="com.xk.orm.HangDetail" id="hangdetailPole">
+		<id column="HandDetailId" property="handdetailid" jdbcType="INTEGER" />
+		<result column="HangLineId" property="hanglineid" jdbcType="INTEGER" />
+		<result column="Code" property="code" jdbcType="VARCHAR" />
+		<result column="PoleId" property="poleid" jdbcType="INTEGER" />
+		<result column="PrevPoleId" property="prevpoleid" jdbcType="INTEGER" />
+		<result column="NextPoleId" property="nextpoleid" jdbcType="INTEGER" />
+		<result column="GetMethod" property="getmethod" jdbcType="INTEGER" />
+		<result column="Status" property="status" jdbcType="INTEGER" />
+		<result column="Memo" property="memo" jdbcType="VARCHAR" />
+		<result column="hanglinename" property="hanglinename" jdbcType="VARCHAR" />
+		<result column="statusname" property="statusname" jdbcType="VARCHAR" />
+		<collection property="linedetailList" ofType="com.xk.orm.LineDetail"
+			column="PoleId" javaType="list">
+			<id column="childlinedetailid" property="linedetailid" jdbcType="INTEGER" />
+			<result column="childLineId" property="lineid" jdbcType="INTEGER" />
+			<result column="childPoleId" property="poleid" jdbcType="INTEGER" />
+			<result column="childPrePoleId" property="prepoleid" jdbcType="INTEGER" />
+			<result column="childCode" property="code" jdbcType="VARCHAR" />
+			<result column="childName" property="name" jdbcType="VARCHAR" />
+			<result column="childMemo" property="memo" jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
 	<!-- 已废弃 -->
 	<select id="selectHangPole" resultType="com.xk.orm.Pole"
 		parameterType="java.lang.Integer">
@@ -45,7 +68,7 @@
 		hangdetail WHERE
 		hangdetail.HangLineId=#{hanglineid})
 	</select>
-	<!-- 查找搭挂线路细节信息 -->
+	<!-- 查找搭挂线路细节信息 手机端 -->
 	<select id="selectAllHangAndPole" resultMap="BaseResultMap">
 		SELECT
 		hangline.HangLineId,hangline.HangName as
@@ -57,6 +80,17 @@
 		childgetmethod,hangdetail.`Status` as childstatus,hangdetail.Memo as
 		childmemo from hangline LEFT JOIN hangdetail on
 		hangline.HangLineId=hangdetail.HangLineId
+	</select>
+	<!-- 电脑端根据hanglineid查找相关线杆信息包括状态 -->
+	<select id="SelectHangDetailPole" resultMap="hangdetailPole"
+		parameterType="java.lang.Integer">
+		SELECT hangdetail.*,dicitem.Item as statusname,hangline.HangName as hanglinename,linedetail.LineDetailId as
+		childlinedetailid,linedetail.LineId as childLineId,linedetail.PoleId
+		as childPoleId,linedetail.PrePoleId as
+		childPrePoleId,linedetail.`Code` as childCode,linedetail.`Name` as
+		childName,linedetail.Memo as childMemo from hangdetail LEFT JOIN
+		linedetail on hangdetail.PoleId=linedetail.PoleId LEFT JOIN dicitem ON dicitem.DicItemId=hangdetail.`Status` LEFT JOIN hangline on hangdetail.HangLineId=hangline.HangLineId where
+		hangdetail.HangLineId=#{hanglineid}
 	</select>
 	<select id="SelectHangPoleByHangLineid" resultMap="SelectHangPoleByHangLineidMap"
 		parameterType="java.lang.Integer">
@@ -92,6 +126,61 @@
 		#{memo,jdbcType=VARCHAR}
 		)
 	</insert>
+	<!-- 批量添加搭挂线杆信息 -->
+	<insert id="InsertHangDetailList" parameterType="com.xk.orm.HangLine">
+		insert into
+		hangdetail (PoleId, Code,
+		HangLineId, PrevPoleId,
+		NextPoleId,
+		GetMethod, Status, Memo
+		)
+		values
+		<foreach collection="hangList" item="item" index="index"
+			separator=",">
+			(#{item.poleid,jdbcType=INTEGER},
+			#{item.code,jdbcType=INTEGER},
+			#{item.hanglineid,jdbcType=INTEGER},
+			#{item.prevpoleid,jdbcType=INTEGER},
+			#{item.nextpoleid,jdbcType=INTEGER},
+			#{item.getmethod,jdbcType=SMALLINT},
+			#{item.status,jdbcType=SMALLINT},
+			#{item.memo,jdbcType=VARCHAR}
+			)
+		</foreach>
+	</insert>
+	<update id="ModifyHangPole" parameterType="com.xk.orm.HangDetail">
+		update hangdetail
+		<set>
+			<if test="poleid != null">
+				PoleId = #{poleid,jdbcType=INTEGER},
+			</if>
+			<if test="code != null">
+				Code = #{code,jdbcType=INTEGER},
+			</if>
+			<if test="hanglineid != null">
+				HangLineId = #{hanglineid,jdbcType=INTEGER},
+			</if>
+			<if test="prevpoleid != null">
+				PrevPoleId = #{prevpoleid,jdbcType=INTEGER},
+			</if>
+			<if test="nextpoleid != null">
+				NextPoleId = #{nextpoleid,jdbcType=INTEGER},
+			</if>
+			<if test="getmethod != null">
+				GetMethod = #{getmethod,jdbcType=SMALLINT},
+			</if>
+			<if test="status != null">
+				Status = #{status,jdbcType=SMALLINT},
+			</if>
+			<if test="memo != null">
+				Memo = #{memo,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where HandDetailId = #{handdetailid,jdbcType=INTEGER}
+	</update>
+	<delete id="DelHangPole" parameterType="java.lang.Integer">
+		delete hangdetail.* from hangdetail  where hangdetail.HandDetailId=#{handdetailid}
+	</delete>
 	<insert id="insertSelective" parameterType="com.xk.orm.HangDetail">
 		insert into hangdetail
 		<trim prefix="(" suffix=")" suffixOverrides=",">

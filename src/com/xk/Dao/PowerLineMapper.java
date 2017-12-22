@@ -50,4 +50,16 @@ public interface PowerLineMapper {
 	 * @return
 	 */
 	List<PowerLine> SelectLineInfoByLineId(@Param("lineid")int lineid);
+	/**
+	 * 修改电力线路status，type,unitid,name
+	 * @param pLine
+	 * @return
+	 */
+	int ModifyLineInfo(PowerLine pLine);
+	/**
+	 * 删除电力线路信息
+	 * @param lineid
+	 * @return
+	 */
+	int DelLineInfo(@Param("lineid")int lineid);
 }

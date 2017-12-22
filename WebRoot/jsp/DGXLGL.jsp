@@ -62,13 +62,17 @@
 							class="btn btn-primary">Go</button></span>
 				</div>
 			</form>
-			<div class="navbar-btn navbar-btn-right">
-				<a class="btn btn-success update-pro"
-					href="#downloads/klorofil-pro-bootstrap-admin-dashboard-template/?utm_source=klorofil&utm_medium=template&utm_campaign=KlorofilPro"
-					title="Upgrade to Pro" target="_blank"><i class="fa fa-rocket"></i>
-					<span>UPGRADE TO PRO</span></a>
+			<div id="navbar-menu">
+				<ul class="nav navbar-nav navbar-right userOp">
+					<li class="dropdown">
+							<a class="dropdown-toggle dropdown userNameSpan" data-toggle="dropdown"><img src="assets/img/user.png" class="img-circle" alt="Avatar"> <span></span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+							<ul class="dropdown-menu dropUserInfo">
+								<li><a href="#"><i class="lnr lnr-user"></i> <span>修改信息</span></a></li>
+								<li><a href="jsp/Quit.jsp"><i class="lnr lnr-exit"></i> <span>退出登录</span></a></li>
+							</ul>
+					</li>
+				</ul>
 			</div>
-			<div id="navbar-menu"></div>
 		</div>
 		</nav>
 		<!-- END NAVBAR -->
@@ -77,7 +81,7 @@
 			<div class="sidebar-scroll">
 				<nav>
 				<ul class="nav">
-					<li><a href="jsp/index.jsp"><i class="lnr lnr-home"></i> <span>首页</span></a></li>
+					<li class="indexpage"><a href="jsp/index.jsp"><i class="lnr lnr-home"></i> <span>首页</span></a></li>
 					<li class="sqgl"><a href="#subPages" data-toggle="collapse"
 						class="collapsed"><i class="lnr lnr-file-empty"></i> <span></span>
 							<i class="icon-submenu lnr lnr-chevron-left"></i></a>
@@ -168,12 +172,6 @@
 				<!-- END MAIN CONTENT -->
 			</div>
 			<!-- END MAIN -->
-			<div class="userinfo" style="display:none">
-				<span><%=session.getAttribute("userid")%></span>
-				<p id="p1"><%=session.getAttribute("loginname").toString()%></p>
-				<p id="p2"><%=session.getAttribute("unitname").toString()%></p>
-				<p id="p3"><%=session.getAttribute("unitid").toString()%></p>
-			</div>
 			<div class="clearfix"></div>
 		</div>
 	</div>
@@ -187,7 +185,7 @@
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-					<h4 class="modal-title" id="exampleModalLabel">添加搭挂线路信息</h4>
+					<h4 class="modal-title" id="exampleModalLabel">搭挂线路信息</h4>
 				</div>
 				<div class="modal-body">
 					<form id="AddHangLineform">
@@ -197,7 +195,7 @@
                    		</div>
                    		<div class="form-group HanglineUnit1">
 	                        <label class="control-label">选择单位</label>
-							<select class="form-control HanglineUnit" >
+							<select class="form-control HanglineUnit" id="HanglineUnit1">
 								
 							</select>	
 	                    </div>
@@ -211,13 +209,13 @@
 	                    </div>
 	                    <div class="form-group HanglineType1">
 	                        <label class="control-label">选择类型</label>
-							<select class="form-control HanglineType" >
+							<select class="form-control HanglineType" id="HanglineType1">
 								
 							</select>	
 	                    </div>
 	                    <div class="form-group HanglineStatus1">
 	                        <label class="control-label">选择状态</label>
-							<select class="form-control HanglineStatus" >
+							<select class="form-control HanglineStatus"  id="HanglineStatus1">
 								
 							</select>	
 	                    </div>
@@ -229,6 +227,7 @@
 	                        <span id="returnMessage" class="glyphicon"> </span>
 	                        <button type="button" class="btn btn-default right" data-dismiss="modal">取消</button>
 	                        <button id="HangLineOK" type="button" class="btn btn-primary">完成</button>
+	                        <button id="HangLineModify" type="button" class="btn btn-primary">修改</button>
 	                    </div>
 	                </form>
 				</div>
@@ -245,31 +244,25 @@
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-					<h4 class="modal-title" id="exampleModalLabel">添加搭挂线路信息</h4>
+					<h4 class="modal-title" id="exampleModalLabel">搭挂线杆信息</h4>
 				</div>
 				<div class="modal-body">
 					<form id="AddHangPoleform">
 	                    <div class="form-group HangPolename1">
                         	<label for="HangPolename" class="control-label">搭挂线路</label>
-                   			<select class="form-control HangPolename" >
+                   			<select class="form-control HangPolename" id="HangPolename">
 								
 							</select>
                    		</div>
                    		<div class="form-group HangPole1">
                         	<label for="HangPole" class="control-label">搭挂线杆</label>
-                   			<select class="form-control HangPole" >
+                   			<select class="form-control HangPole" id="HangPole">
 								
 							</select>
                    		</div>
                    		<div class="form-group HangPolePre1">
                         	<label for="HangPolePre" class="control-label">上一杆</label>
-                   			<select class="form-control HangPolePre" >
-								
-							</select>
-                   		</div>
-                   		<div class="form-group HangPoleNext1">
-                        	<label for="HangPoleNext" class="control-label">下一杆</label>
-                   			<select class="form-control HangPoleNext" >
+                   			<select class="form-control HangPolePre" id="HangPolePre" >
 								
 							</select>
                    		</div>
@@ -279,7 +272,7 @@
 	                    </div>
 	                    <div class="form-group HangPoleStatus1">
 	                        <label class="control-label">选择状态</label>
-							<select class="form-control HangPoleStatus" >
+							<select class="form-control HangPoleStatus" id="HangPoleStatus" >
 								
 							</select>	
 	                    </div>
@@ -291,12 +284,32 @@
 	                        <span id="returnMessage" class="glyphicon"> </span>
 	                        <button type="button" class="btn btn-default right" data-dismiss="modal">取消</button>
 	                        <button id="HangPoleOK" type="button" class="btn btn-primary">完成</button>
+	                        <button id="HangPoleModify" type="button" class="btn btn-primary">修改</button>
 	                    </div>
 	                </form>
 				</div>
 			</div>
 		</div>
 	</div>
+	<!-- 提示信息 -->
+	<div class="modal fade " id="TS_Modal" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content" style="width:35%;margin-top: 50%">
+
+						<div class="modal-header TS_Modal">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="exampleModalLabel"></h4>
+						</div>
+						<div class="modal-body delInfo">
+							<button type="button" class="btn btn-danger  btn-sm" style="margin-right:15px;" data-dismiss="modal">关闭</button>
+						</div>
+					</div>
+				</div>
+			</div>
 	<!-- END WRAPPER -->
 	<script src="./assets/vendor/jquery/jquery.min.js"></script>
 	<script src="./assets/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -312,8 +325,31 @@
 		function initIndex() {
 			$(".tzglchild .1tzgl1   a").addClass("active");
 		}
+		$(".userOp").mouseover(function(){
+			$(".dropUserInfo").css("display","block");
+		})
+		$(".userOp").mouseout(function(){
+			$(".dropUserInfo").css("display","none");
+		})
 	</script>
 	<script src="./js/pageInit.js"></script>
+	<div class="userinfo" style="display:none">
+				<%
+					if (session.getAttribute("userid") == null) {
+						response.sendRedirect("login.jsp");
+					} else {
+				%>
+				<script type="text/javascript">
+					$(".userNameSpan span").text("<%=session.getAttribute("loginname")%>");
+				</script>
+				<span><%=session.getAttribute("userid")%></span>
+				<p id="p1"><%=session.getAttribute("loginname").toString()%></p>
+				<p id="p2"><%=session.getAttribute("unitname").toString()%></p>
+				<p id="p3"><%=session.getAttribute("unitid").toString()%></p>
+				<%
+					}
+				%>
+	</div>
 	<script src="./js/table/DGXLGL.js"></script>
 </body>
 

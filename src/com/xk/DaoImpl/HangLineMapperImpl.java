@@ -57,7 +57,8 @@ public class HangLineMapperImpl implements HangLineMapper,HangDetailMapper{
 	 * @return
 	 */
 	public int insertHangLine(HangLine hangline) {
-		return hangLineMapper.insertHangLine(hangline);
+		hangLineMapper.insertHangLine(hangline);
+		return hangline.getHanglineid();
 	}
 	/**
 	 * 添加搭挂线杆信息
@@ -143,5 +144,51 @@ public class HangLineMapperImpl implements HangLineMapper,HangDetailMapper{
 	 */
 	public List<HangDetailList> selectAllHangAndPole() {
 		return hangDetail.selectAllHangAndPole();
+	}
+	/**
+	 * 批量添加搭挂详情信息
+	 * @param hangline
+	 */
+	public int InsertHangDetailList(HangLine hangline) {
+		return hangDetail.InsertHangDetailList(hangline);
+	}
+	/**
+	 * 修改搭挂线路信息
+	 * @param hangline
+	 * @return
+	 */
+	public int ModifyHangLine(HangLine hangline) {
+		return hangLineMapper.ModifyHangLine(hangline);
+	}
+	/**
+	 * 根据hanglined查找pole信息
+	 */
+	@Override
+	public List<HangDetail> SelectHangDetailPole(int hanglineid) {
+		return hangDetail.SelectHangDetailPole(hanglineid);
+	}
+	/**
+	 * 修改搭挂线杆信息
+	 * @param hangDetail2
+	 * @return
+	 */
+	public int ModifyHangPole(HangDetail hangDetail2) {
+		return hangDetail.ModifyHangPole(hangDetail2);
+	}
+	/**
+	 * 删除hangline以及hangdetail
+	 * @param hanglineid
+	 * @return
+	 */
+	public int DelHangLine(int hanglineid) {
+		return hangLineMapper.DelHangLine(hanglineid);
+	}
+	/**
+	 * 根据handdetailid删除搭挂线杆信息
+	 * @param handdetailid
+	 * @return
+	 */
+	public int DelHangPole(int handdetailid) {
+		return hangDetail.DelHangPole(handdetailid);
 	}
 }

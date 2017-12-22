@@ -38,6 +38,10 @@
 		`user`.UnitId=unit.UnitId and unit.UnitName=#{unitname} 
 		and `user`.`Name`=#{name} AND dicitem.Item=#{type}
 	</select>
+	<!-- 根据userid查找user信息 -->
+	<select id="SelectUserByUserId" resultType="com.xk.orm.UserInfo" parameterType="java.lang.Integer">
+		select * from 	`user` where `user`.UserId=#{userid}
+	</select>
 	<delete id="deleteByUserid" parameterType="java.lang.Integer">
 		delete from user
 		where UserId = #{userid,jdbcType=INTEGER}

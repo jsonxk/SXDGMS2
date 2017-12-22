@@ -12,6 +12,7 @@ var unitid=$(".userinfo #p3").text();
 var loginname=$(".userinfo #p1").text();
 var unitname=$(".userinfo #p2").text();
 var countNum=0;
+var LineId=0;
 /**
  * 线路对象
  */
@@ -100,7 +101,7 @@ $(function() {
 	lineinit.LineTypeInfo("线路状态");
 	lineinit.LineTypeInfo("线杆类别");
 	lineinit.LineTypeInfo("线杆状态");
-	poleinit.SelectAllPole(0);
+	poleinit.SelectAllPole(LineId);
 	lineinit.SelectAllLineName(0);
 });
 /**
@@ -171,16 +172,6 @@ function lineinfoinit() {
 							align : "center",
 							valign : "middle",
 						},{
-							field : "memo",
-							title : "描述",
-							align : "center",
-							valign : "middle",
-						},/* {
-							field : "poleNumber",
-							title : "线杆数量",
-							align : "center",
-							valign : "middle",
-						}*/ {
 							title : "操作",
 							align : "center",
 							valign : "middle",
@@ -195,6 +186,7 @@ function lineinfoinit() {
 						onClickCell : function(field, value, row, $element) {
 							// 点击加载某角色的功能
 							// td父节点的兄弟节点的子节点颜色
+							LineId=row.lineid;
 							poleinit.PoleInfoInit(row.lineid);
 							$($element).parent().siblings().children().css(
 									"background-color", "inherit");
@@ -206,24 +198,107 @@ function lineinfoinit() {
 
 					});
 	$(window).resize(function() {
-		$('#lineInfoTable').bootstrapTable('resetView');
+		$('#lineInfoTable').bootstrapTable('refresh');
 	});
 }
 function operateFormatter(value, row, index) {
 	return [
-			'<button type="button" class="RoleOfA btn btn-default  btn-sm" style="margin-right:15px;">详情</button>',
-			'<button type="button" class="RoleOfB btn btn-default  btn-sm" style="margin-right:15px;">修改</button>',
-			'<button type="button" class="RoleOfB btn btn-default  btn-sm" style="margin-right:15px;background-color:red;color:white">删除</button>']
+			'<button type="button" class="LineDetail btn btn-default  btn-sm" style="margin-right:15px;">详情</button>',
+			'<button type="button" class="ModifyLine btn btn-default  btn-sm" style="margin-right:15px;">修改</button>',
+			'<button type="button" class="DelLineBtn btn btn-default  btn-sm" style="margin-right:15px;background-color:red;color:white">删除</button>']
 			.join('');
 }
 // 表格操作的按钮事件
 window.operateEvents = {
-	'click .RoleOfA' : function(e, value, row, index) {
-		alert(row.lineid);
+	'click .LineDetail' : function(e, value, row, index) {
+		/**
+		 * 查看线路细节
+		 */
+		console.log(row);
+		$("#LineDetailModal").modal("show");
+		$("#LineNameInput2").val(row.name);
+		$("#LineLength2").val(row.linelength);
+		$("#LineNumber2").val(row.lineNum);
+		$("#LineUnit2").val(row.unitname);
+		$("#LineType2").val(row.typename);
+		$("#LineStatus2").val(row.statusname);
+		$("#LineTime2").val(row.time);
+		$("#LineCode2").val(row.code);
+		$("#LineMemo2").text(row.memo);
 	},
-	'click .RoleOfB' : function(e, value, row, index) {
-		alert(row.lineid);
+	'click .ModifyLine' : function(e, value, row, index) {
+		/**
+		 * 修改线路信息
+		 */
+		$("#ModifyLineInfo").modal("show");
+		$("#Modifylinename").val(row.name);
+		$("#Modifylinememo").text(row.memo);
+		var select = document.getElementById("modifylineunit2");
+		for (var i = 0; i < select.options.length; i++) {
+			if (select.options[i].value == row.unitid) {
+				select.options[i].selected = true;
+			}
+		}
+		var ModifyBtn=document.getElementById("ModifylineOk");
+		ModifyBtn.onclick=function(){
+			$.ajax({
+				type:"post",
+				data:JSON.stringify({
+					lineid:row.lineid,
+					name:$("#Modifylinename").val(),
+					unitid:$(".modifylineunit2").val(),
+					status:$(".modifylinestatus2").val(),
+					type:$(".modifylinetype2").val(),
+				}),
+				url:"LinePole/modifyLineInfo.spring",
+				datatype:"json",
+				contentType : 'application/json',
+				success:function(data){
+					$("#ModifyLineInfo").modal("hide");
+					$("#TS_Modal").modal("show");
+					if(data)
+						{
+							$(".TS_Modal h4").text("修改信息成功");
+						}
+					else{
+						$(".TS_Modal h4").text("修改信息失败");
+					}
+				}
+			});
+		}
 	},
+	'click .DelLineBtn' : function(e, value, row, index) {
+		/**
+		 * 删除线路信息
+		 */
+		$("#DelRtnModal").modal("show");
+		$("#DelThisLine").css('display',"inline");
+		$("#DelThisPole").css('display',"none");
+		var DelLineBtn=document.getElementById("DelThisLine");
+		DelLineBtn.onclick=function(){
+			$.ajax({
+				type:"post",
+				data:{
+					lineid:row.lineid,
+				},
+				url:"LinePole/delLineInfo.spring",
+				datatype:"json",
+				success:function(data){
+					$("#DelRtnModal").modal("hide");
+					$("#TS_Modal").modal("show");
+					if(data)
+						{
+							$(".TS_Modal h4").text("删除线路成功");
+							$('#lineInfoTable').bootstrapTable("refresh");
+						}
+					else{
+						$(".TS_Modal h4").text("删除线路失败");
+					}
+				}
+			});
+		}
+	}
+	
 };
 /**
  * 加载所有的线路基本信息
@@ -268,18 +343,18 @@ function poleinfoinit(lineid){
 		paginationPreText: "上一页",
     	paginationNextText: "下一页",
     	contentType:"application/x-www-form-urlencoded; charset=UTF-8",
-						columns : [ {
-							title : "序号",
-							align : "center",
-							valign : "middle",
-							formatter : function(value, row, index) {
-								return index+ 1;
-							}
-						}, {
-							field : "name",
+						columns : [{
+							field : "linedetailList",
 							title : "线杆名称",
 							align : "center",
 							valign : "middle",
+							formatter:function(value, row, index)
+							{
+								if(value.length>0)
+									{
+										return value[0].name;
+									}
+							}
 						}, {
 							field : "statusname",
 							title : "线杆状态",
@@ -309,18 +384,182 @@ function poleinfoinit(lineid){
 }
 function operateFormatterpole(value, row, index) {
 	return [
-'<button type="button" class="RoleOfA btn btn-default  btn-sm" style="margin-right:15px;">详情</button>',
-'<button type="button" class="RoleOfB btn btn-default  btn-sm" style="margin-right:15px;">修改</button>',
-'<button type="button" class="RoleOfB btn btn-default  btn-sm" style="margin-right:15px;background-color:red;color:white">删除</button>', ]
+'<button type="button" class="photoImgBtn btn btn-default  btn-sm" style="margin-right:15px;">照片</button>',
+'<button type="button" class="PoleDetail btn btn-default  btn-sm" style="margin-right:15px;">详情</button>',
+'<button type="button" class="PoleModify btn btn-default  btn-sm" style="margin-right:15px;">修改</button>',
+'<button type="button" class="DelLineBtn btn btn-default  btn-sm" style="margin-right:15px;background-color:red;color:white">删除</button>', ]
 			.join('');
 }
 // 表格操作的按钮事件
 window.operateEventspole = {
-	'click .RoleOfA' : function(e, value, row, index) {
-		alert(row.poleid);
+	'click .PoleModify' : function(e, value, row, index) {
+		/**
+		 * 修改线杆信息
+		 */
+		$("#AddPoleModal").modal("show");
+		$(".OkModifyPole").css("display","inline");
+		$(".OkPole").css("display","none");
+		$("#thirdLayer1").remove();
+		$("#thirdLayer2").remove();
+		$("#PoleTime").val(NowDate());
+		$("#PoleLon").val(row.longtitude);
+		$("#PoleLat").val(row.latitude);
+		countNum=row.linedetailList.length-1;
+		for(var i=0;i<row.linedetailList.length;i++)
+			{
+				
+				if(i>=1)
+					{
+					$("#thirdLayer").append("<div class='thirdLayer"+i+"'>"
+							+"<label for='PolePre' class='control-label'>前一杆</label>"
+							+" <select class='PolePre'></select>"
+							+" <label for='PoleForLine' class='control-label'>所属线路</label>    <select class='PoleForLine' id='PoleForLine"+countNum+"'>"
+							+"	</select>"
+							+" <label for='PoleCode' class='control-label'>编码</label><input"
+							+"  type='text' class='PoleCode' name='PoleCode' value='"+row.linedetailList[i].code+"'/>"
+							+"<input type='button' value='删除' class='delLinePole' onclick='deldiv(this)'/>"
+						+"</div>");
+					poleinit.SelectAllPole(i);
+					lineinit.SelectAllLineName(i);
+					}
+				else{
+					$(".thirdLayer0 .PoleCode").val(row.linedetailList[0].code);
+				}
+			}
 	},
-	'click .RoleOfB' : function(e, value, row, index) {
-		alert(row.poleid);
+	'click .PoleDetail' : function(e, value, row, index) {
+		/**
+		 * 查看该线杆详情
+		 */
+		$.ajax({
+			type:"post",
+			data:{
+				poleid:row.poleid
+			},
+			url:"LinePole/selectPoleInfoByPoleid.spring",
+			datatype:"json",
+			success:function(data)
+			{	
+				$("#PoleDetailModal").modal("show");
+				for(var i=0;i<data.length;i++)
+					{
+						$("#PoleStatus2").val(data[i].statusname);
+						$("#PoleTimeString2").val(data[i].timeString);
+						$("#PoleUnit2").val(data[i].unitname);
+						$("#PoleType2").val(data[i].typename);
+						$("#PoleLon2").val(data[i].longtitude);
+						$("#PoleLat2").val(data[i].latitude);
+						if(data[i].linedetailList.length>0)
+							{
+								$("#thirdLayer2").text("");
+								for(var j=0;j<data[i].linedetailList.length;j++)
+									{
+									$("#thirdLayer2").append("<div class='thirdLayer0'>"
+											+"<label for='PolePre2' class='control-label'>前一杆</label>"
+											+"<input type='text' class='PolePre2' name='PolePre2' value='"+data[i].linedetailList[j].prepolename+"'/>"
+											+"<label for='PoleForLine2' class='control-label'>所属线路</label>"
+											+"<input type='text' class='PoleForLine2' name='PoleForLine2' value='"+data[i].linedetailList[j].linename+"'/>"
+											+"<label for='PoleCode2' class='control-label'>编码</label><input"
+											+" type='text' class='PoleCode2' name='PoleCode2' value='"+data[i].linedetailList[j].code+"'/>"
+											+"</div>");
+									}
+							}
+					}
+			}
+		})
+	},
+	'click .DelLineBtn' : function(e, value, row, index) {
+		/**
+		 * 删除线杆
+		 */
+		$("#DelRtnModal").modal("show");
+		$("#DelThisLine").css('display',"none");
+		$("#DelThisPole").css('display',"inline");
+		var delthispole=document.getElementById("DelThisPole");
+		delthispole.onclick=function(){
+			$.ajax({
+				type:"post",
+				data:{
+					poleid:row.poleid
+				},
+				url:"LinePole/delPoleByPoleId.spring",
+				datatype:"json",
+				success:function(data)
+				{	
+					$("#DelRtnModal").modal("hide");
+					$("#TS_Modal").modal("show");
+					$(".TS_Modal h4").text(data[0].msg);
+					poleinit.PoleInfoInit(LineId);
+				}
+			});
+		}
+	},
+	'click .photoImgBtn' : function(e, value, row, index) {
+		$("#CheckPhotoModal").modal("show");
+		/**
+		 * 线杆基础信息
+		 */
+		$("#Photopolename").val(row.linedetailList[0].name);
+		$("#Photopoleunit").val(row.unitname);
+		$("#Photopoletype").val(row.typename);
+		$("#Photopolestatus").val(row.statusname);
+		$("#Photopolememo").text(row.memo);
+		/**
+		 * 线杆照片信息
+		 */
+		$.ajax({
+			type:"post",
+			url:"LinePole/selectPolePhoto.spring",
+			data:{
+				poleid:row.poleid
+			},
+			datatype:"json",
+			success:function(data)
+			{
+				$("#CheckPhoto ul").text("");
+				if(data.length>0)
+					{
+					$("#PhotoTime").val(data[0].stringcreatetime);
+						var ImgHeight=$("#CheckPhoto").height()
+						for (var i = 0; i < data.length; i++) {
+							$("#CheckPhoto ul").append("<li><img src='"+data[i].photopath+"'></li>");
+						}
+						var num=0;
+						var prevImg=document.getElementById("prevImg");
+						/**
+						 * 上一张下一张照片
+						 */
+						prevImg.onclick=function(){
+							if (num <=0) {
+								alert("第一张");
+								num=0;
+							} else {
+								//在最后面加入一张和第一张相同的图片，如果播放到最后一张，继续往下播，悄悄回到第一张(肉眼看不见)，从第一张播放到第二张
+								//console.log(num);
+								num--;
+								$('#CheckPhoto ul').animate({marginTop :-(num)*ImgHeight},500);
+								$("#PhotoTime").val(data[num].stringcreatetime);
+							}
+						}
+						var nextImg=document.getElementById("nextImg");
+						nextImg.onclick=function(){
+							num++;
+							if (num >= data.length) {
+								alert("最后一张");
+								num=data.length-1;
+							} else {
+								//在最后面加入一张和第一张相同的图片，如果播放到最后一张，继续往下播，悄悄回到第一张(肉眼看不见)，从第一张播放到第二张
+								//console.log(num);
+									$('#CheckPhoto ul').animate({marginTop : -num * ImgHeight},500);
+									$("#PhotoTime").val(data[num].stringcreatetime);
+							}
+						}
+					}
+				else{
+					$("#CheckPhoto ul").append("<li><img alt='没有相关图片'></li>");
+				}
+			}
+		});
 	},
 };
 /**
@@ -348,6 +587,12 @@ function lineunitinfo(status){
 				$("#PoleUnit").append(
 						"<option value='" + data[i].unitid + "'>"
 								+ data[i].unitname + "</option>");
+				/**
+				 * 修改线路单位
+				 */
+				$(".modifylineunit2").append(
+						"<option value='" + data[i].unitid + "'>"
+								+ data[i].unitname + "</option>");
 			}
 		}
 	});
@@ -371,6 +616,9 @@ function linetypeinfo(typename){
 					$("#LineType").append(
 							"<option value='" + data[i].dicitemid + "'>"
 									+ data[i].item + "</option>");
+					$(".modifylinetype2").append(
+							"<option value='" + data[i].dicitemid + "'>"
+									+ data[i].item + "</option>");
 					/*
 					 * if (data[i].item == "提交申请") { ApplyStatus =
 					 * data[i].dicitemid; }
@@ -386,6 +634,8 @@ function linetypeinfo(typename){
 					 * if (data[i].item == "提交申请") { ApplyStatus =
 					 * data[i].dicitemid; }
 					 */
+					$(".modifylinestatus2").append("<option value='" + data[i].dicitemid + "'>"
+									+ data[i].item + "</option>");
 				}
 				break;
 			case ("线杆类别"):
@@ -420,16 +670,25 @@ function linetypeinfo(typename){
 $(".addLine").click(function(){
 	$("#AddLineModal").modal("show");
 	$("#LineTime").val(NowDate());
+	$("#LineCode").val(new Date().getTime());
 })
 /**
  * 点击添加线杆
  */
 $(".addPole").click(function(){
 	$("#AddPoleModal").modal("show");
+	$(".OkModifyPole").css("display","none");
+	$(".OkPole").css("display","inline");
 	$("#PoleTime").val(NowDate());
 	$(".thirdLayer1").remove();
 	$(".thirdLayer2").remove();
 })
+/**
+ * 添加线杆modal隐藏式
+ */
+$('#AddPoleModal').on('hidden.bs.modal', function() {
+	countNum=0;
+});
 /**
  * 线路
  * 点击modal上完成按钮
@@ -442,7 +701,7 @@ $("#LineOK").click(function(){
  *  添加线路信息
  */
 function lineInsertInfo(){
-	$.ajax({
+	/*$.ajax({
 		type : "post",
 		url : "LinePole/insertLineInfo.spring",
 		data : JSON.stringify(InsertLineInfoArr()),
@@ -452,6 +711,47 @@ function lineInsertInfo(){
 			$("#AddLineModal").modal("hide");
 			lineinit.LineInfoInit();
 		},
+	});*/
+	var linedataildata=new Array();
+	linedataildata.push({code:"01",longtitude:$("#LineFirstPolelon").val(),latitude:$("#LineFirstPolelat").val(),name:$("#LineNameInput").val()+"#01"});
+	linedataildata.push({code:"02",longtitude:$("#LineLastPolelon").val(),latitude:$("#LineLastPolelat").val(),name:$("#LineNameInput").val()+"#02"});
+	$.ajax({
+		type : "post",
+		url : "LinePole/insertNewLineAndDetail.spring",
+		data : JSON.stringify({
+			/**
+			 * 电力线路详情
+			 */
+			poleList:linedataildata,
+			/**
+			 * 电力线路信息
+			 */
+			code:$("#LineCode").val(),
+			timeString:$("#LineTime").val(),
+			linelength:$("#LineLength").val(),
+			memo:$("#LineMemo").val(),
+			status:$("#LineStatus").val(),
+			type:$("#LineType").val(),
+			name:$("#LineNameInput").val(),
+			unitid:$("#LineUnit").val(),
+			/**
+			 * 线杆状态
+			 */
+			polestatus:18,
+		}),
+		datatype : "json",
+		contentType : 'application/json',
+		success : function(data) {
+			$("#AddLineModal").modal("show");
+			if(data!=null&& data!="")
+				{
+					$(".TS_Modal h4").text("添加线路成功");
+					$('#lineInfoTable').bootstrapTable("refresh");
+				}
+			else{
+				$(".TS_Modal h4").text("添加线路失败");
+			}
+		}
 	});
 }
 /**
@@ -522,8 +822,12 @@ function selectAllPole(index){
 		success : function(data){
 			for(var i=0;i<data.length;i++)
 				{
-					$(".thirdLayer"+index+" "+".PolePre").append("<option value='" + data[i].poleid + "'>"
-							+ data[i].name + "</option>");
+					if(data[i].linedetailList!=null)
+						{
+							var polename=data[i].linedetailList[0].name;	
+							$(".thirdLayer"+index+" "+".PolePre").append("<option value='" + data[i].poleid +"'>"
+										+ polename + "</option>");
+						}
 				}
 		}
 	});
@@ -537,11 +841,20 @@ function LinePoleDetailObject(index,poleid){
 	var prepoleinfo=$(".thirdLayer"+index+" "+".PolePre").val();
 	var lineforPole=$(".thirdLayer"+index+" "+".PoleForLine").val();
 	var code=$(".thirdLayer"+index+" "+".PoleCode").val();
+	var code2=code<10?("0"+code):code;
+	var unitselect = document.getElementById("PoleForLine"+index);
+	var linename="";
+	for (var i = 0; i < unitselect.options.length; i++) {
+		if (unitselect.options[i].value == lineforPole) {
+			unitselect.options[i].selected = true;
+			linename=unitselect.options[i].text;
+		}
+	}
 	dataDetail["lineid"]=Number(lineforPole);
 	dataDetail["poleid"]=poleid;
 	dataDetail["prepoleid"]=Number(prepoleinfo);
-	dataDetail["code"]=Number(code);
-	dataDetail["name"]=$("#PoleNameInput").val();;
+	dataDetail["code"]=code2;
+	dataDetail["name"]=linename+"#"+code2;
 	console.log(dataDetail);
 	return dataDetail;
 }
@@ -576,7 +889,7 @@ $("#addPoleBtn").click(function(){
 		$("#thirdLayer").append("<div class='thirdLayer"+countNum+"'>"
 				+"<label for='PolePre' class='control-label'>前一杆</label>"
 				+" <select class='PolePre'></select>"
-				+" <label for='PoleForLine' class='control-label'>所属线路</label><select class='PoleForLine'>"
+				+" <label for='PoleForLine' class='control-label'>所属线路</label>    <select class='PoleForLine' id='PoleForLine"+countNum+"'>"
 				+"	</select>"
 				+" <label for='PoleCode' class='control-label'>编码</label><input"
 				+"  type='text' class='PoleCode' name='PoleCode' />"
@@ -593,6 +906,7 @@ function deldiv(thisinfo){
 	$(thisinfo).parent().remove();
 	countNum--;
 	$(".thirdLayer2").removeClass("thirdLayer2").addClass("thirdLayer1");
+	$("#PoleForLine2").removeClass("PoleForLine2").addClass("PoleForLine1");
 }
 /**
  * 所有添加线路输入信息

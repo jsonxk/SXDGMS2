@@ -18,12 +18,38 @@ public class HangDetail {
     private Integer getmethod;
 
     private Integer status;
-
+    private String hanglinename;
+    private String statusname;
     private String memo;
     private String polename;
 	private List<Pole> poleList;
+	private List<LineDetail> linedetailList;
 	
-    public List<Pole> getPoleList() {
+    public String getHanglinename() {
+		return hanglinename;
+	}
+
+	public void setHanglinename(String hanglinename) {
+		this.hanglinename = hanglinename;
+	}
+
+	public String getStatusname() {
+		return statusname;
+	}
+
+	public void setStatusname(String statusname) {
+		this.statusname = statusname;
+	}
+
+	public List<LineDetail> getLinedetailList() {
+		return linedetailList;
+	}
+
+	public void setLinedetailList(List<LineDetail> linedetailList) {
+		this.linedetailList = linedetailList;
+	}
+
+	public List<Pole> getPoleList() {
 		return poleList;
 	}
 

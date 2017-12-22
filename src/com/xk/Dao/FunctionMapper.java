@@ -15,8 +15,7 @@ public interface FunctionMapper {
 	 * @param userid
 	 * @param parentid
 	 */
-	List<FunctionList> selectOnUserid(@Param("userid") Integer userid,
-			@Param("parentid") Integer parentid);
+	List<FunctionList> selectOnUserid(@Param("userid") Integer userid,@Param("parentid") Integer parentid);
 
 	/*
 	 * 获取某个人角色所有功能

@@ -170,18 +170,111 @@ function hanglineinfoinit(){
 }
 function operateFormatter(value, row, index) {
 	return [
-			'<button type="button" class="RoleOfA btn btn-default  btn-sm" style="margin-right:15px;">详情</button>',
-			'<button type="button" class="RoleOfB btn btn-default  btn-sm" style="margin-right:15px;">修改</button>',
-			'<button type="button" class="RoleOfB btn btn-default  btn-sm" style="margin-right:15px;background-color:#f27d7c;color:white">删除</button>']
+			'<button type="button" class="HangDetail btn btn-default  btn-sm" style="margin-right:15px;">详情</button>',
+			'<button type="button" class="HangModify btn btn-default  btn-sm" style="margin-right:15px;">修改</button>',
+			'<button type="button" class="HangDel btn btn-default  btn-sm" style="margin-right:15px;background-color:#f27d7c;color:white">删除</button>']
 			.join('');
 }
 // 表格操作的按钮事件
 window.operateEvents = {
-	'click .RoleOfA' : function(e, value, row, index) {
-		alert(row.hanglineid);
+	'click .HangDetail' : function(e, value, row, index) {
+		/**
+		 * 查看细节
+		 */
+		$("#HangLineModal").modal("show");
+		$("#HangLineOK").css("display","none");
+		$("#HangLineModify").css("display","none");
+		$("#HanglineCode").val(row.code);
+		$("#Hanglinename").val(row.hangname);
+		$("#HanglineTime").val(row.timeString);
+		$("#HanglineMemo").val(row.memo);
+		var HanglineUnit1=document.getElementById("HanglineUnit1");
+		for (var i = 0; i < HanglineUnit1.options.length; i++) {
+			if (HanglineUnit1.options[i].value == row.unitid) {
+				HanglineUnit1.options[i].selected = true;
+				$("#HanglineUnit1").attr("disabled","disabled");
+			}
+		}
+		var HanglineType1=document.getElementById("HanglineType1");
+		for (var i = 0; i < HanglineType1.options.length; i++) {
+			if (HanglineType1.options[i].value == row.type) {
+				HanglineType1.options[i].selected = true;
+				$("#HanglineType1").attr("disabled","disabled");
+			}
+		}
+		var HanglineStatus1=document.getElementById("HanglineStatus1");
+		for (var i = 0; i < HanglineUnit1.options.length; i++) {
+			if (HanglineStatus1.options[i].value == row.status) {
+				HanglineStatus1.options[i].selected = true;
+				$("#HanglineStatus1").attr("disabled","disabled");
+			}
+		}
 	},
-	'click .RoleOfB' : function(e, value, row, index) {
-		alert(row.hanglineid);
+	'click .HangModify' : function(e, value, row, index) {
+		/**
+		 * 修改搭挂线路信息
+		 */
+		$("#HangLineModal").modal("show");
+		$("select").attr("disabled",false);
+		$("#HanglineTime").val(NowDate());
+		$("#HanglineCode").val(row.code);
+		$("#Hanglinename").val(row.hangname);
+		$("#HanglineMemo").val(row.memo);
+		$("#HangLineModify").css("display","inline");
+		$("#HangLineOK").css("display","none");
+		var HangLineModify=document.getElementById("HangLineModify");
+		/**
+		 * 修改搭挂线路信息
+		 */
+		HangLineModify.onclick=function(){
+			var modifyinfo=InsertHangLineArr();
+			modifyinfo["hanglineid"]=row.hanglineid;
+			$.ajax({
+				type : "post",
+				url : "DGXLGL/modifyHangLine.spring",
+				data : JSON.stringify(modifyinfo),
+				datatype : "json",
+				contentType : 'application/json',
+				success : function(data) {
+					$("#HangLineModal").modal("hide");
+					$("#TS_Modal").modal("show");
+					if(data)
+						{
+							$(".TS_Modal h4").text("修改信息成功");
+						}
+					else{
+						$(".TS_Modal h4").text("修改信息失败");
+					}
+				}
+			});
+		}
+	},
+	'click .HangDel' : function(e, value, row, index) {
+		/**
+		 * 删除搭挂线路
+		 *  删除hangline
+		 *  hangdetail
+		 */
+		$.ajax({
+			type : "post",
+			url : "DGXLGL/delHangLine.spring",
+			data : {
+				hanglineid:row.hanglineid
+			},
+			datatype : "json",
+			success : function(data) {
+				$("#HangLineModal").modal("hide");
+				$("#TS_Modal").modal("show");
+				if(data)
+					{
+						$(".TS_Modal h4").text("删除搭挂线路成功");
+						$('#lineInfoTable').bootstrapTable("refresh");
+					}
+				else{
+					$(".TS_Modal h4").text("删除搭挂失败");
+				}
+			}
+		});
 	},
 };
 /**
@@ -218,10 +311,16 @@ function hangpoleinfoinit(hanglineid){
 								return index+ 1;
 							}
 						}, {
-							field : "name",
+							field : "linedetailList",
 							title : "线杆名称",
 							align : "center",
 							valign : "middle",
+							formatter:function(value, row, index){
+								if(value.length>0)
+								{
+									return value[0].name;
+								}
+							}
 						}, {
 							field : "statusname",
 							title : "线杆状态",
@@ -253,16 +352,114 @@ function operateFormatterpole(value, row, index) {
 	return [
 '<button type="button" class="RoleOfA btn btn-default  btn-sm" style="margin-right:15px;">详情</button>',
 '<button type="button" class="RoleOfB btn btn-default  btn-sm" style="margin-right:15px;">修改</button>',
-'<button type="button" class="RoleOfB btn btn-default  btn-sm" style="margin-right:15px;background-color:#f27d7c;color:white">删除</button>', ]
+'<button type="button" class="PoleDel btn btn-default  btn-sm" style="margin-right:15px;background-color:#f27d7c;color:white">删除</button>', ]
 			.join('');
 }
 // 表格操作的按钮事件
 window.operateEventspole = {
 	'click .RoleOfA' : function(e, value, row, index) {
-		alert(row.poleid);
+		/**
+		 * 查看搭挂线杆详情
+		 */
+		$("#HangPoleModal").modal("show");
+		$("#HangPoleOK").css("display","none");
+		$("#HangPoleModify").css('display',"none");
+		console.log(row);
+		$("#HangPoleCode").val(row.linedetailList[0].code);
+		$("#HangPoleMemo").text(row.linedetailList[0].memo);
+		var HangPolename=document.getElementById("HangPolename");
+		for (var i = 0; i < HanglineUnit1.options.length; i++) {
+			if (HangPolename.options[i].value == row.hanglineid) {
+				HangPolename.options[i].selected = true;
+				$("#HangPolename").attr("disabled","disabled");
+			}
+		}
+		var HangPole=document.getElementById("HangPole");
+		for (var i = 0; i < HangPole.options.length; i++) {
+			if (HangPole.options[i].value == row.poleid) {
+				HangPole.options[i].selected = true;
+				$("#HangPole").attr("disabled","disabled");
+			}
+		}
+		var HangPolePre=document.getElementById("HangPolePre");
+		HangPolePre.options[0].selected = true;
+		$("#HangPolePre").attr("disabled","disabled");
+		for (var i = 0; i < HangPolePre.options.length; i++) {
+			if (HangPolePre.options[i].value == row.prevpoleid) {
+				HangPolePre.options[i].selected = true;
+				$("#HangPolePre").attr("disabled","disabled");
+			}
+		}
+		var HangPole=document.getElementById("HangPole");
+		for (var i = 0; i < HangPole.options.length; i++) {
+			if (HangPole.options[i].value == row.poleid) {
+				HangPole.options[i].selected = true;
+				$("#HangPole").attr("disabled","disabled");
+			}
+		}
+		var HangPoleStatus=document.getElementById("HangPoleStatus");
+		for (var i = 0; i < HangPoleStatus.options.length; i++) {
+			if (HangPoleStatus.options[i].value == row.status) {
+				HangPoleStatus.options[i].selected = true;
+				$("#HangPoleStatus").attr("disabled","disabled");
+			}
+		}
 	},
 	'click .RoleOfB' : function(e, value, row, index) {
-		alert(row.poleid);
+		/**
+		 * 修改搭挂线杆信息
+		 */
+		$("#HangPoleModal").modal("show");
+		$("#HangPoleOK").css("display","none");
+		$("#HangPoleModify").css("display","inline");
+		$("select").attr("disabled",false);
+		var hanglineModify=document.getElementById("HangPoleModify");
+		hanglineModify.onclick=function(){
+			var modifypoleinfo=InsertHangPoleArr();
+			modifypoleinfo["handdetailid"]=row.handdetailid;
+			$.ajax({
+				type : "post",
+				url : "DGXLGL/modifyHangPole.spring",
+				data : JSON.stringify(modifypoleinfo),
+				datatype : "json",
+				contentType : 'application/json',
+				success : function(data) {
+					$("#HangPoleModal").modal("hide");
+					$("#TS_Modal").modal("show");
+					if(data)
+						{
+							$(".TS_Modal h4").text("修改搭挂线杆成功");
+						}
+					else{
+						$(".TS_Modal h4").text("修改搭挂线杆失败");
+					}
+				}
+			});
+		}
+	},
+	'click .PoleDel' : function(e, value, row, index) {
+		/**
+		 * 根据hangdetailid删除搭挂线杆信息
+		 */
+		$.ajax({
+			type : "post",
+			url : "DGXLGL/delHangPole.spring",
+			data : {
+				handdetailid:row.handdetailid
+			},
+			datatype : "json",
+			success : function(data) {
+				$("#TS_Modal").modal("show");
+				if(data)
+					{
+						$(".TS_Modal h4").text("删除搭挂线杆成功");
+						$('#poleInfoTable').bootstrapTable("refresh");
+					}
+				else{
+					$(".TS_Modal h4").text("删除搭挂线杆失败");
+				}
+			}
+		});
 	},
 };
 /**
@@ -271,7 +468,13 @@ window.operateEventspole = {
  */
 $(".addLine").click(function(){
 	$("#HangLineModal").modal("show");
+	$("#HangLineOK").css("display","inline");
+	$("#HangLineModify").css("display","none");
+	$("select").attr("disabled",false);
 	$("#HanglineTime").val(NowDate());
+	$("#HanglineCode").val("");
+	$("#Hanglinename").val("");
+	$("#HanglineMemo").val("");
 })
 /**
  * 添加搭挂线路modal
@@ -288,6 +491,7 @@ $("#HangLineOK").click(function(){
 		success : function(data) {
 			if(data)
 				{
+				$('#lineInfoTable').bootstrapTable("refresh");
 				alert("添加搭挂线路成功");
 				}
 			else{
@@ -303,6 +507,11 @@ $("#HangLineOK").click(function(){
 $(".addPole").click(function(){
 	$("#HangPoleModal").modal("show");
 	//$("#HanglineTime").val(NowDate());
+	$("#HangPoleOK").css('display',"inline");
+	$("#HangPoleModify").css('display',"none");
+	$("select").attr("disabled",false);
+	$("#HangPoleCode").val("");
+	$("#HangPoleMemo").text("");
 })
 $("#HangPoleOK").click(function(){
 	$("#HangPoleModal").modal("hide");
@@ -316,6 +525,7 @@ $("#HangPoleOK").click(function(){
 			if(data)
 				{
 				alert("添加搭挂线杆成功");	
+				$('#poleInfoTable').bootstrapTable("refresh");
 				}
 			else{
 				alert("添加失败!");
@@ -362,7 +572,6 @@ function InsertHangPoleArr(){
 	LineData["code"]=$("#HangPoleCode").val();
 	LineData["hanglineid"]=Number($(".HangPolename").val());
 	LineData["prevpoleid"]=Number($(".HangPolePre").val());
-	LineData["nextpoleid"]=Number($(".HangPoleNext").val());
 	LineData["status"]=Number($(".HangPoleStatus").val());
 	LineData["memo"]=$("#HangPoleMemo").val();
 	console.log(JSON.stringify(LineData));
@@ -469,22 +678,24 @@ function selectAllLineInfo(){
 function selectAllPoleInfo(){
 	$.ajax({
 		type : "post",
-		url : "DGXLGL/selectAllHangPoleName.spring",
+		url : "LinePole/selectAllPole.spring",
 		datatype : "json",
 		success : function(data) {
+			$(".HangPolePre").append(
+					"<option value='0'>无</option>");
 			for (var i = 0; i < data.length; i++) {
 				/**
 				 * 添加线杆modal
 				 */
 				$(".HangPole").append(
 						"<option value='" + data[i].poleid + "'>"
-								+ data[i].name + "</option>");
+								+ data[i].linedetailList[0].name + "</option>");
 				$(".HangPolePre").append(
 						"<option value='" + data[i].poleid + "'>"
-								+ data[i].name + "</option>");
-				$(".HangPoleNext").append(
+								+ data[i].linedetailList[0].name + "</option>");
+				/*$(".HangPoleNext").append(
 						"<option value='" + data[i].poleid + "'>"
-								+ data[i].name + "</option>");
+								+ data[i].linedetailList[0].name + "</option>");*/
 			}
 		}
 	});

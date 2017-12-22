@@ -35,6 +35,32 @@
 	<!-- treeview -->
 	<link rel="stylesheet" type="text/css" href="./treeview/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="./css/tabletitle.css">
+	<style type="text/css">
+		.HandFault{
+			background-color: rgba(33,117,232,0.9);
+			color:#FFFFFF;
+		}
+		 .HandFault:hover {
+		   	background-color: rgba(33,117,232,1);
+		   	color:#FFFFFF;
+		}
+		.HandFault:active:focus,.HandFault:active{
+		 	background-color: rgba(33,117,232,1);
+			color:#FFFFFF;
+		}
+		.checkApply{
+			background-color: rgba(92,184,92,0.9);
+			color:#FFFFFF;
+		}
+		 .checkApply:hover {
+		 	background-color: rgba(92,184,92,0.9);	
+		   	color:#FFFFFF;
+		}
+		.checkApply:active:focus,.checkApply:active{
+		 	background-color: rgba(92,184,92,0.9);
+			color:#FFFFFF;
+		}
+	</style>
 <body>
 	<!-- WRAPPER -->
 	<div id="wrapper">
@@ -58,13 +84,17 @@
 							class="btn btn-primary">Go</button></span>
 				</div>
 			</form>
-			<div class="navbar-btn navbar-btn-right">
-				<a class="btn btn-success update-pro"
-					href="#downloads/klorofil-pro-bootstrap-admin-dashboard-template/?utm_source=klorofil&utm_medium=template&utm_campaign=KlorofilPro"
-					title="Upgrade to Pro" target="_blank"><i class="fa fa-rocket"></i>
-					<span>UPGRADE TO PRO</span></a>
+			<div id="navbar-menu">
+				<ul class="nav navbar-nav navbar-right userOp">
+					<li class="dropdown">
+							<a class="dropdown-toggle dropdown userNameSpan" data-toggle="dropdown"><img src="assets/img/user.png" class="img-circle" alt="Avatar"> <span></span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+							<ul class="dropdown-menu dropUserInfo">
+								<li><a href="#"><i class="lnr lnr-user"></i> <span>修改信息</span></a></li>
+								<li><a href="jsp/Quit.jsp"><i class="lnr lnr-exit"></i> <span>退出登录</span></a></li>
+							</ul>
+					</li>
+				</ul>
 			</div>
-			<div id="navbar-menu"></div>
 		</div>
 		</nav>
 		<!-- END NAVBAR -->
@@ -73,7 +103,7 @@
 			<div class="sidebar-scroll">
 				<nav>
 				<ul class="nav">
-					<li><a href="jsp/index.jsp"><i class="lnr lnr-home"></i> <span>首页</span></a></li>
+					<li class="indexpage"><a href="jsp/index.jsp"><i class="lnr lnr-home"></i> <span>首页</span></a></li>
 					<li class="sqgl"><a href="#subPages" data-toggle="collapse"
 						class="collapsed"><i class="lnr lnr-file-empty"></i> <span></span>
 							<i class="icon-submenu lnr lnr-chevron-left"></i></a>
@@ -174,12 +204,6 @@
 				<!-- END MAIN CONTENT -->
 			</div>
 			<!-- END MAIN -->
-			<div class="userinfo" style="display:none">
-				<span><%=session.getAttribute("userid")%></span>
-				<p id="p1"><%=session.getAttribute("loginname").toString()%></p>
-				<p id="p2"><%=session.getAttribute("unitname").toString()%></p>
-				<p id="p3"><%=session.getAttribute("unitid").toString()%></p>
-			</div>
 			<div class="clearfix"></div>
 		</div>
 	</div>
@@ -330,8 +354,31 @@
 		function initIndex() {
 			$(".qxglchild .2qxgl0   a").addClass("active");
 		}
+			$(".userOp").mouseover(function(){
+			$(".dropUserInfo").css("display","block");
+		})
+		$(".userOp").mouseout(function(){
+			$(".dropUserInfo").css("display","none");
+		})
 	</script>
 	<script src="./js/pageInit.js"></script>
+	<div class="userinfo" style="display:none">
+				<%
+					if (session.getAttribute("userid") == null) {
+						response.sendRedirect("login.jsp");
+					} else {
+				%>
+				<script type="text/javascript">
+					$(".userNameSpan span").text("<%=session.getAttribute("loginname")%>");
+				</script>
+				<span><%=session.getAttribute("userid")%></span>
+				<p id="p1"><%=session.getAttribute("loginname").toString()%></p>
+				<p id="p2"><%=session.getAttribute("unitname").toString()%></p>
+				<p id="p3"><%=session.getAttribute("unitid").toString()%></p>
+				<%
+					}
+				%>
+	</div>
 	<script src="./js/table/QXGL.js"></script>
 </body>
 

@@ -87,18 +87,22 @@
 		hangline LEFT JOIN hangdetail h2 on hangline.HangLineId=h2.HangLineId
 		LEFT JOIN dicitem d1 on d1.DicItemId=hangline.`Status` LEFT JOIN
 		dicitem d2 ON hangline.Type=d2.DicItemId
-		LEFT JOIN unit on hangline.UnitId=unit.UnitId
+		LEFT JOIN unit on
+		hangline.UnitId=unit.UnitId
 		where hangline.HangLineId=#{hanglineid}
 	</select>
 	<!-- 根据name查找搭挂线路信息 -->
 	<select id="SelectHangLineByName" resultType="com.xk.orm.HangLine">
-		select hangline.* from hangline where hangline.HangName like "%"#{hangname}"%"
+		select hangline.*
+		from hangline where hangline.HangName like "%"#{hangname}"%"
 	</select>
 	<!-- 根据name查找搭挂线路信息精确查找 -->
 	<select id="SelectHangLineByAllName" resultType="com.xk.orm.HangLine">
-		select hangline.* from hangline where hangline.HangName=#{hangname}
+		select
+		hangline.* from hangline where hangline.HangName=#{hangname}
 	</select>
-	<insert id="insertHangLine" parameterType="com.xk.orm.HangLine">
+	<insert id="insertHangLine" parameterType="com.xk.orm.HangLine"
+		useGeneratedKeys="true" keyProperty="hanglineid">
 		insert into hangline
 		(UnitId,
 		HangName,Type,CreateTime,Status,Memo,Code
@@ -111,6 +115,41 @@
 		#{memo,jdbcType=VARCHAR},
 		#{code,jdbcType=VARCHAR})
 	</insert>
+	<!-- 修改搭挂线路信息 -->
+	<update id="ModifyHangLine" parameterType="com.xk.orm.HangLine">
+		update hangline
+		<set>
+			<if test="unitid != null">
+				UnitId = #{unitid,jdbcType=INTEGER},
+			</if>
+			<if test="hangname != null">
+				HangName = #{hangname,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				Type = #{type,jdbcType=INTEGER},
+			</if>
+			<if test="code != null">
+				Code = #{type,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				Status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="timeString!=null">
+				CreateTime=#{timeString},
+			</if>
+			<if test="memo != null">
+				Memo = #{memo,jdbcType=VARCHAR}
+			</if>
+		</set>
+		where HangLineId = #{hanglineid,jdbcType=INTEGER}
+	</update>
+	<!-- 删除搭挂线路信息 -->
+	<delete id="DelHangLine" parameterType="java.lang.Integer">
+		delete
+		hangline.*,hangdetail.* from hangline,hangdetail where
+		hangline.HangLineId=hangdetail.HangLineId and
+		hangline.HangLineId=#{hanglineid}
+	</delete>
 	<insert id="insertSelective" parameterType="com.xk.orm.HangLine">
 		insert into hangline
 		<trim prefix="(" suffix=")" suffixOverrides=",">

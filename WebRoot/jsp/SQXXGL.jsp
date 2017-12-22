@@ -44,6 +44,30 @@
 #fileToUpload2 {
 	display: none;
 }
+.Handerapply{
+	background-color: rgba(33,117,232,0.9);
+	color:#FFFFFF;
+}
+ .Handerapply:hover {
+   	background-color: rgba(33,117,232,1);
+   	color:#FFFFFF;
+}
+.Handerapply:active:focus,.Handerapply:active{
+ 	background-color: rgba(33,117,232,1);
+	color:#FFFFFF;
+}
+.Checkapply{
+	background-color: rgba(92,184,92,0.9);
+	color:#FFFFFF;
+}
+ .Checkapply:hover {
+ 	background-color: rgba(92,184,92,0.9);	
+   	color:#FFFFFF;
+}
+.Checkapply:active:focus,.Checkapply:active{
+ 	background-color: rgba(92,184,92,0.9);
+	color:#FFFFFF;
+}
 </style>
 <body>
 	<!-- WRAPPER -->
@@ -68,13 +92,17 @@
 							class="btn btn-primary">Go</button></span>
 				</div>
 			</form>
-			<div class="navbar-btn navbar-btn-right">
-				<a class="btn btn-success update-pro"
-					href="#downloads/klorofil-pro-bootstrap-admin-dashboard-template/?utm_source=klorofil&utm_medium=template&utm_campaign=KlorofilPro"
-					title="Upgrade to Pro" target="_blank"><i class="fa fa-rocket"></i>
-					<span>UPGRADE TO PRO</span></a>
+			<div id="navbar-menu">
+				<ul class="nav navbar-nav navbar-right userOp">
+					<li class="dropdown">
+							<a class="dropdown-toggle dropdown userNameSpan" data-toggle="dropdown"><img src="assets/img/user.png" class="img-circle" alt="Avatar"> <span></span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+							<ul class="dropdown-menu dropUserInfo">
+								<li><a href="#"><i class="lnr lnr-user"></i> <span>修改信息</span></a></li>
+								<li><a href="jsp/Quit.jsp"><i class="lnr lnr-exit"></i> <span>退出登录</span></a></li>
+							</ul>
+					</li>
+				</ul>
 			</div>
-			<div id="navbar-menu"></div>
 		</div>
 		</nav>
 		<!-- END NAVBAR -->
@@ -83,7 +111,7 @@
 			<div class="sidebar-scroll">
 				<nav>
 				<ul class="nav">
-					<li><a href="jsp/index.jsp"><i class="lnr lnr-home"></i> <span>首页</span></a></li>
+					<li class="indexpage"><a href="jsp/index.jsp"><i class="lnr lnr-home"></i> <span>首页</span></a></li>
 					<li class="sqgl"><a href="#subPages" data-toggle="collapse"
 						class="active"><i class="lnr lnr-file-empty"></i> <span></span>
 							<i class="icon-submenu lnr lnr-chevron-left"></i></a>
@@ -227,8 +255,7 @@
 											<label for="HM_ApplyHang" class="control-label HM_ApplyHang">搭挂线路:</label> 
 											<select class="HM_SelectHang">
 											</select>
-											<input
-											type="text" id="HM_ApplyHang" name="HM_ApplyHang" readonly>
+											<input type="text" id="HM_ApplyHang" name="HM_ApplyHang"  readonly>
 											<label for="HM_ApplyCode" class="control-label HM_ApplyCode">申请单号:</label> <input
 											type="text" id="HM_ApplyCode" name="HM_ApplyCode" readonly>
 											</br>
@@ -265,9 +292,11 @@
 										</h6>
 									</div>
 									<div id="collapseThree" class="panel-collapse collapse">
-										<div class="panel-body">Nihil anim keffiyeh helvetica,
-											craft beer labore wes anderson cred nesciunt sapiente ea
-											proident. Ad vegan excepteur butcher vice lomo.</div>
+										<div class="panel-body">
+											<table id="hangdertable">
+
+											</table>
+										</div>
 									</div>
 								</div>
 							</div  >
@@ -285,12 +314,6 @@
 				</div>
 			</div>
 			<!-- END MAIN -->
-			<div class="userinfo" style="display:none">
-				<span><%=session.getAttribute("userid")%></span>
-				<p id="p1"><%=session.getAttribute("loginname").toString()%></p>
-				<p id="p2"><%=session.getAttribute("unitname").toString()%></p>
-				<p id="p3"><%=session.getAttribute("unitid").toString()%></p>
-			</div>
 			<div class="clearfix"></div>
 		</div>
 	</div>
@@ -311,8 +334,31 @@
 		function initIndex() {
 			$(".sqglchild .0sqgl0   a").addClass("active");
 		}
+		$(".userOp").mouseover(function(){
+			$(".dropUserInfo").css("display","block");
+		})
+		$(".userOp").mouseout(function(){
+			$(".dropUserInfo").css("display","none");
+		})
 	</script>
 	<script src="./js/pageInit.js"></script>
+	<div class="userinfo" style="display:none">
+				<%
+					if (session.getAttribute("userid") == null) {
+						response.sendRedirect("login.jsp");
+					} else {
+				%>
+				<script type="text/javascript">
+					$(".userNameSpan span").text("<%=session.getAttribute("loginname")%>");
+				</script>
+				<span><%=session.getAttribute("userid")%></span>
+				<p id="p1"><%=session.getAttribute("loginname").toString()%></p>
+				<p id="p2"><%=session.getAttribute("unitname").toString()%></p>
+				<p id="p3"><%=session.getAttribute("unitid").toString()%></p>
+				<%
+					}
+				%>
+	</div>
 	<script src="./js/table/SQXXGL.js"></script>
 </body>
 

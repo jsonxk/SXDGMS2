@@ -44,4 +44,10 @@ public interface LineDetailMapper {
 	 * @return
 	 */
 	List<LineDetail> selectAllHangDetail(@Param("poleid") int poleid);
+	/**
+	 * 批量添加电力线路细节
+	 * @param linedetail
+	 * @return
+	 */
+	int InsertLineDetailList(LineDetailList linedetail);
 }

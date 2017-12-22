@@ -59,7 +59,7 @@ FaultMenage.prototype={
 var faultinit=new FaultMenage();
 $(function(){
 	$(".fromtimeFault1").val(getBeforeDate(30));
-	$(".dateFinishFault1").val(getBeforeDate(0));
+	$(".dateFinishFault1").val(getBeforeDate(-1));
 	faultinit.FaultType();
 })
 /**
@@ -172,25 +172,25 @@ function operateFormatter(value, row, index) {
 		{
 		opvalue = [
 					'<button type="button" class="checkApply btn btn-default  btn-sm" style="margin-right:15px;">查看</button>',
-					'<button type="button" class="delapply btn btn-default  btn-sm" style="margin-right:15px;">删除</button>',
-					'<button type="button" class="startRepairAct btn btn-default  btn-sm" style="margin-right:15px;">开启整改流程</button>'];
+					'<button type="button" class="delapply btn btn-danger  btn-sm" style="margin-right:15px;">删除</button>',
+					'<button type="button" class="startRepairAct btn btn-info  btn-sm" style="margin-right:15px;">开启整改流程</button>'];
 		}
 	else if(row.statusname=='发送整改通知书'){
 		opvalue = [
 					'<button type="button" class="checkApply btn btn-default  btn-sm" style="margin-right:15px;">查看</button>',
-					'<button type="button" class="delapply btn btn-default  btn-sm" style="margin-right:15px;">删除</button>',
-					'<button type="button" class="Submitapply btn btn-default  btn-sm" style="margin-right:15px;">发送通知</button>'];
+					'<button type="button" class="delapply btn btn-danger  btn-sm" style="margin-right:15px;">删除</button>',
+					'<button type="button" class="Submitapply btn btn-warning  btn-sm" style="margin-right:15px;">发送通知</button>'];
 	}
 	else if(row.statusname=="整改完成")
 		{
 		opvalue = [
 					'<button type="button" class="checkApply btn btn-default  btn-sm" style="margin-right:15px;">查看</button>',
-					'<button type="button" class="delapply btn btn-default  btn-sm" style="margin-right:15px;">删除</button>',];
+					'<button type="button" class="delapply btn btn-danger  btn-sm" style="margin-right:15px;">删除</button>',];
 		}
 	else{
 		opvalue = [
 					'<button type="button" class="checkApply btn btn-default  btn-sm" style="margin-right:15px;">查看</button>',
-					'<button type="button" class="delapply btn btn-default  btn-sm" style="margin-right:15px;">删除</button>',
+					'<button type="button" class="delapply btn btn-danger  btn-sm" style="margin-right:15px;">删除</button>',
 					'<button type="button" class="HandFault btn btn-default  btn-sm" style="margin-right:15px;">处理</button>'];
 	}
 	

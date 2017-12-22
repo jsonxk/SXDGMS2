@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.xk.DaoImpl.AllDao;
 import com.xk.orm.HangDetail;
 import com.xk.orm.HangLine;
+import com.xk.orm.LineDetail;
 import com.xk.orm.Pole;
 import com.xk.orm.PublicEntity;
 
@@ -56,7 +57,7 @@ public class DgxlglBLL {
 	 * @return
 	 */
 	public JSONArray selectHangPole(int hanglineid) {
-		List<Pole> polelist=alldao.getHangLineMapperImpl().selectHangPole(hanglineid);
+		List<HangDetail> polelist=alldao.getHangLineMapperImpl().SelectHangDetailPole(hanglineid);
 		return JSONArray.fromObject(polelist);
 	}
 	/**
@@ -103,6 +104,62 @@ public class DgxlglBLL {
 	public JSONArray selectAllHangPoleName() {
 		List<Pole> Poleinfo=alldao.getHangLineMapperImpl().selectAllHangPoleName();
 		return JSONArray.fromObject(Poleinfo);
+	}
+	/**
+	 * 修改搭挂线路信息
+	 * @param hangline
+	 * @return
+	 */
+	public boolean ModifyHangLine(HangLine hangline) {
+		int i=alldao.getHangLineMapperImpl().ModifyHangLine(hangline);
+		if(i>0)
+		{
+			return true;
+		}
+		else
+			return false;
+	}
+	/**
+	 * 修改搭挂线杆信息
+	 * @param hangDetail
+	 * @return
+	 */
+	public boolean ModifyHangPole(HangDetail hangDetail) {
+		int i=alldao.getHangLineMapperImpl().ModifyHangPole(hangDetail);
+		if(i>0)
+		{
+			return true;
+		}
+		else
+			return false;
+	}
+	/**
+	 * 删除搭挂线路信息
+	 * hangline,hangdetail
+	 * @param hanglineid
+	 * @return
+	 */
+	public boolean DelHangLine(int hanglineid) {
+		int i=alldao.getHangLineMapperImpl().DelHangLine(hanglineid);
+		if(i>0)
+		{
+			return true;
+		}
+			return false;
+	}
+	/**
+	 * 根据handdetailid删除搭挂线杆信息
+	 * @param handdetailid
+	 * @return
+	 */
+	public boolean DelHangPole(int handdetailid) {
+		int  i=alldao.getHangLineMapperImpl().DelHangPole(handdetailid);
+		if(i>0)
+		{
+			return true;
+		}
+		else
+			return false;
 	}
 
 }

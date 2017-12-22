@@ -143,7 +143,7 @@ public class FaultController {
 						 * 文件保存数据库地址
 						 */
 						String localpath=request.getSession().getServletContext().getRealPath("")+"\\PhotoImg"+"\\"+fileName;
-						DBPath = "http://localhost:8080/SXDGMS2/EmailFile/"
+						DBPath = "http://localhost:8080/SXDGMS2/PhotoImg/"
 								+ fileName;
 						checkInfoCommon.setPhotopath(DBPath);
 						PhotoUploadRtn=allservice.getFaultBLL().InsertPhotoInfo(checkInfoCommon);

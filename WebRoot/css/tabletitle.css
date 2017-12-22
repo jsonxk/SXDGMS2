@@ -1,3 +1,6 @@
+.leftIndex li{
+	display:none;
+}
 /*字典管理**/
 #search {
 	width: 100%;
@@ -260,7 +263,7 @@
 	width:25%;
 	margin-left: 6%;
 }
-.LineUnit,.LineType,.LineStatus{
+.LineUnit,.LineType,.LineStatus,.LinePoleStatus{
 	width:25%;
 	float:left;
 	margin-left: 6%;
@@ -353,7 +356,7 @@
 	background-color: #2B333E;
 	margin-top: 3%;
 }
-.OkPole{
+.OkPole,.OkModifyPole{
 	background-color: #2B333E;
 	margin:3% 0 0 12%;
 }
@@ -370,7 +373,7 @@
 	width:100%;
 	float:left;
 }
-#HangLineOK{
+#HangLineOK,#HangLineModify{
 	background-color: #2B333E;
 }
 .HangPolename1,.HangPole1,.HangPoleCode1,.HangPolePre1,.HangPoleNext1,.HangPoleStatus1{
@@ -385,7 +388,7 @@
 	width:100%;
 	float:left;
 }
-#HangPoleOK{
+#HangPoleOK,#HangPoleModify{
 	background-color: #2B333E;
 }
 /*缺陷管理*/

@@ -29,14 +29,14 @@
 		permitStringtime,`user`.`Name` as
 		username,unit.UnitName
 		as
-		unitname,dicitem.Item as statusname FROM
+		unitname,dicitem.Item as statusname,hangline.HangName as hanglinename FROM
 		apply LEFT JOIN applyrecord ON
 		apply.ApplyId=applyrecord.ApplyId LEFT
 		JOIN `user` on
 		apply.UserId=`user`.UserId LEFT JOIN unit on
 		apply.UnitId=unit.UnitId
 		LEFT JOIN dicitem on apply.`status`
-		=dicitem.dicitemid
+		=dicitem.dicitemid LEFT JOIN  hangline ON hangline.HangLineId=apply.HangLineId 
 		WHERE
 		<if
 			test="starttime!=null and starttime!='' and finishtime!=null and finishtime!=''">
@@ -55,23 +55,28 @@
 		<if test="unitid">
 			and apply.UnitId=#{unitid}
 		</if>
-		<if test="userid!=0">
+		<!-- <if test="userid!=0">
 			and apply.UserId=#{userid}
-		</if>
+		</if> -->
 		LIMIT #{offset},#{pageSize}
 	</select>
-	<select id="SelectApplyAndTask" parameterType="com.xk.orm.PublicEntity" resultType="com.xk.orm.ApplyMore">
+	<select id="SelectApplyAndTask" parameterType="com.xk.orm.PublicEntity"
+		resultType="com.xk.orm.ApplyMore">
 		SELECT apply.*,applyrecord.CreateTime as
 		permitStringtime,`user`.`Name` as
 		username,unit.UnitName
-		as unitname,dicitem.Item as statusname FROM
+		as
+		unitname,dicitem.Item as statusname,hangline.HangName as hanglinename
+		FROM
 		apply LEFT JOIN applyrecord ON
-		apply.ApplyId=applyrecord.ApplyId LEFT
+		apply.ApplyId=applyrecord.ApplyId
+		LEFT
 		JOIN `user` on
 		apply.UserId=`user`.UserId LEFT JOIN unit on
 		apply.UnitId=unit.UnitId
 		LEFT JOIN dicitem on apply.`status`
-		=dicitem.dicitemid
+		=dicitem.dicitemid LEFT JOIN hangline on
+		hangline.HangLineId=apply.HangLineId
 		WHERE
 		<if
 			test="starttime!=null and starttime!='' and finishtime!=null and finishtime!=''">
@@ -85,14 +90,14 @@
 			applyrecord.CreateTime &lt;=#{permitfinishtime}
 		</if>
 		<if test="status!=0">
-			and apply.Status=#{status} 
+			and apply.Status=#{status}
 		</if>
 		<if test="unitid">
 			and apply.UnitId=#{unitid}
 		</if>
-		<if test="userid!=0">
+		<!-- <if test="userid!=0">
 			and apply.UserId=#{userid}
-		</if>
+		</if> -->
 		and apply.status!=1
 		LIMIT #{offset},#{pageSize}
 	</select>
@@ -114,6 +119,12 @@
 		<if test="status!=0">
 			and apply.Status=#{status}
 		</if>
+			<if test="unitid">
+			and apply.UnitId=#{unitid}
+		</if>
+		<!-- <if test="userid!=0">
+			and apply.UserId=#{userid}
+		</if> -->
 	</select>
 	<select id="SelectApplyALLCount" parameterType="com.xk.orm.PublicEntity"
 		resultType="java.lang.Integer">
@@ -190,6 +201,7 @@
 		where ApplyId =
 		#{applyid,jdbcType=INTEGER}
 	</update>
+	<!-- 修改apply状态，processid，hanglneid -->
 	<update id="ModifyProcessInstanceId" parameterType="com.xk.orm.Apply">
 		update apply
 		set
@@ -205,6 +217,12 @@
 		where
 		apply.ApplyId=#{applyid}
 	</update>
+	<!-- 删除相关apply以及applydoc -->
+	<delete id="DelApplyAndApplyDoc" parameterType="java.lang.Integer">
+		DELETE
+		apply,applydoc from apply LEFT JOIN applydoc on
+		apply.ApplyId=applydoc.ApplyId where apply.ApplyId=#{applyid}
+	</delete>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from apply
 		where ApplyId = #{applyid,jdbcType=INTEGER}

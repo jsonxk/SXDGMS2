@@ -39,6 +39,7 @@
 <link rel="stylesheet" type="text/css"
 	href="./treeview/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="./css/tabletitle.css">
+<link rel="stylesheet" type="text/css" href="./css/sqxxgl.css">
 <style>
 #myTab {
 	width: 100%;
@@ -72,6 +73,58 @@
 	margin: 0 5%;
 	border: solid 1px #000;
 }
+.Upapply{
+	background-color: rgba(33,117,232,0.9);
+	color:#FFFFFF;
+}
+ .Upapply:hover {
+   	background-color: rgba(33,117,232,1);
+   	color:#FFFFFF;
+}
+.Upapply:active:focus,.Handerapply:active{
+ 	background-color: rgba(33,117,232,1);
+	color:#FFFFFF;
+}
+.Checkapply{
+	background-color: rgba(92,184,92,0.9);
+	color:#FFFFFF;
+}
+ .Checkapply:hover {
+ 	background-color: rgba(92,184,92,0.9);	
+   	color:#FFFFFF;
+}
+.Checkapply:active:focus,.Checkapply:active{
+ 	background-color: rgba(92,184,92,0.9);
+	color:#FFFFFF;
+}
+.delapply{
+	background-color: rgba(243,70,78,0.9);
+	color:#FFFFFF;
+}
+ .delapply:hover {
+ 	background-color: rgba(243,70,78,1);
+   	color:#FFFFFF;
+}
+.delapply:active:focus,.delapply:active{
+ 	background-color: rgba(243,70,78,1);
+	color:#FFFFFF;
+}
+#DelThisApply
+{
+	margin-left: 20%;
+}
+.Handerapply{
+	background-color: rgba(33,117,232,0.9);
+	color:#FFFFFF;
+}
+ .Handerapply:hover {
+   	background-color: rgba(33,117,232,1);
+   	color:#FFFFFF;
+}
+.Handerapply:active:focus,.Handerapply:active{
+ 	background-color: rgba(33,117,232,1);
+	color:#FFFFFF;
+}
 </style>
 </head>
 <body>
@@ -97,13 +150,17 @@
 							class="btn btn-primary">Go</button></span>
 				</div>
 			</form>
-			<div class="navbar-btn navbar-btn-right">
-				<a class="btn btn-success update-pro"
-					href="#downloads/klorofil-pro-bootstrap-admin-dashboard-template/?utm_source=klorofil&utm_medium=template&utm_campaign=KlorofilPro"
-					title="Upgrade to Pro" target="_blank"><i class="fa fa-rocket"></i>
-					<span>UPGRADE TO PRO</span></a>
+			<div id="navbar-menu">
+				<ul class="nav navbar-nav navbar-right userOp">
+					<li class="dropdown">
+							<a class="dropdown-toggle dropdown userNameSpan" data-toggle="dropdown"><img src="assets/img/user.png" class="img-circle" alt="Avatar"> <span></span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
+							<ul class="dropdown-menu dropUserInfo">
+								<li><a href="#"><i class="lnr lnr-user"></i> <span>修改信息</span></a></li>
+								<li><a href="jsp/Quit.jsp"><i class="lnr lnr-exit"></i> <span>退出登录</span></a></li>
+							</ul>
+					</li>
+				</ul>
 			</div>
-			<div id="navbar-menu"></div>
 		</div>
 		</nav>
 		<!-- END NAVBAR -->
@@ -112,7 +169,7 @@
 			<div class="sidebar-scroll">
 				<nav>
 				<ul class="nav">
-					<li><a href="jsp/index.jsp"><i class="lnr lnr-home"></i> <span>首页</span></a></li>
+					<li class="indexpage"><a href="jsp/index.jsp"><i class="lnr lnr-home"></i> <span>首页</span></a></li>
 					<li class="sqgl"><a href="#subPages" data-toggle="collapse"
 						class="active"><i class="lnr lnr-file-empty"></i> <span></span>
 							<i class="icon-submenu lnr lnr-chevron-left"></i></a>
@@ -198,9 +255,6 @@
 
 										</select>
 										<button class="btn btn-primary" type="button" id="Hangbtn">查找</button>
-										<button class="btn btn-primary" type="button" id="Refreshbtn">
-											刷新<span class="glyphicon glyphicon-repeat"></span>
-										</button>
 										<button class="btn btn-primary addHang" type="button">
 											<i class="fa fa-plus-square"></i>&nbsp;添加申请
 										</button>
@@ -218,12 +272,6 @@
 				<!-- END MAIN CONTENT -->
 			</div>
 			<!-- END MAIN -->
-			<div class="userinfo" style="display:none">
-				<span><%=session.getAttribute("userid")%></span>
-				<p id="p1"><%=session.getAttribute("loginname").toString()%></p>
-				<p id="p2"><%=session.getAttribute("unitname").toString()%></p>
-				<p id="p3"><%=session.getAttribute("unitid").toString()%></p>
-			</div>
 			<div class="clearfix"></div>
 		</div>
 	</div>
@@ -325,6 +373,135 @@
 			</div>
 		</div>
 	</div>
+	<!-- 删除提示信息 -->
+			<div class="modal fade " id="DelRtnModal" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content" style="width:35%;margin-top: 50%">
+
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="exampleModalLabel">确定删除此申请？</h4>
+						</div>
+						<div class="modal-body delInfo">
+							<button type="button" id="DelThisApply" class="btn btn-danger  btn-sm" style="margin-right:15px;">删除</button>
+							<button type="button" class="btn btn-default  btn-sm" style="margin-right:15px;" data-dismiss="modal">取消</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 提示信息 -->
+			<div class="modal fade " id="TS_Modal" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content" style="width:35%;margin-top: 50%">
+
+						<div class="modal-header TS_Modal">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="exampleModalLabel"></h4>
+						</div>
+						<div class="modal-body delInfo">
+							<button type="button" class="btn btn-danger  btn-sm" style="margin-right:15px;" data-dismiss="modal">关闭</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal fade " id="CheckApplyModal" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalLabel">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content" style="width:115%">
+
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"
+								aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							<h4 class="modal-title" id="exampleModalLabel">处理申请信息</h4>
+						</div>
+						<div class="modal-body">
+							<div class="panel-group" id="accordion">
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h6 class="panel-title" style="font-size: 15px;margin:-8px;">
+											<a data-toggle="collapse" data-parent="#accordion"
+												href="#collapseOne"> 申请信息 &nbsp;<i class="lnr lnr-user"></i></a>
+										</h6>
+									</div>
+									<div id="collapseOne" class="panel-collapse collapse in">
+										<div style="margin-top: 2%">
+											<label for="HM_ApplyUser" class="control-label HM_ApplyUser">申请用户:</label> <input
+											type="text" id="HM_ApplyUser" name="HM_ApplyUser" readonly>
+											<label for="HM_ApplyUnit" class="control-label HM_ApplyUnit">申请单位:</label> <input
+											type="text" id="HM_ApplyUnit" name="HM_ApplyUnit" readonly>
+											</br>
+											<label for="HM_ApplyContract" class="control-label HM_ApplyContract">联系人:</label> <input
+											type="text" id="HM_ApplyContract" name="HM_ApplyContract" readonly>
+											<label for="HM_ApplyPhone" class="control-label HM_ApplyPhone">单位电话:</label> <input
+											type="text" id="HM_ApplyPhone" name="HM_ApplyPhone" readonly>
+											</br>
+											<label for="HM_ApplyHang" class="control-label HM_ApplyHang2">搭挂线路:</label> 
+											<input type="text" id="HM_ApplyHang2" name="HM_ApplyHang2"  readonly>
+											<label for="HM_ApplyCode" class="control-label HM_ApplyCode">申请单号:</label> <input
+											type="text" id="HM_ApplyCode" name="HM_ApplyCode" readonly>
+											</br>
+											<label for="HM_ApplyTime" class="control-label HM_ApplyTime">申请日期:</label> <input
+											type="text" id="HM_ApplyTime" name="HM_ApplyTime" readonly>
+											<label for="HM_ApplyStatus" class="control-label HM_ApplyStatus">申请状态:</label> <input
+											type="text" id="HM_ApplyStatus" name="HM_ApplyStatus" readonly>
+											</br>
+											<label for="HM_ApplyMemo" class="control-label HM_ApplyMemo">申请描述:</label>
+											</br>
+											<textarea rows="2"
+												 id="HM_ApplyMemo" name="HM_ApplyMemo" readonly></textarea>
+										</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h6 class="panel-title" style="font-size: 15px;margin:-8px; ">
+											<a data-toggle="collapse" data-parent="#accordion"
+												href="#collapseTwo"> 查勘信息  &nbsp;<i class="lnr lnr-layers"></i></a>
+										</h6>
+									</div>
+									<div id="collapseTwo" class="panel-collapse collapse">
+										<div class="panel-body">Nihil anim keffiyeh helvetica,
+											craft beer labore wes anderson cred nesciunt sapiente ea
+											proident. Ad vegan excepteur butcher vice lomo.</div>
+									</div>
+								</div>
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h6 class="panel-title" style="font-size: 15px;margin:-8px;">
+											<a data-toggle="collapse" data-parent="#accordion"
+												href="#collapseThree"> 审核信息 &nbsp;<i class=" lnr lnr-database"></i></a>
+										</h6>
+									</div>
+									<div id="collapseThree" class="panel-collapse collapse">
+										<div class="panel-body">
+											<table id="hangdertable">
+
+											</table>
+										</div>
+									</div>
+								</div>
+							</div  >
+										<!-- HM   Modal底部按钮 -->
+										<div id="HM_BottonBtn">
+											<button type="button" class="btn btn-primary HM_OK">通过</button>
+											<button type="button" class="btn btn-default HM_Cancel" data-dismiss="modal"
+												>取消</button>
+										</div>					​
+							
+						</div>
+					</div>
+				</div>
+			</div>
 	<!-- END WRAPPER -->
 	<script src="./assets/vendor/jquery/jquery.min.js"></script>
 	<script src="./assets/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -343,8 +520,35 @@
 		function initIndex() {
 			$(".sqglchild .0sqgl1   a").addClass("active");
 		}
+		$(".userOp").mouseover(function(){
+			$(".dropUserInfo").css("display","block");
+		})
+		$(".userOp").mouseout(function(){
+			$(".dropUserInfo").css("display","none");
+		})
 	</script>
 	<script src="./js/pageInit.js"></script>
+	<div class="userinfo" style="display:none">
+				<%
+					if (session.getAttribute("userid") == null) {
+						%>
+							<script type="text/javascript">
+								window.location.href="jsp/login.jsp";
+							</script>
+						<%
+					} else {
+				%>
+				<script type="text/javascript">
+					$(".userNameSpan span").text("<%=session.getAttribute("loginname")%>");
+				</script>
+				<span><%=session.getAttribute("userid")%></span>
+				<p id="p1"><%=session.getAttribute("loginname").toString()%></p>
+				<p id="p2"><%=session.getAttribute("unitname").toString()%></p>
+				<p id="p3"><%=session.getAttribute("unitid").toString()%></p>
+				<%
+					}
+				%>
+	</div>
 	<script src="./js/table/DGSQGL.js"></script>
 </body>
 </html>

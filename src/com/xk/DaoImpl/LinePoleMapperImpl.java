@@ -186,4 +186,34 @@ public class LinePoleMapperImpl implements PowerLineMapper,PoleMapper{
 	public int ModifyPrevPoleIdByPoleId(int poleid) {
 		return poleMapper.ModifyPrevPoleIdByPoleId(poleid);
 	}
+	/**
+	 * 批量添加电力线路细节
+	 * @param linedetail
+	 */
+	public int InsertLineDetailList(LineDetailList linedetail) {
+		return lineDetailMapper.InsertLineDetailList(linedetail);
+	}
+	/**
+	 * 根据lineid查找pole数量
+	 */
+	public int SelectPoleCount(int lineid){
+		return poleMapper.SelectPoleCount(lineid);
+	}
+	/**
+	 * 修改电力线路status  type，unitid,name
+	 * @param pLine
+	 * @return
+	 */
+	public int ModifyLineInfo(PowerLine pLine) {
+		return powerLineMapper.ModifyLineInfo(pLine);
+	}
+	/**
+	 * 删除电路线路信息
+	 * @param lineid
+	 * @return
+	 */
+	public int DelLineInfo(int lineid) {
+		return powerLineMapper.DelLineInfo(lineid);
+	}
+	
 }

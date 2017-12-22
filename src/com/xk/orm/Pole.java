@@ -1,5 +1,7 @@
 package com.xk.orm;
 
+import java.util.List;
+
 
 public class Pole extends CommonEntity{
     private double longtitude;
@@ -9,7 +11,6 @@ public class Pole extends CommonEntity{
     private double positionmethod;
 
     private double height;
-
 	public double getLongtitude() {
 		return longtitude;
 	}

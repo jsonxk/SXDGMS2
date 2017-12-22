@@ -61,7 +61,7 @@ public class test extends SpringCaseTest{
 
 		//部署流程定义
 		repositoryService=processEngine.getRepositoryService();
-		Deployment de=repositoryService.createDeployment().addClasspathResource("./Activiti/ApplyPrs.bpmn").deploy();
+		Deployment de=repositoryService.createDeployment().addClasspathResource("./Activiti/ZGProcess.bpmn").deploy();
 		/*
 		 * 流程定义类
 		 */

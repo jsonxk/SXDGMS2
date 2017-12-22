@@ -11,7 +11,7 @@
 	margin: 2% 0 0 8%;
 }
 
-.HM_ApplyUser, .HM_ApplyHang, .HM_ApplyTime {
+.HM_ApplyUser, .HM_ApplyHang, .HM_ApplyTime,.HM_ApplyHang2{
 	margin: 2% 0 0 2%;
 }
 
@@ -41,4 +41,10 @@
 
 #HM_BottonBtn {
 	margin: 0% 0 0 70%;
+}
+#HM_ApplyHang2{
+	border-radius: 3px;
+	border: 1px solid #cccccc;
+	height: 4%;
+	width: 33%;
 }

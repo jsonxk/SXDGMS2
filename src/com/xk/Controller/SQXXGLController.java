@@ -55,4 +55,13 @@ public class SQXXGLController {
 	public @ResponseBody JSONArray HanderApply(@RequestParam("applyid") int applyid,@RequestParam("userid") int userid,@RequestParam("hanglineid") int hanglineid,@RequestParam("handtype") int handtype,@RequestParam("processid") int processid,@RequestParam("unitid") int unitid){
 		return allservice.getSqxxglBll().HanderApply(applyid,userid,hanglineid,handtype,processid,unitid);
 	}
+	/**
+	 * 查询流程历史处理信息
+	 * @param processid
+	 * @return
+	 */
+	@RequestMapping(value="/selectHistoryTask",method=RequestMethod.POST)
+	public @ResponseBody JSONArray SelectHistoryTask(@RequestParam("processid")int processid){
+		return allservice.getSqxxglBll().SelectHistoryTaskInfo(processid);
+	}
 }

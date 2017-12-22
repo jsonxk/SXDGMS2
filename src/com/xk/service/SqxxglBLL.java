@@ -3,16 +3,22 @@ package com.xk.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.activiti.engine.HistoryService;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.impl.identity.Authentication;
+import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +28,7 @@ import com.xk.orm.Apply;
 import com.xk.orm.ApplyMore;
 import com.xk.orm.PublicEntity;
 import com.xk.orm.Unit;
+import com.xk.orm.UserInfo;
 import com.xk.orm.dicitem;
 
 /**
@@ -64,8 +71,14 @@ public class SqxxglBLL {
 		JSONArray jadata=new JSONArray();
 		JSONObject jodata=new JSONObject();
 		SimpleDateFormat formart = new SimpleDateFormat("yyyy-MM-dd");
+		/**
+		 * 查找需要处理的申请信息
+		 */
 		List<ApplyMore> applyinfo=allDao.getApplyMapperImpl().SelectApplyAndTask(publicEntity);
 		taskService=processEngine.getTaskService();
+		/**
+		 * 当前任务
+		 */
 		List<Task> task=taskService.createTaskQuery().taskCandidateUser(publicEntity.getUserid()+"").orderByTaskCreateTime().desc().list();
 		//System.out.println(task.size());
 		//List<IdentityLink> identityLinks=null;
@@ -121,12 +134,14 @@ public class SqxxglBLL {
 		 */
 		List<Task> task=null;
 		task=taskService.createTaskQuery().processInstanceId(processid+"").taskCandidateUser(userid+"").list();
+		Date nowdate=new Date();
+		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		if(task.size()>0)
 		{
 			Map<String , Object> map=new HashMap<String, Object>();
 			map.put("type", handtype);
 			Authentication.setAuthenticatedUserId(userid+"");
-			taskService.addComment(task.get(0).getId(), processid+"", applyid+"");
+			taskService.addComment(task.get(0).getId(), processid+"", format.format(nowdate)+"");
 			taskService.setVariable(task.get(0).getId(),"unitid",unitid);
 			taskService.complete(task.get(0).getId(), map);
 			/**
@@ -135,13 +150,16 @@ public class SqxxglBLL {
 			task=taskService.createTaskQuery().processInstanceId(processid+"").list();
 			if(task.size()>0)
 			{
-				System.out.println(task.get(0).getName());
+				//System.out.println(task.get(0).getName());
 				List<dicitem> item=allDao.getdicitemMapperImpl().selectItemByName(task.get(0).getName());
 				Apply apply=new Apply();
 				apply.setApplyid(applyid);
 				apply.setHanglineid(hanglineid);
-				System.out.println(item.get(0).getDicitemid()+"fffffff");
+				//System.out.println(item.get(0).getDicitemid()+"fffffff");
 				apply.setStatus(item.get(0).getDicitemid());
+				/**
+				 * 根据applyid修改hanglineid和status
+				 */
 				allDao.getApplyMapperImpl().ModifyProcessInstanceId(apply);
 			}
 			return JSONArray.fromObject("[{'msg':'处理成功'}]");
@@ -149,5 +167,45 @@ public class SqxxglBLL {
 		else{
 			return JSONArray.fromObject("[{'msg':'您没有权限处理此业务'}]");
 		}
+	}
+	/**
+	 * 查询某个申请的历史处理任务信息
+	 * @param processid
+	 * @return
+	 */
+	@Autowired
+	private HistoryService historyService;
+	public JSONArray SelectHistoryTaskInfo(int processid) {
+		historyService=processEngine.getHistoryService();
+		/**
+		 * 审核任务和审核人
+		 */
+		List<HistoricTaskInstance> histask=historyService.createHistoricTaskInstanceQuery().processInstanceId(processid+"").list();
+		JSONArray HanderInfo=new JSONArray();
+		JSONObject OneHanderInfo=new JSONObject();	
+		List<UserInfo> OneuserInfo=null;
+		for(HistoricTaskInstance instance:histask)
+		{
+			System.out.println(instance.getName()+instance.getId());
+			List<Comment> comment=taskService.getTaskComments(instance.getId());
+			if(comment.size()>0)
+			{
+				//System.out.println(+"hj"+comment.get(0).getFullMessage());
+				/**
+				 * 根据userid查找审批人信息
+				 */
+				OneuserInfo= allDao.getuserMapperImpl().SelectUserByUserId(Integer.parseInt(comment.get(0).getUserId()));
+				if(OneuserInfo.size()>0)
+				{
+					OneHanderInfo.put("handeruser",OneuserInfo.get(0).getName());
+					OneHanderInfo.put("handeruserPhone",OneuserInfo.get(0).getPhone());
+					OneHanderInfo.put("handertask", instance.getName());
+					OneHanderInfo.put("handertime", comment.get(0).getFullMessage());
+					OneHanderInfo.put("handerresult", "完成");
+					HanderInfo.add(OneHanderInfo);
+				}
+			}
+		}
+		return HanderInfo;
 	}
 }

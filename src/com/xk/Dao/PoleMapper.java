@@ -15,7 +15,13 @@ public interface PoleMapper {
 	 * @param lineid
 	 * @return
 	 */
-	List<Pole> SelectPoleInfo(int lineid);
+	List<Pole> SelectPoleInfo(@Param("lineid")int lineid);
+	/**
+	 * 根据lineid查找线杆数量
+	 * @param lineid
+	 * @return
+	 */
+	int SelectPoleCount(@Param("lineid") int lineid);
 	/**
 	 * 添加线杆
 	 * 返回主键poleid

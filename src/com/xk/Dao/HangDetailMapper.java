@@ -6,11 +6,12 @@ import org.apache.ibatis.annotations.Param;
 
 import com.xk.orm.HangDetail;
 import com.xk.orm.HangDetailList;
+import com.xk.orm.HangLine;
 import com.xk.orm.Pole;
 
 public interface HangDetailMapper {
 	/**
-	 * 查找搭挂线杆信息
+	 * 查找搭挂线杆信息 废弃
 	 * @param hanglineid
 	 * @return
 	 */
@@ -38,4 +39,28 @@ public interface HangDetailMapper {
 	 * @return
 	 */
 	List<HangDetailList> selectAllHangAndPole();
+	/**
+	 * 批量添加搭挂详情信息
+	 * @param hangline
+	 * @return
+	 */
+	int InsertHangDetailList(HangLine hangline);
+	/**
+	 * 根据hanglineid查找线杆信息
+	 * @param hanglineid
+	 * @return
+	 */
+	List<HangDetail> SelectHangDetailPole(@Param("hanglineid") int hanglineid);
+	/**
+	 * 修改搭挂线杆信息
+	 * @param hangDetail2
+	 * @return
+	 */
+	int ModifyHangPole(HangDetail hangDetail2);
+	/**
+	 * 根据handdetailid删除搭挂线杆
+	 * @param handdetailid
+	 * @return
+	 */
+	int DelHangPole(@Param("handdetailid")int handdetailid);
 }

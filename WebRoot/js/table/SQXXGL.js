@@ -41,6 +41,7 @@ var ApplyUnitId=0;
 var HangLineid=0;
 var ApplyStatus="";
 $(function() {
+//	alert(userid);
 	TodayTime();
 	sqxxtable.TableStatus("申请状态");
 	sqxxtable.TableUnitInfo("正常");
@@ -196,11 +197,9 @@ function tableinit() {
  */
 function operateFormatter(value, row, index) {
 	var opvalue = [
-			'<button type="button" class="delapply btn btn-default  btn-sm" style="margin-right:15px;">删除</button>',
 			'<button type="button" class="Handerapply btn btn-default  btn-sm" style="margin-right:15px;">处理</button>' ];
-	if (row.statusname == "完成") {
-		opvalue
-				.push('<button type="button" class="Checkapply btn btn-default  btn-sm" style="margin-right:15px;">查看</button>');
+	if (row.statusname == "完成"||row.statusname=="退回申请"||row.statusname=="施工"||row.statusname=="整改") {
+		opvalue = ['<button type="button" class="Checkapply btn btn-default  btn-sm" style="margin-right:15px;">查看</button>'];
 	}
 	return opvalue.join('');
 }
@@ -213,6 +212,7 @@ window.operateEvents = {
 		HanderApply(row);
 	},
 	'click .Checkapply' : function(e, value, row, index) {
+		HanderApply(row);
 	},
 };
 function HanderApply(row) {
@@ -227,7 +227,6 @@ function HanderApply(row) {
 	$("#HM_ApplyUnit").val(row.unitname);
 	$("#HM_ApplyContract").val(row.contactperson);
 	$("#HM_ApplyPhone").val(row.contactphone);
-	//$("#HM_ApplyHang").val(row.hangname);
 	$("#HM_ApplyCode").val(row.num);
 	$("#HM_ApplyTime").val(row.applystringtime);
 	$("#HM_ApplyStatus").val(row.statusname);
@@ -240,7 +239,7 @@ function HanderApply(row) {
 	else{
 		$(".HM_SelectHang").css("display","none");
 		$("#HM_ApplyHang").css("display","inline");
-		$("#HM_ApplyHang").val(row.hangname);
+		$("#HM_ApplyHang").val(row.hanglinename);
 		HangLineid=row.hanglineid;
 	}
 	if(row.statusname=="现场查勘"||row.statusname=="签证发放"||row.statusname=="施工"||row.statusname=="整改")
@@ -248,7 +247,7 @@ function HanderApply(row) {
 			$(".HM_NoOK").css("visibility","hidden");
 			$(".HM_OK").css("visibility","visible");
 		}
-	else if(row.statusname=="完成")
+	else if(row.statusname=="完成"||row.statusname=="退回申请"||row.statusname=="施工"||row.statusname=="整改")
 		{
 			$(".HM_NoOK").css("visibility","hidden");
 			$(".HM_OK").css("visibility","hidden");
@@ -261,29 +260,87 @@ function HanderApply(row) {
 	ApplyId=row.applyid;
 	ApplyUnitId=row.unitid;
 	ApplyStatus=row.statusname;
-	/*$.ajax({
-		type : "post",
-		url : "",
-		data : {
-			"taskid" : row.taskId,
-			"userid":row.userid
-		},
-		datatype : "json",
-		success : function(data) {
-		}
-	})*/
+	selectHistoryTask(ProcessId);
+}
+/**
+ * 查询申请的审核信息
+ * 通过processid查找 
+ */
+function selectHistoryTask(processid){
+	$('#hangdertable').bootstrapTable("destroy");
+	$('#hangdertable').bootstrapTable(
+			{
+				url : 'SQXXGL/selectHistoryTask.spring',
+				method : 'post',
+				cache : false,
+				striped : true,
+				pagination : true,
+				pageSize : 10,
+				pageNumber : 1,
+				sidePagination : "client",
+				queryParams : function queryParams(params) {
+					var param = {
+						"processid" :processid,
+					};
+					return param;
+				},
+				paginationPreText : "上一页",
+				paginationNextText : "下一页",
+				columns : [ {
+					title : "序号",
+					align : "center",
+					valign : "middle",
+					formatter : function(value, row, index) {
+						return index +1;
+					}
+				}, {
+					field : "handertask",
+					title : "审核任务",
+					align : "center",
+					valign : "middle",
+				}, {
+					field : "handertime",
+					title : "审核时间",
+					align : "center",
+					valign : "middle",
+				}, {
+					field : "handeruser",
+					title : "审核人",
+					align : "center",
+					valign : "middle",
+				}, {
+					field : "handerresult",
+					title : "审核结果",
+					align : "center",
+					valign : "middle",
+				}, {
+					field : "handeruserPhone",
+					title : "联系电话",
+					align : "center",
+					valign : "middle",
+				}],
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				onPageChange : function(size, number) {
+				},
+				formatNoMatches : function() {
+					return '没有找到信息';
+				},
+			});
+	$(window).resize(function() {
+		$('#hangdertable').bootstrapTable('resetView');
+	});
 }
 /**
  * 点击处理后点击通过
  */
 $(".HM_OK").click(function(){
 	/**
-	 * 处理申请信息
+	 * 点击处理申请信息
 	 */
 	ApplyHander(1);
 });
 /**
- * 点击处理点击驳回
+ * 点击驳回申请
  */
 $(".HM_NoOK").click(function(){
 	ApplyHander(0);

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xk.orm.Apply;
 import com.xk.orm.ApplyMore;
+import com.xk.orm.HangLine;
 import com.xk.orm.PublicEntity;
 import com.xk.service.AllService;
 
@@ -157,5 +158,23 @@ public class HangLineController {
 	@RequestMapping(value="/selectAllHangAndPole",method=RequestMethod.POST)
 	public @ResponseBody JSONArray SelectAllHangAndPole(){
 		return allService.gethangLineBLL().selectAllHangAndPole();
+	}
+	/**
+	 * 添加搭挂线路信息及搭挂细节
+	 * @param hangline
+	 * @return
+	 */
+	@RequestMapping(value="/insertHangLineAndDetail",method=RequestMethod.POST)
+	public @ResponseBody JSONArray InsertHangLineAndDetail(@RequestBody HangLine hangline){
+		return allService.gethangLineBLL().InsertHangLineAndDetail(hangline);
+	}
+	/**
+	 * 根据applyid删除搭挂线路及相关申请信息
+	 * @param applyid
+	 * @return
+	 */
+	@RequestMapping(value="/delHangLineApply",method=RequestMethod.POST)
+	public @ResponseBody JSONArray DelHangLineApply(@RequestParam("applyid") int applyid){
+		return allService.getApplyMapperBLL().DelHangLineApply(applyid);
 	}
 }

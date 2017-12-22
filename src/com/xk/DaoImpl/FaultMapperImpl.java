@@ -145,4 +145,12 @@ public class FaultMapperImpl implements CheckTypeMapper,CheckDetailMapper,PhotoM
 	public int MofidyNoticeStatus(int faultid, int status) {
 		return noticeMapper.MofidyNoticeStatus(faultid,status);
 	}
+	/**
+	 * 根据poleid查找photo信息
+	 * @param poleid
+	 * @return
+	 */
+	public List<Photo> SelectPolePhoto(int poleid) {
+		return photoMapper.SelectPolePhoto(poleid);
+	}
 }

@@ -36,7 +36,7 @@ public class UserLogin {
 			//map.addAttribute("name",username);
 			session=req.getSession();
 			//session.setAttribute("userid", 1);
-			session.setAttribute("userid", 1+"");
+			session.setAttribute("userid", user.getUserid()+"");
 			session.setAttribute("loginname", username);
 			unitinfo=alldao.getunitMapperImpl().selectAllUnitName();
 			session.setAttribute("unitname","未找到信息");

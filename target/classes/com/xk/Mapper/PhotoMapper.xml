@@ -1,95 +1,104 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xk.Dao.PhotoMapper" >
-  <resultMap id="BaseResultMap" type="com.xk.orm.Photo" >
-    <id column="PhotoId" property="photoid" jdbcType="INTEGER" />
-    <result column="CheckDetailId" property="checkdetailid" jdbcType="INTEGER" />
-    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
-    <result column="Description" property="description" jdbcType="VARCHAR" />
-    <result column="PhotoPath" property="photopath" jdbcType="VARCHAR" />
-  </resultMap>
-  <select id="FaultPhoto" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select * 
-    from photo
-    where photo.CheckDetailId=#{checkdetailid}
-  </select>
-  <insert id="InsertPhotoInfo" parameterType="com.xk.orm.CheckInfoCommon">
-  	insert into photo (CheckDetailId, CreateTime, 
-      Description, PhotoPath)
-    values (#{checkdetailid,jdbcType=INTEGER}, #{Stringcreatetime,jdbcType=TIMESTAMP}, 
-      #{description,jdbcType=VARCHAR}, #{photopath,jdbcType=VARCHAR})
-  </insert>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from photo
-    where PhotoId = #{photoid,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.xk.orm.Photo" >
-    insert into photo (PhotoId, CheckDetailId, CreateTime, 
-      Description, PhotoPath)
-    values (#{photoid,jdbcType=INTEGER}, #{checkdetailid,jdbcType=INTEGER}, #{createtime,jdbcType=TIMESTAMP}, 
-      #{description,jdbcType=VARCHAR}, #{photopath,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.xk.orm.Photo" >
-    insert into photo
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="photoid != null" >
-        PhotoId,
-      </if>
-      <if test="checkdetailid != null" >
-        CheckDetailId,
-      </if>
-      <if test="createtime != null" >
-        CreateTime,
-      </if>
-      <if test="description != null" >
-        Description,
-      </if>
-      <if test="photopath != null" >
-        PhotoPath,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="photoid != null" >
-        #{photoid,jdbcType=INTEGER},
-      </if>
-      <if test="checkdetailid != null" >
-        #{checkdetailid,jdbcType=INTEGER},
-      </if>
-      <if test="createtime != null" >
-        #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="description != null" >
-        #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="photopath != null" >
-        #{photopath,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xk.orm.Photo" >
-    update photo
-    <set >
-      <if test="checkdetailid != null" >
-        CheckDetailId = #{checkdetailid,jdbcType=INTEGER},
-      </if>
-      <if test="createtime != null" >
-        CreateTime = #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="description != null" >
-        Description = #{description,jdbcType=VARCHAR},
-      </if>
-      <if test="photopath != null" >
-        PhotoPath = #{photopath,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where PhotoId = #{photoid,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.xk.orm.Photo" >
-    update photo
-    set CheckDetailId = #{checkdetailid,jdbcType=INTEGER},
-      CreateTime = #{createtime,jdbcType=TIMESTAMP},
-      Description = #{description,jdbcType=VARCHAR},
-      PhotoPath = #{photopath,jdbcType=VARCHAR}
-    where PhotoId = #{photoid,jdbcType=INTEGER}
-  </update>
+<mapper namespace="com.xk.Dao.PhotoMapper">
+	<resultMap id="BaseResultMap" type="com.xk.orm.Photo">
+		<id column="PhotoId" property="photoid" jdbcType="INTEGER" />
+		<result column="CheckDetailId" property="checkdetailid"
+			jdbcType="INTEGER" />
+		<result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+		<result column="Description" property="description" jdbcType="VARCHAR" />
+		<result column="PhotoPath" property="photopath" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="FaultPhoto" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select *
+		from photo
+		where photo.CheckDetailId=#{checkdetailid}
+	</select>
+	<!-- 根据poleid查找相关的照片信息 -->
+	<select id="SelectPolePhoto" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		SELECT photo.* FROM photo WHERE photo.CheckDetailId in (SELECT
+		checkdetail.CheckDetailId from checkdetail where
+		checkdetail.PoleId=#{poleid})
+	</select>
+	<insert id="InsertPhotoInfo" parameterType="com.xk.orm.CheckInfoCommon">
+		insert into photo (CheckDetailId, CreateTime,
+		Description, PhotoPath)
+		values (#{checkdetailid,jdbcType=INTEGER},
+		#{Stringcreatetime,jdbcType=TIMESTAMP},
+		#{description,jdbcType=VARCHAR}, #{photopath,jdbcType=VARCHAR})
+	</insert>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from photo
+		where PhotoId = #{photoid,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.xk.orm.Photo">
+		insert into photo (PhotoId, CheckDetailId, CreateTime,
+		Description, PhotoPath)
+		values (#{photoid,jdbcType=INTEGER}, #{checkdetailid,jdbcType=INTEGER},
+		#{createtime,jdbcType=TIMESTAMP},
+		#{description,jdbcType=VARCHAR}, #{photopath,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective" parameterType="com.xk.orm.Photo">
+		insert into photo
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="photoid != null">
+				PhotoId,
+			</if>
+			<if test="checkdetailid != null">
+				CheckDetailId,
+			</if>
+			<if test="createtime != null">
+				CreateTime,
+			</if>
+			<if test="description != null">
+				Description,
+			</if>
+			<if test="photopath != null">
+				PhotoPath,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="photoid != null">
+				#{photoid,jdbcType=INTEGER},
+			</if>
+			<if test="checkdetailid != null">
+				#{checkdetailid,jdbcType=INTEGER},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="description != null">
+				#{description,jdbcType=VARCHAR},
+			</if>
+			<if test="photopath != null">
+				#{photopath,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.xk.orm.Photo">
+		update photo
+		<set>
+			<if test="checkdetailid != null">
+				CheckDetailId = #{checkdetailid,jdbcType=INTEGER},
+			</if>
+			<if test="createtime != null">
+				CreateTime = #{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="description != null">
+				Description = #{description,jdbcType=VARCHAR},
+			</if>
+			<if test="photopath != null">
+				PhotoPath = #{photopath,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where PhotoId = #{photoid,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.xk.orm.Photo">
+		update photo
+		set CheckDetailId = #{checkdetailid,jdbcType=INTEGER},
+		CreateTime = #{createtime,jdbcType=TIMESTAMP},
+		Description = #{description,jdbcType=VARCHAR},
+		PhotoPath = #{photopath,jdbcType=VARCHAR}
+		where PhotoId = #{photoid,jdbcType=INTEGER}
+	</update>
 </mapper>

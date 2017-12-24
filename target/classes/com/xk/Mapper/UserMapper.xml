@@ -18,33 +18,44 @@
 		where UserName = #{username,jdbcType=VARCHAR} and
 		Password=#{password,jdbcType=VARCHAR}
 	</select>
-	<!-- <select id="selectallUser" resultType="com.xk.orm.UserInfo">
-		select
-		`user`.*,dicitem.Item as type,unit.UnitName as unitname FROM
-		`user`,dicitem,unit WHERE `user`.UserType=dicitem.DicItemId and
-		`user`.UnitId=unit.UnitId
-	</select> -->
+	<!-- <select id="selectallUser" resultType="com.xk.orm.UserInfo"> select 
+		`user`.*,dicitem.Item as type,unit.UnitName as unitname FROM `user`,dicitem,unit 
+		WHERE `user`.UserType=dicitem.DicItemId and `user`.UnitId=unit.UnitId </select> -->
 	<select id="selectallUser" resultType="com.xk.orm.UserInfo">
-		select `user`.*,unit.UnitName as unitname FROM
-		`user`,unit WHERE `user`.UnitId=unit.UnitId
-	</select>
-	<!-- <select id="selectUsertype">
-		select * from dicitem
-	</select> -->
-	<select id="selectUserByInfo" resultType="com.xk.orm.UserInfo" parameterType="com.xk.orm.UserInfo">
 		select
-		`user`.*,dicitem.Item as type,unit.UnitName as unitname FROM
-		`user`,dicitem,unit WHERE `user`.UserType=dicitem.DicItemId and
-		`user`.UnitId=unit.UnitId and unit.UnitName=#{unitname} 
+		`user`.*,unit.UnitName as unitname FROM
+		`user`,unit WHERE
+		`user`.UnitId=unit.UnitId
+	</select>
+	<select id="AppUserLogin" resultType="com.xk.orm.UserInfo"
+		parameterType="java.lang.String">
+		SELECT userrole.UserId,`user`.*,unit.UnitName from
+		userrole LEFT JOIN `user` ON userrole.UserId=`user`.UserId LEFT JOIN
+		unit ON `user`.UnitId=unit.UnitId WHERE userrole.RoleId in (SELECT
+		role.RoleId from role WHERE role.`Name`="线路运行单位") AND
+		`user`.UserName= #{username,jdbcType=VARCHAR} and `user`.`Password`= #{password,jdbcType=VARCHAR}
+	</select>
+	<!-- <select id="selectUsertype"> select * from dicitem </select> -->
+	<select id="selectUserByInfo" resultType="com.xk.orm.UserInfo"
+		parameterType="com.xk.orm.UserInfo">
+		select
+		`user`.*,dicitem.Item as type,unit.UnitName as
+		unitname FROM
+		`user`,dicitem,unit WHERE
+		`user`.UserType=dicitem.DicItemId and
+		`user`.UnitId=unit.UnitId and
+		unit.UnitName=#{unitname}
 		and `user`.`Name`=#{name} AND dicitem.Item=#{type}
 	</select>
 	<!-- 根据userid查找user信息 -->
-	<select id="SelectUserByUserId" resultType="com.xk.orm.UserInfo" parameterType="java.lang.Integer">
-		select * from 	`user` where `user`.UserId=#{userid}
+	<select id="SelectUserByUserId" resultType="com.xk.orm.UserInfo"
+		parameterType="java.lang.Integer">
+		select * from `user` where `user`.UserId=#{userid}
 	</select>
 	<delete id="deleteByUserid" parameterType="java.lang.Integer">
 		delete from user
-		where UserId = #{userid,jdbcType=INTEGER}
+		where
+		UserId = #{userid,jdbcType=INTEGER}
 	</delete>
 	<insert id="insert" parameterType="com.xk.orm.User">
 		insert into user (UserId,

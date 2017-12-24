@@ -303,6 +303,10 @@ public class LinePoleBLL {
 	 */
 	public JSONArray DelPoleByPoleId(int poleid) {
 		/**
+		 * 查询当前线杆是否有所属的搭挂线路
+		 */
+		
+		/**
 		 * 删除线杆并删除相关的搭挂详情和线路详情
 		 */
 		int i=allDao.getLinePoleMapperImpl().DelPoleByPoleId(poleid);

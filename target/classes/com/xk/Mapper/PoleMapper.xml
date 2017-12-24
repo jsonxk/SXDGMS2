@@ -33,7 +33,8 @@
 	<!-- 根据lineid查找线杆信息 -->
 	<select id="SelectPoleInfo" parameterType="java.lang.Integer"
 		resultMap="BaseResultMap">
-		select pole.*,unit.UnitName as unitname,d1.Item as statusname,d2.Item as
+		select pole.*,unit.UnitName as unitname,d1.Item as statusname,d2.Item
+		as
 		typename,linedetail.LineDetailId as
 		childlinedetailid,linedetail.LineId as childlineid,linedetail.PoleId
 		as childpoleid,linedetail.`Name` as childname,linedetail.`Code` as
@@ -43,16 +44,19 @@
 		LEFT JOIN
 		dicitem d2 ON
 		pole.Type=d2.DicItemId LEFT JOIN linedetail ON
-		pole.PoleId=linedetail.PoleId 
-		LEFT JOIN  unit ON pole.UnitId=unit.UnitId
+		pole.PoleId=linedetail.PoleId
+		LEFT JOIN unit ON pole.UnitId=unit.UnitId
 		<if test="lineid!=null and lineid!=0">
 			WHERE pole.PoleId in (SELECT
 			linedetail.PoleId
-			from linedetail WHERE linedetail.LineId=#{lineid})
+			from
+			linedetail WHERE linedetail.LineId=#{lineid})
 		</if>
 	</select>
-	<select id="SelectPoleCount" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-		select COUNT(*) from linedetail WHERE linedetail.LineId=#{lineid}
+	<select id="SelectPoleCount" parameterType="java.lang.Integer"
+		resultType="java.lang.Integer">
+		select COUNT(*) from linedetail WHERE
+		linedetail.LineId=#{lineid}
 	</select>
 	<!-- 根据poleid查找pole信息 -->
 	<select id="SelectPoleInfoByPoleId" parameterType="java.lang.Integer"
@@ -61,11 +65,14 @@
 		as
 		childLineId,linedetail.`Name` as childname,linedetail.Code as
 		childCode,linedetail.Memo as childMemo,linedetail.LineDetailId as
-		childdetailid,linedetail.PrePoleId as childprepoleid,pline.`Name` as childLinename,d1.Item as
-		statusname,d2.Item as typename,unit.UnitName as unitname
+		childdetailid,linedetail.PrePoleId as childprepoleid,pline.`Name` as
+		childLinename,d1.Item as
+		statusname,d2.Item as typename,unit.UnitName
+		as unitname
 		from pole LEFT
 		JOIN
-		dicitem d1 ON pole.`Status`=d1.DicItemId LEFT JOIN
+		dicitem d1 ON pole.`Status`=d1.DicItemId
+		LEFT JOIN
 		dicitem d2 ON
 		pole.Type=d2.DicItemId
 		LEFT JOIN linedetail on
@@ -73,8 +80,8 @@
 		on
 		powerline.LineId=linedetail.LineId
 		LEFT JOIN unit on
-		pole.UnitId=unit.UnitId 
-		LEFT JOIN powerline as pline ON pline.LineId=linedetail.LineId 
+		pole.UnitId=unit.UnitId
+		LEFT JOIN powerline as pline ON pline.LineId=linedetail.LineId
 		WHERE pole.PoleId=#{poleid}
 	</select>
 	<!-- 所有pole -->
@@ -84,11 +91,13 @@
 	<select id="SelectPoleInfoByName" resultType="com.xk.orm.LineDetail"
 		parameterType="java.lang.String">
 		select * from linedetail where linedetail.name like
-		"%"#{name}"%"
+		"%"#{name}"%" and LineDetail.PoleId in (SELECT hangdetail.PoleId FROM
+		hangdetail)
 	</select>
 	<select id="SelectPoleInfoByAllName" resultType="com.xk.orm.LineDetail"
 		parameterType="java.lang.String">
 		select * from linedetail where linedetail.name=#{name}
+		and LineDetail.PoleId in (SELECT hangdetail.PoleId FROM hangdetail)
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from pole

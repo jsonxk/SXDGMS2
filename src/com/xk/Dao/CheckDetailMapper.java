@@ -30,4 +30,9 @@ public interface CheckDetailMapper {
 	 * @return
 	 */
 	int ModifyCheckDtlProcess(@Param("checkdetailid")int checkdetailid,@Param("faultid") int faultid,@Param("processid") int processid);
+	/**
+	 * 查询状态为整改验收的错误检查信息
+	 * @return
+	 */
+	List<CheckDetail> SelectFaultTask();
 }

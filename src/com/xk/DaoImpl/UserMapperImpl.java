@@ -2,6 +2,8 @@ package com.xk.DaoImpl;
 
 import java.util.List;
 
+import net.sf.json.JSONArray;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -29,5 +31,19 @@ public class UserMapperImpl {
 	}
 	public List<UserInfo> SelectUserByUserId(int userid){
 		return userMapper.SelectUserByUserId(userid);
+	}
+	/**
+	 * 手机端登录
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	public JSONArray AppUserLogin(String username, String password) {
+		List<UserInfo> userinfoList=userMapper.AppUserLogin(username,password);
+		if(userinfoList.size()>0)
+		{
+			return JSONArray.fromObject(userinfoList);
+		}
+		return null;
 	}
 }

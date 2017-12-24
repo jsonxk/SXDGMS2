@@ -65,4 +65,19 @@ public JSONArray selectByUserid(Integer userid)
 			//带参
 			return alldao.getRoleMapperImpl().selectAllRoleByRolename(rolename);
 	}
+	/**
+	 * 修改角色信息
+	 * @param roleid
+	 * @param name
+	 * @param memo
+	 * @return
+	 */
+/*	public boolean ModifyRoleInfo(int roleid, String name, String memo) {
+		int i=alldao.getRoleMapperImpl().ModifyRoleInfo(roleid,name,memo);
+		if(i>0)
+		{
+			return true;
+		}
+		return false;
+	}*/
 }

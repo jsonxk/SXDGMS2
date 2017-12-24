@@ -67,10 +67,28 @@ function operateFormatter(value, row, index) {
 // 表格操作的按钮事件
 window.operateEvents = {
 	'click .RoleOfA' : function(e, value, row, index) {
-		alert(1);
+		$("#ModifyRoleInfo").modal("show");
+		$("#ModifyRolename").val(row.name);
+		$("#Modifyrolememo").text(row.memo);
+		var ModifyRoleOk=document.getElementById("ModifyRoleOk");
+		ModifyRoleOk.onclick=function(){
+			$.ajax({
+				type:"post",
+				url:"",
+				data:{
+					roleid:row.roleid,
+					name:$("#ModifyRolename").val(),
+					memo:$("#Modifyrolememo").val(),
+				},
+				datatype:"json",
+				success:function(data){
+					
+				}
+			})
+		}
 	},
 	'click .RoleOfB' : function(e, value, row, index) {
-		alert(2);
+		//alert(2);
 	},
 }
 // table角色搜索的参数设置

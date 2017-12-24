@@ -27,6 +27,9 @@
     values (#{Stringtime,jdbcType=TIMESTAMP}, 
       #{memo,jdbcType=VARCHAR})
   </insert>
+  <delete id="DelCheckDtlFault" parameterType="java.lang.Integer">
+  	delete from checkdetail where checkdetail.CheckDetailId=#{checkdetailid}
+  </delete>
   <insert id="qqq" parameterType="com.xk.orm.Fault">
     insert into fault
     <trim prefix="(" suffix=")" suffixOverrides=",">

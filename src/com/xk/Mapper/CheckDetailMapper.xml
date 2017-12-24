@@ -12,11 +12,32 @@
 		<result column="FaultId" property="faultid" jdbcType="INTEGER" />
 		<result column="Description" property="description" jdbcType="VARCHAR" />
 	</resultMap>
+	<resultMap id="noticeList" type="com.xk.orm.NoticeList">
+		   	<id column="NoticeId" property="noticeid" jdbcType="INTEGER" />
+		    <result column="FaultId" property="faultid" jdbcType="INTEGER" />
+		    <result column="UnitId" property="unitid" jdbcType="INTEGER" />
+		    <result column="ProccessId" property="proccessid" jdbcType="INTEGER" />
+		    <result column="Status" property="status" jdbcType="INTEGER" />
+		    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+		    <result column="statusname" property="statusname" jdbcType="VARCHAR" />
+		    <result column="CorrentChkDtlId" property="correntchkdtlid" jdbcType="INTEGER" />
+		    <collection property="linedetailList" ofType="com.xk.orm.LineDetail"
+			column="LineDetailId" javaType="list">
+			<id column="LineDetailId" property="linedetailid" jdbcType="INTEGER" />
+			<result column="LineId" property="lineid" jdbcType="INTEGER" />
+			<result column="PoleId" property="poleid" jdbcType="INTEGER" />
+			<result column="PrePoleId" property="prepoleid" jdbcType="INTEGER" />
+			<result column="Code" property="code" jdbcType="VARCHAR" />
+			<result column="Name" property="name" jdbcType="VARCHAR" />
+			<result column="Memo" property="memo" jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
 	<select id="SelectAllFaultInfo" parameterType="com.xk.orm.PublicEntity"
 		resultType="com.xk.orm.CheckDtlNotice">
 		SELECT checkdetail.*,notice.CorrentChkDtlId,notice.CreateTime as
 		createtime1,notice.FaultId as faultid1,notice.ProccessId as
-		processid1,notice.`Status` as status1,notice.UnitId,dicitem.Item as
+		processid1,notice.`Status` as status1,notice.UnitId as
+		unitid1,dicitem.Item as
 		statusname
 		from checkdetail LEFT JOIN notice on
 		notice.FaultId=checkdetail.FaultId LEFT JOIN dicitem on
@@ -35,6 +56,15 @@
 			checkitem.CheckItemId FROM checkitem WHERE
 			checkitem.CheckTypeId=#{type})
 		</if>
+	</select>
+	<!-- 查询状态为整改验收的错误信息 -->
+	<select id="SelectFaultTask" resultMap="noticeList">
+		SELECT notice.*,d1.Item
+		as statusname,linedetail.* from notice LEFT JOIN dicitem d1 ON
+		d1.DicItemId=notice.`Status` INNER JOIN checkdetail ON
+		checkdetail.FaultId=notice.FaultId LEFT JOIN linedetail ON
+		checkdetail.PoleId=linedetail.PoleId WHERE notice.`Status` in (SELECT
+		dicitem.DicItemId FROM dicitem WHERE dicitem.Item="整改验收")
 	</select>
 	<insert id="InsertPoleChkDtl" parameterType="com.xk.orm.CheckInfoCommon"
 		useGeneratedKeys="true" keyProperty="checkdetailid">
@@ -55,11 +85,13 @@
 		#{faultid,jdbcType=INTEGER},
 		#{chkDtlDescription,jdbcType=VARCHAR},#{taskid})
 	</insert>
-	<!--  修改checkedtail中processid-->
+	<!-- 修改checkedtail中processid -->
 	<update id="ModifyCheckDtlProcess" parameterType="java.lang.Integer">
-		update checkdetail
+		update
+		checkdetail
 		set ProcessId=#{processid,jdbcType=INTEGER}
-		 where CheckDetailId = #{checkdetailid,jdbcType=INTEGER} and FaultId=#{faultid}
+		where CheckDetailId = #{checkdetailid,jdbcType=INTEGER} and
+		FaultId=#{faultid}
 	</update>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
 		delete from

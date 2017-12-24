@@ -93,7 +93,7 @@ $("#searchBtn").click(function(){
 });
 function operateFormatter(value, row, index) {
 	return [
-			'<button type="button" class="RoleOfA btn btn-default  btn-sm" style="margin-right:15px;">修改</button>',
+			//'<button type="button" class="RoleOfA btn btn-default  btn-sm" style="margin-right:15px;">修改</button>',
 			'<button type="button" class="RoleOfB btn btn-default  btn-sm" style="margin-right:15px;">删除</button>', ]
 			.join('');
 }
@@ -275,7 +275,7 @@ function ItemInit(dictypeid){
 }
 function operateFormatterItem(value, row, index) {
 	return [
-			'<button type="button" class="RoleOfA btn btn-default  btn-sm" style="margin-right:15px;">修改</button>',
+			//'<button type="button" class="RoleOfA btn btn-default  btn-sm" style="margin-right:15px;">修改</button>',
 			'<button type="button" class="RoleOfB btn btn-default  btn-sm" style="margin-right:15px;">删除</button>', ]
 			.join('');
 }

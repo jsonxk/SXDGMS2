@@ -13,7 +13,7 @@ var ProcessId=0;
 var Faultid=0;
 var Status=0;
 var userid=$(".userinfo span").text();
-//var unitid=$(".userinfo #p3").text();
+var unitid=$(".userinfo #p3").text();
 //var loginname=$(".userinfo #p1").text();
 //var unitname=$(".userinfo #p2").text();
 FaultMenage.prototype={
@@ -70,7 +70,7 @@ function faultInfoInit(){
 	$('#Faulttable')
 			.bootstrapTable(
 					{
-						url : 'FaultMS/selectAllFaultInfo.spring',
+						url : 'FaultMS/selectRentFaultInfo.spring',
 						method : 'post',
 						cache : false,
 						striped : true,
@@ -85,7 +85,8 @@ function faultInfoInit(){
 								"starttime":$(".fromtimeFault1").val(),
 								"finishtime":$(".dateFinishFault1").val(),
 								"status":Number($("#FaultStatus").val()),
-								"type":Number($("#FaultType").val())
+								"type":Number($("#FaultType").val()),
+								"unitid":unitid,
 							};
 							return param;
 						},
@@ -168,28 +169,15 @@ function operateFormatter(value, row, index) {
 	 * 当前缺陷状态
 	 * {0：缺陷上报，1}
 	 */
-	if(row.statusname=='缺陷上报')
+	if(row.statusname=='施工'||row.statusname=="继续整改")
 		{
-		opvalue = [
-					'<button type="button" class="checkApply btn btn-default  btn-sm" style="margin-right:15px;">查看</button>',
-					'<button type="button" class="delapply btn btn-danger  btn-sm" style="margin-right:15px;">删除</button>',
-					'<button type="button" class="startRepairAct btn btn-info  btn-sm" style="margin-right:15px;">开启整改流程</button>'];
-		}
-	else if(row.statusname=='发送整改通知书'){
-		opvalue = [
-					'<button type="button" class="checkApply btn btn-default  btn-sm" style="margin-right:15px;">查看</button>',
-					'<button type="button" class="Submitapply btn btn-warning  btn-sm" style="margin-right:15px;">发送通知</button>'];
-	}
-	else if(row.statusname=="整改完成")
-		{
-		opvalue = [
-					'<button type="button" class="checkApply btn btn-default  btn-sm" style="margin-right:15px;">查看</button>',
-					'<button type="button" class="delapply btn btn-danger  btn-sm" style="margin-right:15px;">删除</button>',];
-		}
-	else{
 		opvalue = [
 					'<button type="button" class="checkApply btn btn-default  btn-sm" style="margin-right:15px;">查看</button>',
 					'<button type="button" class="HandFault btn btn-default  btn-sm" style="margin-right:15px;">处理</button>'];
+		}
+	else{
+		opvalue = [
+					'<button type="button" class="checkApply btn btn-default  btn-sm" style="margin-right:15px;">查看</button>'];
 	}
 	
 	return opvalue.join('');
@@ -212,34 +200,6 @@ window.operateEvents = {
 		faultinit.FaultPoleOfLine(row.poleid);
 	},
 	'click .delapply' : function(e, value, row, index) {
-		/**
-		 * 删除缺陷
-		 * 可以删除整改完成的或者未开启流程的缺陷
-		 */
-		$("#DelRtnModal").modal("show");
-		var DelThisFault=document.getElementById("DelThisFault");
-		DelThisFault.onclick=function(){
-			$.ajax({
-				type:"post",
-				url:"FaultMS/delCheckDtlFault.spring",
-				data:{
-					"checkdetailid":row.checkdetailid,
-				},
-				datatype:"json",
-				success:function(data){
-					$("#DelRtnModal").modal("hide");
-					$("#TS_Modal").modal("show");
-					if(data)
-						{
-							$(".TS_Modal h4").text("删除信息成功");
-							$('#Faulttable').bootstrapTable("refresh");
-						}
-					else{
-						$(".TS_Modal h4").text("删除信息失败");
-					}
-				}
-			});
-		}
 	},
 	'click .Submitapply' : function(e, value, row, index) {
 		/**

@@ -336,45 +336,6 @@
 					</div>
 				</div>
 			</div>
-		<!-- 删除提示信息 -->
-			<div class="modal fade " id="DelRtnModal" tabindex="-1" role="dialog"
-				aria-labelledby="exampleModalLabel">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content" style="width:35%;margin-top: 50%">
-
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-							<h4 class="modal-title" id="exampleModalLabel">确定删除此缺陷？</h4>
-						</div>
-						<div class="modal-body delInfo">
-							<button type="button" id="DelThisFault" class="btn btn-danger  btn-sm" style="margin-right:15px;">删除</button>
-							<button type="button" class="btn btn-default  btn-sm" style="margin-right:15px;" data-dismiss="modal">取消</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- 提示信息 -->
-	<div class="modal fade " id="TS_Modal" tabindex="-1" role="dialog"
-				aria-labelledby="exampleModalLabel">
-				<div class="modal-dialog" role="document">
-					<div class="modal-content" style="width:35%;margin-top: 50%">
-
-						<div class="modal-header TS_Modal">
-							<button type="button" class="close" data-dismiss="modal"
-								aria-label="Close">
-								<span aria-hidden="true">&times;</span>
-							</button>
-							<h4 class="modal-title" id="exampleModalLabel"></h4>
-						</div>
-						<div class="modal-body delInfo">
-							<button type="button" class="btn btn-danger  btn-sm" style="margin-right:15px;" data-dismiss="modal">关闭</button>
-						</div>
-					</div>
-				</div>
-			</div>
 	<!-- END WRAPPER -->
 	<script src="./assets/vendor/jquery/jquery.min.js"></script>
 	<script src="./assets/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -391,7 +352,7 @@
 	<script src="./js/ajaxupload/ajaxfileupload.js"></script>
 	<script type="text/javascript">
 		function initIndex() {
-			$(".qxglchild .2qxgl0   a").addClass("active");
+			$(".qxglchild .2qxgl1  a").addClass("active");
 		}
 			$(".userOp").mouseover(function(){
 			$(".dropUserInfo").css("display","block");
@@ -418,7 +379,7 @@
 					}
 				%>
 	</div>
-	<script src="./js/table/QXGL.js"></script>
+	<script src="./js/table/QXCK.js"></script>
 </body>
 
 </html>

@@ -588,7 +588,8 @@
 				</div>
 			</div>
 		</div>
-		</div>	<!-- 提示信息 -->
+		</div>
+		<!-- 提示信息 -->
 		<div class="modal fade " id="TS_Modal" tabindex="-1" role="dialog"
 				aria-labelledby="exampleModalLabel">
 				<div class="modal-dialog" role="document">

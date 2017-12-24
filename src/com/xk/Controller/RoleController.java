@@ -50,4 +50,15 @@ public @ResponseBody JSONArray SelectAllRole(@RequestParam(value="rolename",requ
 	List<Role> list=allService.getroleMapperBLL().SelectAllRole(rolename);
 	return JSONArray.fromObject(list);
 }
+/**
+ * 修改角色信息
+ * @param roleid
+ * @param name
+ * @param memo
+ * @return
+ */
+/*@RequestMapping(value="/modifyRoleInfo",method=RequestMethod.POST)
+public @ResponseBody boolean ModifyRoleInfo(@RequestParam("roleid") int roleid,@RequestParam("name") String name,@RequestParam("memo") String memo){
+	return allService.getroleMapperBLL().ModifyRoleInfo(roleid,name,memo);
+}*/
 }

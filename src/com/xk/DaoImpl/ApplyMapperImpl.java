@@ -74,4 +74,11 @@ public class ApplyMapperImpl implements ApplyMapper{
 	public int DelApplyAndApplyDoc(int applyid) {
 		return applymapper.DelApplyAndApplyDoc(applyid);
 	}
+	/**
+	 * 查询申请状态在整改或者查勘的申请搭挂线路
+	 * @return
+	 */
+	public List<ApplyMore> SelectApplyCheckTask() {
+		return applymapper.SelectApplyCheckTask();
+	}
 }

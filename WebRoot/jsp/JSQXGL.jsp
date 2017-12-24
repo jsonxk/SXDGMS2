@@ -63,6 +63,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 .leftIndex li{
 	display: none;
 }
+#ModifyRoleOk{
+	background-color: #2B333E;
+}
 </style>
   <body>
 <!-- WRAPPER -->
@@ -189,6 +192,37 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<div class="clearfix"></div>
 	</div>
 	</div>
+	<!-- 修改角色信息 -->
+	<div class="modal fade " id="ModifyRoleInfo" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="width:50%;height:300px;margin:10% auto">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="exampleModalLabel">修改角色信息</h4>
+				</div>
+				<div class="modal-body">
+					<form id="mofidyroleinfo">
+	                    <div class="form-group ModifyRolename">
+                        	<label for="ModifyRolename" class="control-label">角色名称</label>
+                        	<input type="text" id="ModifyRolename" name="ModifyRolename" class="form-control" placeholder="角色名称"/>
+                   		</div>
+                   		<div class="form-group Modifyrolememo">
+                        	<label for="Modifyrolememo" class="control-label">线路名称</label>
+                        	<textarea class="form-control textarea1" rows="2"
+											placeholder="角色描述" id="Modifyrolememo" name="Modifyrolememo"></textarea></div>
+	                    <div class="text-right ModifyRoleBtn">
+	                        <button type="button" class="btn btn-default right" data-dismiss="modal">取消</button>
+	                        <button id="ModifyRoleOk" type="button" class="btn btn-primary">修改</button>
+	                    </div>
+	                </form>
+				</div>
+			</div>
+		</div>
+		</div>
 	<!-- END WRAPPER -->
 	<!-- Javascript -->
 	<script src="./assets/vendor/jquery/jquery.min.js"></script>

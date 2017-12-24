@@ -31,4 +31,11 @@ public interface UserMapper {
      * @return
      */
     List<UserInfo> SelectUserByUserId(@Param("userid") int userid);
+    /**
+     * app登录
+     * @param username
+     * @param password
+     * @return
+     */
+	List<UserInfo> AppUserLogin(@Param("username")String username,@Param("password") String password);
 }

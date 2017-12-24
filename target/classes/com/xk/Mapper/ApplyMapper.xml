@@ -29,14 +29,17 @@
 		permitStringtime,`user`.`Name` as
 		username,unit.UnitName
 		as
-		unitname,dicitem.Item as statusname,hangline.HangName as hanglinename FROM
+		unitname,dicitem.Item as statusname,hangline.HangName as hanglinename
+		FROM
 		apply LEFT JOIN applyrecord ON
-		apply.ApplyId=applyrecord.ApplyId LEFT
+		apply.ApplyId=applyrecord.ApplyId
+		LEFT
 		JOIN `user` on
 		apply.UserId=`user`.UserId LEFT JOIN unit on
 		apply.UnitId=unit.UnitId
 		LEFT JOIN dicitem on apply.`status`
-		=dicitem.dicitemid LEFT JOIN  hangline ON hangline.HangLineId=apply.HangLineId 
+		=dicitem.dicitemid LEFT JOIN hangline ON
+		hangline.HangLineId=apply.HangLineId
 		WHERE
 		<if
 			test="starttime!=null and starttime!='' and finishtime!=null and finishtime!=''">
@@ -55,9 +58,7 @@
 		<if test="unitid">
 			and apply.UnitId=#{unitid}
 		</if>
-		<!-- <if test="userid!=0">
-			and apply.UserId=#{userid}
-		</if> -->
+		<!-- <if test="userid!=0"> and apply.UserId=#{userid} </if> -->
 		LIMIT #{offset},#{pageSize}
 	</select>
 	<select id="SelectApplyAndTask" parameterType="com.xk.orm.PublicEntity"
@@ -95,9 +96,7 @@
 		<if test="unitid">
 			and apply.UnitId=#{unitid}
 		</if>
-		<!-- <if test="userid!=0">
-			and apply.UserId=#{userid}
-		</if> -->
+		<!-- <if test="userid!=0"> and apply.UserId=#{userid} </if> -->
 		and apply.status!=1
 		LIMIT #{offset},#{pageSize}
 	</select>
@@ -119,12 +118,10 @@
 		<if test="status!=0">
 			and apply.Status=#{status}
 		</if>
-			<if test="unitid">
+		<if test="unitid">
 			and apply.UnitId=#{unitid}
 		</if>
-		<!-- <if test="userid!=0">
-			and apply.UserId=#{userid}
-		</if> -->
+		<!-- <if test="userid!=0"> and apply.UserId=#{userid} </if> -->
 	</select>
 	<select id="SelectApplyALLCount" parameterType="com.xk.orm.PublicEntity"
 		resultType="java.lang.Integer">
@@ -145,6 +142,14 @@
 			and apply.Status=#{status}
 		</if>
 		and apply.Status!=1
+	</select>
+	<!-- 查找处于验收和查查勘的任务 -->
+	<select id="SelectApplyCheckTask" resultType="com.xk.orm.ApplyMore">
+		SELECT
+		apply.*,hangline.HangName as hanglinename,dicitem.Item as statusname
+		from apply LEFT JOIN hangline ON apply.HangLineId=hangline.HangLineId
+		LEFT JOIN dicitem on dicitem.DicItemId=apply.`Status` WHERE
+		dicitem.Item="现场查勘" or dicitem.Item="施工验收"
 	</select>
 	<!-- 添加信息返回主键 keyProperty为返回Entity中的字段 -->
 	<insert id="insertApplyInfo" useGeneratedKeys="true"

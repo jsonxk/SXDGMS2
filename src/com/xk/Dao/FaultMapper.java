@@ -9,4 +9,10 @@ public interface FaultMapper {
 	 * @return
 	 */
 	int InsertFaultInfo(Fault fault);
+	/**
+	 * 删除已经整改完成或者不用整改的信息
+	 * @param checkdetailid
+	 * @return
+	 */
+	int DelCheckDtlFault(int checkdetailid);
 }

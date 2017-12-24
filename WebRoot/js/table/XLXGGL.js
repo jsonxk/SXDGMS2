@@ -323,64 +323,70 @@ function selectAllLineName(index){
  */
 function poleinfoinit(lineid){
 	$('#poleInfoTable').bootstrapTable("destroy");
-	$('#poleInfoTable').bootstrapTable({
-		url:'LinePole/selectpoleinfo.spring',
-		method: 'post',
-		cache: false,
-		striped: true,
-		pagination: true,
-		pageSize: 10,
-		pageNumber:1,
-		pageList: [10, 20, 40],
-		sidePagination:'client',
-		queryParams: function paramsfunc(){
-			var param={
-				"lineid":lineid,
-			}
-			return param;
-		},
-		clickToSelect: true,
-		paginationPreText: "上一页",
-    	paginationNextText: "下一页",
-    	contentType:"application/x-www-form-urlencoded; charset=UTF-8",
-						columns : [{
-							field : "linedetailList",
-							title : "线杆名称",
-							align : "center",
-							valign : "middle",
-							formatter:function(value, row, index)
-							{
-								if(value.length>0)
-									{
-										return value[0].name;
-									}
-							}
-						}, {
-							field : "statusname",
-							title : "线杆状态",
-							align : "center",
-							valign : "middle",
-						},{
-							title : "操作",
-							align : "center",
-							valign : "middle",
-							events : operateEventspole,
-							formatter : operateFormatterpole
-						} ],
-						onPageChange : function(size, number) {
-						},
-						formatNoMatches : function() {
-							return '请选择线路';
-						},
-						onClickCell : function(field, value, row, $element) {
-							// 点击加载某角色的功能
-							// td父节点的兄弟节点的子节点颜色
-						},
+	if(lineid==0)
+		{
+		
+		}
+	else{
+		$('#poleInfoTable').bootstrapTable({
+			url:'LinePole/selectpoleinfo.spring',
+			method: 'post',
+			cache: false,
+			striped: true,
+			pagination: true,
+			pageSize: 10,
+			pageNumber:1,
+			pageList: [10, 20, 40],
+			sidePagination:'client',
+			queryParams: function paramsfunc(){
+				var param={
+					"lineid":lineid,
+				}
+				return param;
+			},
+			clickToSelect: true,
+			paginationPreText: "上一页",
+	    	paginationNextText: "下一页",
+	    	contentType:"application/x-www-form-urlencoded; charset=UTF-8",
+							columns : [{
+								field : "linedetailList",
+								title : "线杆名称",
+								align : "center",
+								valign : "middle",
+								formatter:function(value, row, index)
+								{
+									if(value.length>0)
+										{
+											return value[0].name;
+										}
+								}
+							}, {
+								field : "statusname",
+								title : "线杆状态",
+								align : "center",
+								valign : "middle",
+							},{
+								title : "操作",
+								align : "center",
+								valign : "middle",
+								events : operateEventspole,
+								formatter : operateFormatterpole
+							} ],
+							onPageChange : function(size, number) {
+							},
+							formatNoMatches : function() {
+								return '请选择线路';
+							},
+							onClickCell : function(field, value, row, $element) {
+								// 点击加载某角色的功能
+								// td父节点的兄弟节点的子节点颜色
+							},
 
-					});
-	$(window).resize(function() {
-		$('#poleInfoTable').bootstrapTable('resetView');
-	});
+						});
+		$(window).resize(function() {
+			$('#poleInfoTable').bootstrapTable('resetView');
+		});
+	}
 }
 function operateFormatterpole(value, row, index) {
 	return [

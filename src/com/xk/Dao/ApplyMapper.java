@@ -66,4 +66,9 @@ public interface ApplyMapper {
 	 * @return
 	 */
 	int DelApplyAndApplyDoc(@Param("applyid")int applyid);
+	/**
+	 * 查询处于查看或者施工验收状态的申请
+	 * @return
+	 */
+	List<ApplyMore> SelectApplyCheckTask();
 }

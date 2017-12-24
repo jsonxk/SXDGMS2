@@ -26,6 +26,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import com.xk.orm.CheckInfoCommon;
 import com.xk.orm.HistoryEmail;
 import com.xk.orm.LineCheck;
+import com.xk.orm.PowerLine;
 import com.xk.orm.PublicEntity;
 import com.xk.service.AllService;
 
@@ -49,7 +50,7 @@ public class FaultController {
 		return allservice.getFaultBLL().SelectFaultType();
 	}
 	/**
-	 * 查找所有缺陷信息
+	 * 查找管理者所有缺陷信息
 	 * @param publicEntity
 	 * @return
 	 */
@@ -57,6 +58,15 @@ public class FaultController {
 	public @ResponseBody JSONArray SelectAllFaultInfo(@RequestBody PublicEntity publicEntity){
 		System.out.println(publicEntity.getStarttime()+publicEntity.getFinishtime()+publicEntity.getStatus()+publicEntity.getType()+"萨达萨达撒多撒");
 		return allservice.getFaultBLL().SelectAllFaultInfo(publicEntity);
+	}
+	/**
+	 * 租用单位查看缺陷信息
+	 * @param publicEntity
+	 * @return
+	 */
+	@RequestMapping(value="/selectRentFaultInfo",method=RequestMethod.POST)
+	public @ResponseBody JSONArray SelectRentFaultInfo(@RequestBody PublicEntity publicEntity){
+		return allservice.getFaultBLL().SelectRentFaultInfo(publicEntity);
 	}
 	/**
 	 * 根据poleid查找单位，搭挂线路信息
@@ -244,7 +254,15 @@ public class FaultController {
 		}
 		return returnOP;
 	}
-
+	/**
+	 * 删除线路检查中有错误的信息
+	 * @param checkdetailid
+	 * @return
+	 */
+	@RequestMapping(value="/delCheckDtlFault",method=RequestMethod.POST)
+	public  @ResponseBody boolean DelCheckDtlFault(@RequestParam("checkdetailid") int checkdetailid){
+		return allservice.getFaultBLL().DelCheckDtlFault(checkdetailid);
+	}
 	/*private void responseMessage(HttpServletResponse response) throws IOException {
 		response.setCharacterEncoding("utf-8");
 		response.setContentType("text/html; charset=" + "utf-8");
@@ -265,4 +283,12 @@ public class FaultController {
 			//IOUtils.closeQuietly(writer);
 		}
 	}*/
+	/**
+	 * 查找所有，查勘，整改验收任务
+	 * @return
+	 */
+	@RequestMapping(value="/selectTasks",method=RequestMethod.POST)
+	public @ResponseBody JSONArray SelectTasks(){
+		return allservice.getFaultBLL().SelectTasks();
+	}
 }

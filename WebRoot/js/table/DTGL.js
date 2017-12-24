@@ -155,8 +155,8 @@ function AutoAddMarker(data) {
 		}
 	});
 	polemarker.on('click', function(e) {
-		$("#allmap").css("height", "75%");
-		$(".poleTab").css("display", "block");
+		//$("#allmap").css("height", "75%");
+		//$(".poleTab").css("display", "block");
 	});
 	/**
 	 * 所有点标记
@@ -395,6 +395,7 @@ function ModifyPolePosition(poleid, lng, lat) {
 }
 /**
  * 点击开启删除线杆操作
+ * 判断线杆是否属于搭挂线路
  */
 var CountNum = 0;
 $(".openDelPole").click(function() {

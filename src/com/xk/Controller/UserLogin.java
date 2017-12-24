@@ -5,11 +5,15 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import net.sf.json.JSONArray;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.xk.DaoImpl.AllDao;
@@ -54,5 +58,15 @@ public class UserLogin {
 			return "login";
 		}	
 		
+	}
+	/**
+	 * 手机端登录
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	@RequestMapping(value="/appUserLogin",method=RequestMethod.POST)
+	public @ResponseBody JSONArray AppUserLogin(@RequestParam("username") String username,@RequestParam("password") String password){
+		return alldao.getuserMapperImpl().AppUserLogin(username,password);
 	}
 }

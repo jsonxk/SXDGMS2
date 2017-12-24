@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import com.xk.ActivitiUtil.EnumData;
 import com.xk.DaoImpl.AllDao;
 import com.xk.Util.SendMailDemo;
+import com.xk.orm.ApplyMore;
 import com.xk.orm.CheckDetail;
 import com.xk.orm.CheckDtlNotice;
 import com.xk.orm.CheckInfoCommon;
@@ -115,6 +117,65 @@ public class FaultBLL {
 			}
 		}
 		return JSONArray.fromObject(ListChkDtl);
+	}
+	/**
+	 * 租用单位查看缺陷信息
+	 * @param publicEntity
+	 * @return
+	 */
+	public JSONArray SelectRentFaultInfo(PublicEntity publicEntity) {
+		/**
+		 * 获取所有线路检查信息中有缺陷的部分
+		 */
+		List<CheckDtlNotice> ListChkDtl=alldao.getFaultMapperImpl().SelectAllFaultInfo(publicEntity);
+		List<CheckDtlNotice> finaldata=new ArrayList<CheckDtlNotice>();
+		List<LineDetail> linedetail=null;
+		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:MM:SS");
+		for(int j=0;j<ListChkDtl.size();j++)
+		{
+			Date date=new Date(1970,1 , 1, 0, 0, 0);
+			if(ListChkDtl.get(j).getCreatetime()!=null)
+			{
+				ListChkDtl.get(j).setStringtime(format.format(ListChkDtl.get(j).getCreatetime()));
+			}
+			if(ListChkDtl.get(j).getStatus1()==null)
+			{
+				ListChkDtl.get(j).setStatusname("缺陷上报");
+				ListChkDtl.get(j).setStatus1(11);
+			}
+			/*else if(ListChkDtl.get(j).getStatusname()=="整改完成")
+			{
+				ListChkDtl.remove(j);
+			}*/
+			if(ListChkDtl.get(j).getCreatetime1()==null)
+			{
+				ListChkDtl.get(j).setCreatetime1(date);
+			}
+			/**
+			 * 查询错误线杆的名称
+			 */
+			linedetail=alldao.getLinePoleMapperImpl().selectAllHangDetail(ListChkDtl.get(j).getPoleid());
+			if(linedetail.size()>0)
+			{
+				ListChkDtl.get(j).setPolename(linedetail.get(0).getName());
+			}
+			//System.out.println(JSONArray.fromObject(ListChkDtl));
+		}
+		int k=0;
+		for(int i=0;i<ListChkDtl.size();i++)
+		{
+			if(ListChkDtl.get(i).getUnitid1()!=null)
+			{
+				k++;
+				if(publicEntity.getUnitid()==ListChkDtl.get(i).getUnitid1())
+				{
+					finaldata.add(ListChkDtl.get(i));
+					System.out.println(JSONArray.fromObject(finaldata));
+				}
+			}
+		}
+		System.out.println(k+"擦擦擦");
+		return JSONArray.fromObject(finaldata);
 	}
 	/**
 	 * 根据poleid掺杂或单位，搭挂线路信息
@@ -403,5 +464,39 @@ public class FaultBLL {
 	public List<Task> GetNextTaskId(HistoryEmail historyEmail){
 		List<Task> task=taskService.createTaskQuery().processInstanceId(historyEmail.getProcessid()+"").list();
 		return task;
+	}
+	/**
+	 * 删除整改完成或者不用整改的错误
+	 * @param checkdetailid
+	 * @return
+	 */
+	public boolean DelCheckDtlFault(int checkdetailid) {
+		int i=alldao.getFaultMapperImpl().DelCheckDtlFault(checkdetailid);
+		if(i>0)
+		{
+			return true;
+		}
+		else
+			return false;
+	}
+	/**
+	 * 查询所有查勘，整改验收任务
+	 * @return
+	 */
+	public JSONArray SelectTasks() {
+		/**
+		 * 获取查勘，施工验收任务
+		 */
+		List<ApplyMore> ApplyTask=alldao.getApplyMapperImpl().SelectApplyCheckTask();
+		/**
+		 * 查询整改验收阶段的任务
+		 */
+		List<CheckDetail> FaultTask=alldao.getFaultMapperImpl().SelectFaultTask();
+		JSONObject jo=new JSONObject();
+		JSONArray ja=new JSONArray();
+		jo.put("applytask", ApplyTask);
+		jo.put("faulttask", FaultTask);
+		ja.add(jo);
+		return ja;
 	}
 }

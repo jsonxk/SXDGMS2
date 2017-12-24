@@ -153,4 +153,19 @@ public class FaultMapperImpl implements CheckTypeMapper,CheckDetailMapper,PhotoM
 	public List<Photo> SelectPolePhoto(int poleid) {
 		return photoMapper.SelectPolePhoto(poleid);
 	}
+	/**
+	 * 删除已经整改完整或者不用整改的错误
+	 * @param checkdetailid
+	 * @return
+	 */
+	public int DelCheckDtlFault(int checkdetailid) {
+		return faultMapper.DelCheckDtlFault(checkdetailid);
+	}
+	/**
+	 * 查询状态为整改验收的错误信息
+	 * @return
+	 */
+	public List<CheckDetail> SelectFaultTask() {
+		return checkDetailMapper.SelectFaultTask();
+	}
 }

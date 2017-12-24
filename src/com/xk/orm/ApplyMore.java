@@ -19,6 +19,14 @@ public class ApplyMore extends Apply{
 	private String statusname;
 	private String TaskId;
 	private List<ApplyDoc> listDoc;
+	private List<HangDetail> hangList;
+	
+	public List<HangDetail> getHangList() {
+		return hangList;
+	}
+	public void setHangList(List<HangDetail> hangList) {
+		this.hangList = hangList;
+	}
 	public String getApplystringtime() {
 		return applystringtime;
 	}

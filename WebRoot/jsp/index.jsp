@@ -35,6 +35,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		.leftIndex li{
 			display: none;
 		}
+		#indexBackImg{
+			width: 100%;
+			height: 82%;
+			margin:0px ;
+			padding:0px;
+			background-image: url("./images/index3.png");
+			background-repeat: no-repeat;
+			background-size:100% 100%; 
+		}
+		.M_name,.M_userunit,.M_username,.M_pwd,.M_userphone
+		{
+			width:50%;
+			float:left;
+		} 
+		.M_usermemo{
+			width:100%;
+			float:left;
+		}
+		.usermodalBtn{
+			float:left;
+			width: 100%;
+		}
 	</style>
   </head>
   
@@ -51,17 +73,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<button type="button" class="btn-toggle-fullwidth"><i class="lnr lnr-arrow-left-circle"></i></button>
 				</div>
 				<form class="navbar-form navbar-left">
-					<div class="input-group">
-						<input type="text" value="" class="form-control" placeholder="Search dashboard...">
-						<span class="input-group-btn"><button type="button" class="btn btn-primary">Go</button></span>
-					</div>
+					
 				</form>
 				<div id="navbar-menu">
 					<ul class="nav navbar-nav navbar-right userOp">
 					<li class="dropdown">
 							<a class="dropdown-toggle dropdown userNameSpan" data-toggle="dropdown"><img src="assets/img/user.png" class="img-circle" alt="Avatar"> <span></span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
 							<ul class="dropdown-menu dropUserInfo">
-								<li><a href="#"><i class="lnr lnr-user"></i> <span>修改信息</span></a></li>
+								<li><a id="modifyuserInfo"><i class="lnr lnr-user"></i> <span>修改信息</span></a></li>
 								<li><a href="jsp/Quit.jsp"><i class="lnr lnr-exit"></i> <span>退出登录</span></a></li>
 							</ul>
 					</li>
@@ -128,46 +147,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<!-- MAIN CONTENT -->
 			<div class="main-content">
 				<div class="container-fluid">
-					<h3 class="page-title">用户信息表</h3>
 					<div class="row">
-						<div class="col-md-6">
+						<div class="col-md-12">
 							<!-- BASIC TABLE -->
-							<div class="panel">
-								<div class="panel-heading">
-									<h3 class="panel-title">Basic Table</h3>
-								</div>
-								<div class="panel-body">
-									<table class="table">
-										<thead>
-											<tr>
-												<th>#</th>
-												<th>First Name</th>
-												<th>Last Name</th>
-												<th>Username</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td>1</td>
-												<td>Steve</td>
-												<td>Jobs</td>
-												<td>@steve</td>
-											</tr>
-											<tr>
-												<td>2</td>
-												<td>Simon</td>
-												<td>Philips</td>
-												<td>@simon</td>
-											</tr>
-											<tr>
-												<td>3</td>
-												<td>Jane</td>
-												<td>Doe</td>
-												<td>@jane</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
+							<div class="panel" id="indexBackImg">
+								
 							</div>
 							<!-- END BASIC TABLE -->
 						</div>
@@ -177,12 +161,65 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 		<!-- END MAIN -->
 		<div class="clearfix"></div>
-		<footer>
-			<div class="container-fluid">
-				<p class="copyright">&copy; 2017 <a href="#" target="_blank">Theme I Need</a>. All Rights Reserved. More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a></p>
-			</div>
-		</footer>
+		
 	</div>
+	<div class="modal fade " id="modifyUserInfoModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="width:80%;height:480px">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="exampleModalLabel">个人信息</h4>
+				</div>
+				<div class="modal-body">
+					<form id="userinfoForm">
+						<div class="form-group M_name">
+							<label for="M_name" class="control-label">用户姓名:</label> <input
+								type="text" id="M_name" name="M_name"
+								class="form-control" placeholder="用户姓名" />
+						</div>
+						<div class="form-group M_userunit">
+							<label class="control-label">用户单位:</label> 
+							</br>
+							<select
+								class="form-control" id="M_userunit">
+
+							</select>
+						</div>
+						<div class="form-group M_username">
+							<label class="control-label" for="M_username">登录名:</label> <input
+								type="text" id="M_username" name="M_username"
+								class="form-control" />
+						</div>
+						<div class="form-group M_pwd">
+							<label class="control-label" for="M_pwd">密码:</label> <input
+								type="password" id=M_pwd name="M_pwd"
+								class="form-control" placeholder="密码" />
+						</div>
+						<div class="form-group M_userphone">
+							<label class="control-label" for="M_userphone">电话:</label> <input
+								type="text" id="M_userphone" name="M_userphone"
+								class="form-control" />
+						</div>
+						<div class="form-group M_usermemo">
+							<label for="M_usermemo" class="control-label">用户描述</label>
+							<textarea class="form-control textarea1" rows="3"
+								placeholder="用户描述" id="M_usermemo" name="M_usermemo"></textarea>
+						</div>
+						<div class="text-right usermodalBtn">
+							<span id="returnMessage" class="glyphicon"> </span>
+							<button type="button" class="btn btn-default right"
+								data-dismiss="modal">取消</button>
+							<button id="userModifyBtn" type="button" class="btn btn-primary">修改</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>			
 	<!-- END WRAPPER -->
 	<!-- Javascript -->
 	<script src="./assets/vendor/jquery/jquery.min.js"></script>

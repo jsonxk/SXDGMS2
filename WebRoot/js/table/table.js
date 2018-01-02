@@ -85,6 +85,30 @@ $(function(){
         	  $("#mymodal").modal("toggle"); 
         	  $(".updatename").val(row.name);
         	  $(".updatephone").val(row.phone);
+        	  $(".usermemo").text(row.memo),
+        	  $("#modifyUserInfo").css("display","inline");
+        	  $("#addUserInfo").css("display","none");
+        	  var modifyUserInfo=document.getElementById("modifyUserInfo");
+        	  modifyUserInfo.onclick=function(){
+        		  $.ajax({
+            			type:"post",
+            			url:"user/modifyUserInfo.spring",
+            			data:JSON.stringify({
+            				userid:row.userid,
+            				unitid:$("#unitselect .unit").val(),
+            				name:$(".updatename").val(),
+            				phone:$(".updatephone").val(),
+            				usertype:$(".usertype").val(),
+            				status:$(".userstatus").val(),
+            				memo:$(".usermemo").val(),
+            			}),
+            			datatype:"json",
+            			contentType : 'application/json',
+            			success:function(){
+            				$("#mymodal").modal("toggle"); 
+            			}
+            		});
+        	  }
           },
           'click .RoleOfB': function (e, value, row, index) {
         	  DelUser(row.userid);           
@@ -214,3 +238,31 @@ $(function(){
 			}
 		});
 	}
+	$(".addUser").click(function(){
+		$("#mymodal").modal("show");
+		$("#modifyUserInfo").css("display","none");
+		$("#addUserInfo").css("display","inline");
+		$(".updatename").val("");
+	  	$(".updatephone").val("");
+	    $(".usermemo").text("");
+	    var addUserInfo=document.getElementById("addUserInfo");
+	    addUserInfo.onclick=function(){
+	    	$.ajax({
+				type:"post",
+				url:"user/addUserInfo.spring",
+				data:JSON.stringify({
+					unitid:$("#unitselect .unit").val(),
+					name:$(".updatename").val(),
+					phone:$(".updatephone").val(),
+					usertype:$(".usertype").val(),
+					status:$(".userstatus").val(),
+					memo:$(".usermemo").val(),
+				}),
+				datatype:"json",
+				contentType:"application/json",
+				success:function(){
+					$("#mymodal").modal("hide");
+				}
+			});
+	    }
+	})

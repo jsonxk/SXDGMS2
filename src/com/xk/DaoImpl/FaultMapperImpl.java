@@ -168,4 +168,12 @@ public class FaultMapperImpl implements CheckTypeMapper,CheckDetailMapper,PhotoM
 	public List<CheckDetail> SelectFaultTask() {
 		return checkDetailMapper.SelectFaultTask();
 	}
+	/**
+	 * 根据applyid查找线路查勘信息
+	 * @param applyid
+	 * @return
+	 */
+	public List<CheckDetail> SelectCheckInfo(int applyid) {
+		return checkDetailMapper.SelectCheckInfo(applyid);
+	}
 }

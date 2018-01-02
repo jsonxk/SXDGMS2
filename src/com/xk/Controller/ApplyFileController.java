@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.util.Date;
 import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import com.xk.ActivitiUtil.EnumData;
 import com.xk.orm.ApplyDoc;
 import com.xk.orm.ApplyDocTime;
 import com.xk.orm.ApplyMore;
@@ -68,6 +70,7 @@ public class ApplyFileController {
 						System.out.println(myFileName);
 						// 重命名上传后的文件名
 						String fileName = file.getOriginalFilename();
+						String DBPathFilename=new Date().getTime()+"."+fileName.substring(fileName.lastIndexOf(".")+1);
 						// 定义上传路径
 						String path = System.getProperty("evan.webapp")
 								+ File.separator + "FileUpload";
@@ -79,10 +82,10 @@ public class ApplyFileController {
 						// "E:"+File.separator+"test"+File.separator+ fileName;
 						// String path=request.getServletPath();
 						File localFile = new File(path + File.separator
-								+ fileName);
+								+ DBPathFilename);
 						file.transferTo(localFile);
-						DBPath = "http://localhost:8080/SXDGMS2/FileUpload/"
-								+ fileName;
+						DBPath = "http://"+EnumData.ServerAddress+"/SXDGMS2/FileUpload/"
+								+ DBPathFilename;
 						System.out.println(DBPath
 								+ Integer.parseInt(appDocTime.getDoctype()));
 						/*

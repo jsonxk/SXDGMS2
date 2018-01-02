@@ -57,6 +57,14 @@
 			#{item.code,jdbcType=VARCHAR},#{item.name,jdbcType=VARCHAR})
 		</foreach>
 	</insert>
+	<update id="ModifyPoleDetail" parameterType="java.util.Map">
+		update linedetail
+		set LineId = #{lineid,jdbcType=INTEGER},
+		PrePoleId = #{prepoleid,jdbcType=INTEGER},
+		Code = #{code,jdbcType=VARCHAR}
+		where LineDetailId =
+		#{linedetailid,jdbcType=INTEGER}
+	</update>
 	<insert id="insertSelective" parameterType="com.xk.orm.LineDetail">
 		insert into linedetail
 		<trim prefix="(" suffix=")" suffixOverrides=",">

@@ -12,6 +12,8 @@ public class PublicEntity {
 	private int offset;
 	private int status;
 	private int type;
+	private int hanglineid;
+	private int lineid;
 	private int total;
 	private int timestatus;
 	private String starttime;
@@ -20,6 +22,20 @@ public class PublicEntity {
 	private String permitfinishtime;
 	private String publicname;
 	private String name;
+	private String unitname;
+	
+	public String getUnitname() {
+		return unitname;
+	}
+	public void setUnitname(String unitname) {
+		this.unitname = unitname;
+	}
+	public int getLineid() {
+		return lineid;
+	}
+	public void setLineid(int lineid) {
+		this.lineid = lineid;
+	}
 	public int getTimestatus() {
 		return timestatus;
 	}
@@ -32,9 +48,17 @@ public class PublicEntity {
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
+	
+	public int getHanglineid() {
+		return hanglineid;
+	}
+	public void setHanglineid(int hanglineid) {
+		this.hanglineid = hanglineid;
+	}
 	public int getOffset() {
 		return offset;
 	}
+	
 	public void setOffset(int offset) {
 		this.offset = offset;
 	}

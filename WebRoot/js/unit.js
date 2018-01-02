@@ -14,10 +14,10 @@ $(function(){
 				{
 					if(i==0)
 					{
-						unitname.append("<option class='select'>"+data[i].unitname+"</option>");
+						unitname.append("<option class='select' value="+data[i].unitid+">"+data[i].unitname+"</option>");
 					}
 					else
-						unitname.append("<option>"+data[i].unitname+"</option>");	
+						unitname.append("<option value="+data[i].unitid+">"+data[i].unitname+"</option>");	
 				}
 		}
   	});

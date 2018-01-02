@@ -68,6 +68,60 @@
  	background-color: rgba(92,184,92,0.9);
 	color:#FFFFFF;
 }
+.panel-group{
+	margin-bottom: 10px;
+}
+#LineCheckPhoto{
+	height:280px;
+	margin:10px 0 10px 1%;
+	width:64%;
+	border:0px;
+	float:left;
+	box-shadow: 0 0 5px #000;
+	overflow: hidden;
+}
+#LineCheckPhoto img{
+	width:100%;
+	height:100%;
+}
+#CheckDtlinfo{
+	height:250px;
+	width:30%;
+	float:left;
+	border: 0px;
+	margin: 5% 0 0 2%;
+}
+#LineCheckPhoto ul {
+	width:100%;
+	height:100%;
+	margin: 0;
+	padding:0;
+}
+textarea{
+	resize:none;
+}
+#LineCheckPhoto ul li{
+	width:100%;
+	height:100%;
+	list-style-type:none;
+	display:inline-block;
+}
+#LineCheckPhoto ul li span{
+	display: none;
+}
+.M_name,.M_userunit,.M_username,.M_pwd,.M_userphone
+{
+	width:50%;
+	float:left;
+} 
+.M_usermemo{
+	width:100%;
+	float:left;
+}
+.usermodalBtn{
+	float:left;
+	width: 100%;
+}
 </style>
 <body>
 	<!-- WRAPPER -->
@@ -85,19 +139,14 @@
 				</button>
 			</div>
 			<form class="navbar-form navbar-left">
-				<div class="input-group">
-					<input type="text" value="" class="form-control"
-						placeholder="Search dashboard..."> <span
-						class="input-group-btn"><button type="button"
-							class="btn btn-primary">Go</button></span>
-				</div>
+				
 			</form>
 			<div id="navbar-menu">
 				<ul class="nav navbar-nav navbar-right userOp">
 					<li class="dropdown">
 							<a class="dropdown-toggle dropdown userNameSpan" data-toggle="dropdown"><img src="assets/img/user.png" class="img-circle" alt="Avatar"> <span></span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
 							<ul class="dropdown-menu dropUserInfo">
-								<li><a href="#"><i class="lnr lnr-user"></i> <span>修改信息</span></a></li>
+								<li><a id="modifyuserInfo"><i class="lnr lnr-user"></i> <span>修改信息</span></a></li>
 								<li><a href="jsp/Quit.jsp"><i class="lnr lnr-exit"></i> <span>退出登录</span></a></li>
 							</ul>
 					</li>
@@ -269,6 +318,9 @@
 											<textarea rows="2"
 												 id="HM_ApplyMemo" name="HM_ApplyMemo" readonly></textarea>
 										</div>
+										<table id="applyDoctable">
+
+										</table>
 									</div>
 								</div>
 								<div class="panel panel-default">
@@ -279,9 +331,28 @@
 										</h6>
 									</div>
 									<div id="collapseTwo" class="panel-collapse collapse">
-										<div class="panel-body">Nihil anim keffiyeh helvetica,
-											craft beer labore wes anderson cred nesciunt sapiente ea
-											proident. Ad vegan excepteur butcher vice lomo.</div>
+										<div class="panel-body">
+											<div style="height:300px;box-shadow:0 0 20px #000">
+												<div id="LineCheckPhoto">
+													<ul>
+															
+													</ul>
+													<i class="ChkleftImg" id="ChkleftImg"></i>
+													<i class="ChkrightImg" id="ChkrightImg"></i>
+												</div>
+												<div id="CheckDtlinfo">
+													<label for="CheckPoleName" class="control-label">查勘线杆名称:</label>
+													<input type="button" id="CheckPoleName"
+														name="CheckPoleName" class="form-control" />
+													<label for="CheckDtlMemo" class="control-label">查勘描述:</label>
+													<textarea class="form-control" rows="2"
+														placeholder="查勘描述" id="CheckDtlMemo" name="CheckDtlMemo"></textarea>
+													<label for="CheckPhotoMemo" class="control-label">照片描述:</label>
+													<textarea class="form-control" rows="2"
+														placeholder="照片描述" id="CheckPhotoMemo" name="CheckPhotoMemo"></textarea>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 								<div class="panel panel-default">
@@ -300,6 +371,9 @@
 									</div>
 								</div>
 							</div  >
+							<div id="handerTextArea">
+								<textarea rows="2" placeholder="处理意见" style="width: 100%;border:1px solid gray;border-radius:3px;margin-bottom: 5px"></textarea>
+							</div>
 										<!-- HM   Modal底部按钮 -->
 										<div id="HM_BottonBtn">
 											<button type="button" class="btn btn-primary HM_NoOK"
@@ -314,7 +388,83 @@
 				</div>
 			</div>
 			<!-- END MAIN -->
+			<!-- 提示信息 -->
+			<div class="modal fade " id="TS_Modal" tabindex="-1" role="dialog"
+					aria-labelledby="exampleModalLabel">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content" style="width:35%;margin-top: 50%">
+	
+							<div class="modal-header TS_Modal">
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+								<h4 class="modal-title" id="exampleModalLabel"></h4>
+							</div>
+							<div class="modal-body delInfo">
+								
+							</div>
+						</div>
+					</div>
+				</div>
 			<div class="clearfix"></div>
+		</div>
+	</div>
+	<div class="modal fade " id="modifyUserInfoModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="width:80%;height:450px">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="exampleModalLabel">个人信息</h4>
+				</div>
+				<div class="modal-body">
+					<form id="userinfoForm">
+						<div class="form-group M_name">
+							<label for="M_name" class="control-label">用户姓名:</label> <input
+								type="text" id="M_name" name="M_name"
+								class="form-control" placeholder="用户姓名" />
+						</div>
+						<div class="form-group M_userunit">
+							<label class="control-label">用户单位:</label> 
+							</br>
+							<select
+								class="form-control" id="M_userunit">
+
+							</select>
+						</div>
+						<div class="form-group M_username">
+							<label class="control-label" for="M_username">登录名:</label> <input
+								type="text" id="M_username" name="M_username"
+								class="form-control" />
+						</div>
+						<div class="form-group M_pwd">
+							<label class="control-label" for="M_pwd">密码:</label> <input
+								type="password" id=M_pwd name="M_pwd"
+								class="form-control" placeholder="密码" />
+						</div>
+						<div class="form-group M_userphone">
+							<label class="control-label" for="M_userphone">电话:</label> <input
+								type="text" id="M_userphone" name="M_userphone"
+								class="form-control" />
+						</div>
+						<div class="form-group M_usermemo">
+							<label for="M_usermemo" class="control-label">用户描述</label>
+							<textarea class="form-control textarea1" rows="3"
+								placeholder="用户描述" id="M_usermemo" name="M_usermemo"></textarea>
+						</div>
+						<div class="text-right usermodalBtn">
+							<span id="returnMessage" class="glyphicon"> </span>
+							<button type="button" class="btn btn-default right"
+								data-dismiss="modal">取消</button>
+							<button id="userModifyBtn" type="button" class="btn btn-primary">修改</button>
+						</div>
+					</form>
+				</div>
+			</div>
 		</div>
 	</div>
 	<!-- END WRAPPER -->

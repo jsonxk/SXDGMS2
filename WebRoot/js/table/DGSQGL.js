@@ -245,6 +245,7 @@ function operateFormatter(value, row, index) {
 window.operateEvents = {
 	'click .checkApply' : function(e, value, row, index) {
 		HanderApply(row);
+		$("#handerTextArea").css("display","none");
 	},
 	'click .delapply' : function(e, value, row, index) {
 			$("#DelRtnModal").modal("show");
@@ -258,6 +259,7 @@ window.operateEvents = {
 	},
 	'click .Handerapply' : function(e, value, row, index) {
 		HanderApply(row);
+		$("#handerTextArea").css("display","inline");
 	},
 };
 function HanderApply(row) {
@@ -288,6 +290,9 @@ function HanderApply(row) {
 	ApplyId=row.applyid;
 	ApplyUnitId=row.unitid;
 	ApplyStatus=row.statusname;
+	/**
+	 * 加载审核信息
+	 */
 	selectHistoryTask(ProcessId);
 }
 /**
@@ -297,6 +302,7 @@ $(".HM_OK").click(function(){
 	/**
 	 * 点击处理申请信息
 	 */
+	//alert($("#handerTextArea textarea").val());
 	ApplyHander(1);
 });
 function ApplyHander(handflag){
@@ -311,12 +317,14 @@ function ApplyHander(handflag){
 			"handtype":handflag,
 			"userid":Number(userid),
 			"unitid":ApplyUnitId,
+			"handermemo":$("#handerTextArea textarea").val()
 		},
 		datatype : "json",
 		success : function(data) {
 			$("#CheckApplyModal").modal("hide");
 			$('#hanglinetable').bootstrapTable("refresh");
-			alert(data[0].msg);
+			$("#TS_Modal").modal("show");
+			$("#TS_Modal h4").text(data[0].msg);
 		}
 	})
 }
@@ -372,8 +380,8 @@ function selectHistoryTask(processid){
 					align : "center",
 					valign : "middle",
 				}, {
-					field : "handeruserPhone",
-					title : "联系电话",
+					field : "handerDes",
+					title : "审核意见",
 					align : "center",
 					valign : "middle",
 				}],
@@ -638,6 +646,7 @@ var eventFun = {
 				"applyid":ApplyId,
 				"userid":Number(userid),
 				"unitid":Number(unitid),
+				"memo":$("#ApplyMemo").text(),
 			};
 		$.ajax({
 			type:"post",
@@ -646,8 +655,9 @@ var eventFun = {
 			datatype:"json",
 			contentType : 'application/json',
 			success:function(data){
-				alert(data[0].msg);
 				$("#HangModal").modal("hide");
+				$("#TS_Modal").modal("show");
+				$(".TS_Modal h4").text(data[0].msg);
 				$('#hanglinetable').bootstrapTable("refresh");
 			},	
 		});

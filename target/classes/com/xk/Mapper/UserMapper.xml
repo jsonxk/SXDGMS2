@@ -18,6 +18,9 @@
 		where UserName = #{username,jdbcType=VARCHAR} and
 		Password=#{password,jdbcType=VARCHAR}
 	</select>
+	<select id="selectUserInfo" resultType="com.xk.orm.User" parameterType="java.lang.Integer">
+		select * from `user` WHERE `user`.UserId=#{userid}
+	</select>
 	<!-- <select id="selectallUser" resultType="com.xk.orm.UserInfo"> select 
 		`user`.*,dicitem.Item as type,unit.UnitName as unitname FROM `user`,dicitem,unit 
 		WHERE `user`.UserType=dicitem.DicItemId and `user`.UnitId=unit.UnitId </select> -->
@@ -52,20 +55,48 @@
 		parameterType="java.lang.Integer">
 		select * from `user` where `user`.UserId=#{userid}
 	</select>
+	<update id="ModifyUserInfo" parameterType="com.xk.orm.User">
+		update user
+		<set>
+			<if test="unitid != null">
+				UnitId = #{unitid,jdbcType=INTEGER}
+			</if>
+			<if test="name != null">
+				,Name = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="usertype != null">
+				,UserType = #{usertype,jdbcType=INTEGER}
+			</if>
+			<if test="username != null">
+				,UserName = #{username,jdbcType=VARCHAR}
+			</if>
+			<if test="password != null">
+				,Password = #{password,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+				,Status = #{status,jdbcType=SMALLINT}
+			</if>
+			<if test="memo != null">
+				,Memo = #{memo,jdbcType=VARCHAR}
+			</if>
+		</set>
+		where UserId = #{userid,jdbcType=INTEGER}
+	</update>
 	<delete id="deleteByUserid" parameterType="java.lang.Integer">
 		delete from user
 		where
 		UserId = #{userid,jdbcType=INTEGER}
 	</delete>
-	<insert id="insert" parameterType="com.xk.orm.User">
-		insert into user (UserId,
+	<insert id="AddUserInfo" parameterType="com.xk.orm.User">
+		insert into user (
 		UnitId, Name,
-		UserType, UserName, Password,
+		UserType,Phone, UserName, Password,
 		Status, Memo)
 		values
-		(#{userid,jdbcType=INTEGER}, #{unitid,jdbcType=INTEGER},
+		(#{unitid,jdbcType=INTEGER},
 		#{name,jdbcType=VARCHAR},
 		#{usertype,jdbcType=INTEGER},
+		#{phone,jdbcType=INTEGER},
 		#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
 		#{status,jdbcType=SMALLINT}, #{memo,jdbcType=VARCHAR})
 	</insert>

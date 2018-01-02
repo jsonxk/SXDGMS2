@@ -25,4 +25,6 @@ public class EnumData {
 	public final static String serverPort="25";
 	public final static String serverName="17855833967@163.com";
 	public final static String serverPwd="521wsxk2jj";
+	public final static String ServerAddress="10.26.32.2:8080";
+	
 }

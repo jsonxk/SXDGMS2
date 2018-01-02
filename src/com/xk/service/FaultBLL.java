@@ -86,13 +86,16 @@ public class FaultBLL {
 		 */
 		List<CheckDtlNotice> ListChkDtl=alldao.getFaultMapperImpl().SelectAllFaultInfo(publicEntity);
 		List<LineDetail> linedetail=null;
-		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:MM:SS");
+		//System.out.println(JSONArray.fromObject(ListChkDtl));
+		//SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:MM:SS");
+		SimpleDateFormat dataformat=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		for(int j=0;j<ListChkDtl.size();j++)
 		{
 			Date date=new Date(1970,1 , 1, 0, 0, 0);
 			if(ListChkDtl.get(j).getCreatetime()!=null)
 			{
-				ListChkDtl.get(j).setStringtime(format.format(ListChkDtl.get(j).getCreatetime()));
+				ListChkDtl.get(j).setStringtime(dataformat.format(ListChkDtl.get(j).getCreatetime()));
+				System.out.println(dataformat.format(ListChkDtl.get(j).getCreatetime()));
 			}
 			if(ListChkDtl.get(j).getStatus1()==null)
 			{
@@ -130,13 +133,13 @@ public class FaultBLL {
 		List<CheckDtlNotice> ListChkDtl=alldao.getFaultMapperImpl().SelectAllFaultInfo(publicEntity);
 		List<CheckDtlNotice> finaldata=new ArrayList<CheckDtlNotice>();
 		List<LineDetail> linedetail=null;
-		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:MM:SS");
+		SimpleDateFormat dataformat=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 		for(int j=0;j<ListChkDtl.size();j++)
 		{
 			Date date=new Date(1970,1 , 1, 0, 0, 0);
 			if(ListChkDtl.get(j).getCreatetime()!=null)
 			{
-				ListChkDtl.get(j).setStringtime(format.format(ListChkDtl.get(j).getCreatetime()));
+				ListChkDtl.get(j).setStringtime(dataformat.format(ListChkDtl.get(j).getCreatetime()));
 			}
 			if(ListChkDtl.get(j).getStatus1()==null)
 			{
@@ -170,11 +173,10 @@ public class FaultBLL {
 				if(publicEntity.getUnitid()==ListChkDtl.get(i).getUnitid1())
 				{
 					finaldata.add(ListChkDtl.get(i));
-					System.out.println(JSONArray.fromObject(finaldata));
+					//System.out.println(JSONArray.fromObject(finaldata));
 				}
 			}
 		}
-		System.out.println(k+"擦擦擦");
 		return JSONArray.fromObject(finaldata);
 	}
 	/**
@@ -289,18 +291,18 @@ public class FaultBLL {
 		 * 所有角色
 		 */
 		List<Role> repairUser=alldao.getRoleMapperImpl().selectAllRole();
-		int RunUserId=0;
+		int RepairUsers=0;
 		for(Role role:repairUser)
 		{
-			if(role.getName().equals(EnumData.RunUsers))
+			if(role.getName().equals(EnumData.RepairUsers))
 			{
-				RunUserId=role.getRoleid();
+				RepairUsers=role.getRoleid();
 			}
 		}
 		/**
 		 * 线路运行单位所有用户
 		 */
-		List<UserRole> allRunUser=alldao.getuserRoleMapperLmpl().SelectRepairUsers(RunUserId);
+		List<UserRole> allRunUser=alldao.getuserRoleMapperLmpl().SelectRepairUsers(RepairUsers);
 		for(UserRole ur:allRunUser)
 		{
 			if(ur.getUserid()==userid)

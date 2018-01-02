@@ -1,6 +1,7 @@
 package com.xk.Dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -50,4 +51,10 @@ public interface LineDetailMapper {
 	 * @return
 	 */
 	int InsertLineDetailList(LineDetailList linedetail);
+	/**
+	 * 修改线杆详情信息
+	 * @param reqMap
+	 * @return
+	 */
+	int ModifyPoleDetail(Map<String, Object> reqMap);
 }

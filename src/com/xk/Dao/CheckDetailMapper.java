@@ -35,4 +35,10 @@ public interface CheckDetailMapper {
 	 * @return
 	 */
 	List<CheckDetail> SelectFaultTask();
+	/**
+	 * 根据applyid查找搭挂线路信息
+	 * @param applyid
+	 * @return
+	 */
+	List<CheckDetail> SelectCheckInfo(int applyid);
 }

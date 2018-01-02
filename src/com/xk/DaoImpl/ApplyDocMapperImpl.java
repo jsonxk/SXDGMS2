@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.xk.Dao.ApplyDocMapper;
 import com.xk.orm.ApplyDoc;
 import com.xk.orm.ApplyDocTime;
+import com.xk.orm.Doctype;
 
 /**
  * @author: xk
@@ -32,5 +33,13 @@ public class ApplyDocMapperImpl implements ApplyDocMapper{
 	}
 	public int ModifyApplyDoc(ApplyDocTime appDocTime) {
 		return applydoc.ModifyApplyDoc(appDocTime);
+	}
+	/**
+	 * 根据applyid查找申请信息
+	 * @param applyid
+	 * @return
+	 */
+	public List<Doctype> SelectApplyDocInfo(int applyid) {
+		return applydoc.SelectApplyDocInfo(applyid);
 	}
 }

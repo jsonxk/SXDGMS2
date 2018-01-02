@@ -210,9 +210,11 @@ window.operateEvents = {
 	},
 	'click .Handerapply' : function(e, value, row, index) {
 		HanderApply(row);
+		$("#handerTextArea").css("display","inline");
 	},
 	'click .Checkapply' : function(e, value, row, index) {
 		HanderApply(row);
+		$("#handerTextArea").css("display","none");
 	},
 };
 function HanderApply(row) {
@@ -260,7 +262,19 @@ function HanderApply(row) {
 	ApplyId=row.applyid;
 	ApplyUnitId=row.unitid;
 	ApplyStatus=row.statusname;
+	/**
+	 * 查询申请用户提交的文件信息
+	 */
+	SelectApplyDoc(row.applyid);
+	/**
+	 * 查询审核信息
+	 */
 	selectHistoryTask(ProcessId);
+	/**
+	 * 查询查勘信息
+	 */
+	//alert(row.applyid);
+	selectCheckInfo(row.applyid);
 }
 /**
  * 查询申请的审核信息
@@ -314,8 +328,8 @@ function selectHistoryTask(processid){
 					align : "center",
 					valign : "middle",
 				}, {
-					field : "handeruserPhone",
-					title : "联系电话",
+					field : "handerDes",
+					title : "审核意见",
 					align : "center",
 					valign : "middle",
 				}],
@@ -330,6 +344,185 @@ function selectHistoryTask(processid){
 		$('#hangdertable').bootstrapTable('resetView');
 	});
 }
+/**
+ * 根据applyid查找查堪信息
+ * @param applyid
+ */
+function selectCheckInfo(applyid){
+	$(".ChkleftImg").css("display","block");
+	$(".ChkrightImg").css("display","block");
+	$("#LineCheckPhoto ul").text("");
+	$.ajax({
+		type : "post",
+		url : "SQXXGL/selectCheckInfo.spring",
+		data : {
+			"applyid":applyid,
+		},
+		datatype : "json",
+		success : function(data) {
+			var ImgHeight=$("#LineCheckPhoto").height();
+			var num=0;
+			var prevImg=document.getElementById("ChkleftImg");
+			var nextImg=document.getElementById("ChkrightImg");
+			/**
+			 * 设置第一张
+			 */
+			$('#LineCheckPhoto ul').animate({marginTop :-(num)*ImgHeight},500);
+			for(var i=0;i<data.length;i++)
+				{
+					for(var j=0;j<data[i].photoList.length;j++)
+						{
+							$("#LineCheckPhoto ul").append("<li><img  src='"+data[i].photoList[j].photopath+"' alt='没有相关照片'><span>"+data[i].photoList[j].description+"</span><span>"+data[i].photoList[j].linedtlList[0].name+"</span><span>"+data[i].description+"</span></li>");
+						}
+					var imgnum=$("#LineCheckPhoto ul").find("li").length;
+					/**
+					 * 上一张下一张照片
+					 */
+					prevImg.onclick=function(){
+						if (num <=0) {
+							$(".ChkleftImg").css("display","none");
+							$(".ChkrightImg").css("display","block");
+							//$("#TS_Modal").modal("show");
+							//$(".delInfo").text("第一张");
+							num=0;
+						} else {
+							//console.log(num);
+							$(".ChkleftImg").css("display","block");
+							$(".ChkrightImg").css("display","block");
+							num--;
+							$('#LineCheckPhoto ul').animate({marginTop :-(num)*ImgHeight},500);
+							//$("#PhotoTime").val(data[num].stringcreatetime);
+							$("#CheckPoleName").val($("#LineCheckPhoto ul").find("li").eq(num).find("span").eq(1).text());
+							$("#CheckDtlMemo").text($("#LineCheckPhoto ul").find("li").eq(num).find("span").eq(2).text());
+							$("#CheckPhotoMemo").text($("#LineCheckPhoto ul").find("li").eq(num).find("span").eq(0).text());	
+						}
+					}
+					nextImg.onclick=function(){
+						num++;
+						if (num >=imgnum) {
+							//$("#TS_Modal").modal("show");
+							//$(".delInfo").text("最后一张");
+							$(".ChkleftImg").css("display","block");
+							$(".ChkrightImg").css("display","none");
+							num=imgnum-1;
+						} else {
+							//在最后面加入一张和第一张相同的图片，如果播放到最后一张，继续往下播，悄悄回到第一张(肉眼看不见)，从第一张播放到第二张
+							//console.log(num);
+							$(".ChkleftImg").css("display","block");
+							$(".ChkrightImg").css("display","block");
+								$('#LineCheckPhoto ul').animate({marginTop : -num * ImgHeight},500);
+								//$("#PhotoTime").val(data[num].stringcreatetime);
+								$("#CheckPoleName").val($("#LineCheckPhoto ul").find("li").eq(num).find("span").eq(1).text());
+								$("#CheckDtlMemo").text($("#LineCheckPhoto ul").find("li").eq(num).find("span").eq(2).text());
+								$("#CheckPhotoMemo").text($("#LineCheckPhoto ul").find("li").eq(num).find("span").eq(0).text());
+						}
+					}
+				}
+			$("#CheckPoleName").val($("#LineCheckPhoto ul").find("li").eq(0).find("span").eq(1).text());
+			$("#CheckDtlMemo").text($("#LineCheckPhoto ul").find("li").eq(0).find("span").eq(2).text());
+			$("#CheckPhotoMemo").text($("#LineCheckPhoto ul").find("li").eq(0).find("span").eq(0).text());
+		}
+	});
+}
+/**
+ * 根据applyid查找用户提交申请时上传的文件
+ * @param applyid
+ */
+function SelectApplyDoc(applyid){
+	$('#applyDoctable').bootstrapTable(
+			{
+				url : 'SQXXGL/selectApplyDoc.spring',
+				method : 'post',
+				cache : false,
+				striped : true,
+				pagination : true,
+				pageSize : 10,
+				pageNumber : 1,
+				pageList : [ 10, 20, 40 ],
+				sidePagination : 'client',
+				queryParams : function(params) {
+					var temp = {
+						"applyid":applyid
+					};
+					return temp;
+				},
+				clickToSelect : true,
+				paginationPreText : "上一页",
+				paginationNextText : "下一页",
+				contentType : "application/x-www-form-urlencoded; charset=UTF-8",
+				columns : [{
+							field : "docname",
+							title : "类型名称",
+							align : "center",
+							valign : "middle",
+						},
+						{
+							field : "docnameInfo",
+							title : "文件名称",
+							align : "center",
+							valign : "middle",
+						},
+						{
+							field : "must",
+							title : "是否必须",
+							align : "center",
+							valign : "middle",
+							formatter : function(value, row, index) {
+								var change = "";
+								if (value == 1) {
+									change = '<span style="color:#ff4242;font-weight:700">必须</span>';
+								} else
+									change = '<span style="font-weight:700">必须</span>';
+								return change;
+							}
+						}, {
+							title : "操作",
+							align : "center",
+							valign : "middle",
+							events : applyOpEvents,
+							formatter : applyOpFormatter
+						} ],
+				onPageChange : function(size, number) {
+				},
+				formatNoMatches : function() {
+					return '没有找到信息';
+				}
+			});
+	$(window).resize(function() {
+		$('#applyDoctable').bootstrapTable('resetView');
+	});
+}
+/**
+ * 下载文件自定义方法
+ * @param value
+ * @param row
+ * @param index
+ * @returns
+ */
+function applyOpFormatter(value, row, index) {
+	return ['<a href="'+row.docpath+'">查看文件</a>'].join('');
+}
+/**
+ * 自定义事件
+ */
+window.applyOpEvents = {
+		'click .downloadDoc' : function(e, value, row, index) {
+		/*	$.ajax({
+				type:"post",
+				url:"SQXXGL/downApplyDoc.spring",
+				data:{
+					"url":row.docpath,
+					"docname":row.docnameInfo
+				},
+				datatype:"json",
+				//contentType : 'application/json',
+				success:function(data){
+					
+				}
+			})*/
+			
+		}
+	};
 /**
  * 点击处理后点击通过
  */
@@ -364,12 +557,14 @@ function ApplyHander(handflag){
 			"handtype":handflag,
 			"userid":Number(userid),
 			"unitid":ApplyUnitId,
+			"handermemo":$("#handerTextArea textarea").val(),
 		},
 		datatype : "json",
 		success : function(data) {
 			$("#HanderModal").modal("hide");
 			$('#sqxxgltable').bootstrapTable("refresh");
-			alert(data[0].msg);
+			$("#TS_Modal").modal("show");
+			$("#TS_Modal h4").text(data[0].msg);
 		}
 	})
 	

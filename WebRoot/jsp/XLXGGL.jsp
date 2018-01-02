@@ -108,13 +108,13 @@
 	height:450px;
 	width:35%;
 	float:left;
-	border: 1px solid black;
 }
 #Checkphoto{
 	height:440px;
 	width:65%;
 	float:left;
 	overflow: hidden;
+	box-shadow: 0 0 5px #000;
 }
 #Checkphoto ul li{
 	height:100%;
@@ -130,7 +130,7 @@
     background-color: rgba(0, 0, 0, 0.11);
 }
 .nextImg{
-	left: 90%;
+	left: 94%;
     background: url(./images/left_right.png) no-repeat 0 -120px;
     background-color: rgba(0, 0, 0, 0.11);
 }
@@ -141,6 +141,19 @@
     position: absolute;
     cursor: pointer;
     border-radius: 5px;
+}
+.M_name,.M_userunit,.M_username,.M_pwd,.M_userphone
+{
+	width:50%;
+	float:left;
+} 
+.M_usermemo{
+	width:100%;
+	float:left;
+}
+.usermodalBtn{
+	float:left;
+	width: 100%;
 }
 </style>
 <body>
@@ -159,19 +172,13 @@
 				</button>
 			</div>
 			<form class="navbar-form navbar-left">
-				<div class="input-group">
-					<input type="text" value="" class="form-control"
-						placeholder="Search dashboard..."> <span
-						class="input-group-btn"><button type="button"
-							class="btn btn-primary">Go</button></span>
-				</div>
 			</form>
 			<div id="navbar-menu">
 				<ul class="nav navbar-nav navbar-right userOp">
 					<li class="dropdown">
 							<a class="dropdown-toggle dropdown userNameSpan" data-toggle="dropdown"><img src="assets/img/user.png" class="img-circle" alt="Avatar"> <span></span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
 							<ul class="dropdown-menu dropUserInfo">
-								<li><a href="#"><i class="lnr lnr-user"></i> <span>修改信息</span></a></li>
+								<li><a id="modifyuserInfo"><i class="lnr lnr-user"></i> <span>修改信息</span></a></li>
 								<li><a href="jsp/Quit.jsp"><i class="lnr lnr-exit"></i> <span>退出登录</span></a></li>
 							</ul>
 					</li>
@@ -308,10 +315,10 @@
 										type="text" id="LineLength" name="LineLength"
 										placeholder="请输入线路长度" class="form-control" readonly />
 								</div>
-								<div class="form-group LineNumber">
-									<label for="LineNumber" class="control-label">线杆数量</label> <input
-										type="text" id="LineNumber" name="LineNumber"
-										placeholder="请输入产生线杆数量" class="form-control" />
+								<div class="form-group LineTime">
+									<label for="LineTime" class="control-label">添加时间</label> <input
+										type="text" id="LineTime" name="LineTime" class="form-control"
+										readonly />
 								</div>
 							</div>
 							<div class="form-group">
@@ -356,11 +363,6 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<div class="form-group LineTime">
-									<label for="LineTime" class="control-label">添加时间</label> <input
-										type="text" id="LineTime" name="LineTime" class="form-control"
-										readonly />
-								</div>
 								<div class="form-group LineCode">
 									<label for="LineCode" class="control-label">编码</label>
 									<input type="text" id="LineCode"
@@ -409,7 +411,7 @@
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-					<h4 class="modal-title" id="exampleModalLabel">添加线杆信息</h4>
+					<h4 class="modal-title" id="exampleModalLabel">编辑线杆信息</h4>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -440,7 +442,7 @@
 						<div id="thirdLayer">
 							<div class="thirdLayer0">
 								<label for="PolePre" class="control-label">前一杆</label>
-								<select class="PolePre" >
+								<select class="PolePre" id="PolePre">
 								
 								</select>
 								<label for="PoleForLine" class="control-label">所属线路</label>
@@ -456,7 +458,7 @@
 						<div class="poleModalBtn">
 							<button type="button" class="btn btn-primary cancelPole" data-dismiss="modal">取消</button>
 							<button type="button" class="btn btn-primary OkPole">完成</button>
-							<button type="button" class="btn btn-primary OkModifyPole">修改</button>
+							<button type="button" class="btn btn-primary OkModifyPole" id="OkModifyPole">修改</button>
 						</div>
 					</div>
 
@@ -479,7 +481,7 @@
 
 					<div class="modal-body">
 						<div style="width:100%;height:340px;">
-							<form id="LineForm">
+							<form >
 								<div class="form-group">
 									<div class="form-group LineNameInput2">
 										<label for="LineNameInput2" class="control-label">线路名称</label>
@@ -539,6 +541,7 @@
 				</div>
 			</div>
 		</div>
+		
 	<!-- modal修改线路线路弹出框 -->
 	<div class="modal fade " id="ModifyLineInfo" tabindex="-1" role="dialog"
 		aria-labelledby="exampleModalLabel">
@@ -719,7 +722,62 @@
 				</div>
 				</div>
 			</div>
-	
+		<div class="modal fade " id="modifyUserInfoModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="width:80%;height:450px">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="exampleModalLabel">个人信息</h4>
+				</div>
+				<div class="modal-body">
+					<form id="userinfoForm">
+						<div class="form-group M_name">
+							<label for="M_name" class="control-label">用户姓名:</label> <input
+								type="text" id="M_name" name="M_name"
+								class="form-control" placeholder="用户姓名" />
+						</div>
+						<div class="form-group M_userunit">
+							<label class="control-label">用户单位:</label> 
+							</br>
+							<select class="form-control" id="M_userunit">
+
+							</select>
+						</div>
+						<div class="form-group M_username">
+							<label class="control-label" for="M_username">登录名:</label> <input
+								type="text" id="M_username" name="M_username"
+								class="form-control" />
+						</div>
+						<div class="form-group M_pwd">
+							<label class="control-label" for="M_pwd">密码:</label> <input
+								type="password" id=M_pwd name="M_pwd"
+								class="form-control" placeholder="密码" />
+						</div>
+						<div class="form-group M_userphone">
+							<label class="control-label" for="M_userphone">电话:</label> <input
+								type="text" id="M_userphone" name="M_userphone"
+								class="form-control" />
+						</div>
+						<div class="form-group M_usermemo">
+							<label for="M_usermemo" class="control-label">用户描述</label>
+							<textarea class="form-control textarea1" rows="3"
+								placeholder="用户描述" id="M_usermemo" name="M_usermemo"></textarea>
+						</div>
+						<div class="text-right usermodalBtn">
+							<span id="returnMessage" class="glyphicon"> </span>
+							<button type="button" class="btn btn-default right"
+								data-dismiss="modal">取消</button>
+							<button id="userModifyBtn" type="button" class="btn btn-primary">修改</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 		<!-- END WRAPPER -->
 		<script src="./assets/vendor/jquery/jquery.min.js"></script>
 		<script src="./assets/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -742,7 +800,6 @@
 			$(".dropUserInfo").css("display","none");
 		})
 		</script>
-		<script src="./js/pageInit.js"></script>
 		<div class="userinfo" style="display:none">
 				<%
 					if (session.getAttribute("userid") == null||session.getAttribute("userid") == "") {
@@ -764,8 +821,7 @@
 					}
 				%>
 	</div>
-	
-	
+	<script src="./js/pageInit.js"></script>
 	<script src="./js/table/XLXGGL.js"></script>
 	<script src="./js/table/Linemap.js"></script>
 </body>

@@ -19,8 +19,8 @@ HangLineInit.prototype = {
 	/**
 	 * 搭挂线路信息初始化
 	 */
-	HangLineInfoInit : function() {
-		hanglineinfoinit();
+	HangLineInfoInit : function(hanglineid) {
+		hanglineinfoinit(hanglineid);
 	},
 	/**
 	 * 查询所有单位
@@ -59,7 +59,12 @@ var hangpoleinit = new HangPoleInit();
 //表格偏移量
 var fset=0;
 $(function() {
-	hanglineinit.HangLineInfoInit();
+	/**
+	 * 获取地图详情传递过来的参数
+	 */
+	var DThanglineid=GetQueryString("hanglineid");
+	var DTpoleid=GetQueryString("poleidid");
+	hanglineinit.HangLineInfoInit(DThanglineid);
 	hangpoleinit.HangPoleInfoInit(0);
 	hanglineinit.HangLineUnit("正常");
 	hanglineinit.HangLineStatus("搭挂线路类别");
@@ -68,10 +73,16 @@ $(function() {
 	hanglineinit.SelectAllLineInfo();
 	hangpoleinit.SelectAllPoleInfo();
 });
+function GetQueryString(name)
+{
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
 /**
  * 搭挂线路初始化
  */
-function hanglineinfoinit(){
+function hanglineinfoinit(hanglineid){
 	$('#lineInfoTable').bootstrapTable("destroy");
 	$('#lineInfoTable')
 			.bootstrapTable(
@@ -92,6 +103,8 @@ function hanglineinfoinit(){
 								offset : params.offset,
 								"unitid":Number(unitid),
 								"name":$(".lineName").val()+"",
+								"hanglineid":hanglineid,
+								"unitname":$(".lineUnitName").val()+""
 							};
 							/*for ( var key in serarchInfo) {
 								param[key] = serarchInfo[key]
@@ -276,7 +289,13 @@ window.operateEvents = {
 			}
 		});
 	},
-};
+}
+/**
+ * 点击查找搭挂线杆
+ */
+$("#lineSearchBtn").click(function(){
+	$('#lineInfoTable').bootstrapTable("refresh");
+});
 /**
  * 搭挂线杆初始化
  * @param lineid{线路id}
@@ -303,14 +322,7 @@ function hangpoleinfoinit(hanglineid){
 		paginationPreText: "上一页",
     	paginationNextText: "下一页",
     	contentType:"application/x-www-form-urlencoded; charset=UTF-8",
-						columns : [ {
-							title : "序号",
-							align : "center",
-							valign : "middle",
-							formatter : function(value, row, index) {
-								return index+ 1;
-							}
-						}, {
+						columns : [{
 							field : "linedetailList",
 							title : "线杆名称",
 							align : "center",
@@ -350,13 +362,92 @@ function hangpoleinfoinit(hanglineid){
 }
 function operateFormatterpole(value, row, index) {
 	return [
+'<button type="button" class="PhotoBtn btn btn-default  btn-sm" style="margin-right:15px;">照片</button>',
 '<button type="button" class="RoleOfA btn btn-default  btn-sm" style="margin-right:15px;">详情</button>',
 '<button type="button" class="RoleOfB btn btn-default  btn-sm" style="margin-right:15px;">修改</button>',
-'<button type="button" class="PoleDel btn btn-default  btn-sm" style="margin-right:15px;background-color:#f27d7c;color:white">删除</button>', ]
+'<button type="button" class="PoleDel btn btn-default  btn-sm" style="margin-right:15px;background-color:#f27d7c;color:white">删除</button>']
 			.join('');
 }
 // 表格操作的按钮事件
 window.operateEventspole = {
+	'click .PhotoBtn' : function(e, value, row, index) {
+		$("#CheckPhotoModal").modal("show");
+		/**
+		 * 线杆基础信息
+		 */
+		$("#Photopolename").val(row.linedetailList[0].name);
+		//$("#Photopoleunit").val(row.unitname);
+		//$("#Photopoletype").val(row.typename);
+		$("#Photopolestatus").val(row.statusname);
+		$("#Photopolememo").text(row.memo);
+		/**
+		 * 线杆照片信息
+		 */
+		$.ajax({
+			type:"post",
+			url:"LinePole/selectPolePhoto.spring",
+			data:{
+				poleid:row.poleid
+			},
+			datatype:"json",
+			success:function(data)
+			{
+				$("#CheckPhoto ul").text("");
+				$("#prevImg").css("display","block");
+				$("#nextImg").css("display","block");
+				if(data.length>0)
+					{
+					$("#PhotoTime").val(data[0].stringcreatetime);
+						var ImgHeight=$("#CheckPhoto").height()
+						for (var i = 0; i < data.length; i++) {
+							$("#CheckPhoto ul").append("<li><img src='"+data[i].photopath+"'></li>");
+						}
+						var num=0;
+						$('#CheckPhoto ul').animate({marginTop :-(num)*ImgHeight},200);
+						var prevImg=document.getElementById("prevImg");
+						/**
+						 * 上一张下一张照片
+						 */
+						prevImg.onclick=function(){
+							if (num <=0) {
+								//alert("第一张");
+								$("#prevImg").css("display","none");
+								$("#nextImg").css("display","block");
+								num=0;
+							} else {
+								//在最后面加入一张和第一张相同的图片，如果播放到最后一张，继续往下播，悄悄回到第一张(肉眼看不见)，从第一张播放到第二张
+								//console.log(num);
+								$("#prevImg").css("display","block");
+								$("#nextImg").css("display","block");
+								num--;
+								$('#CheckPhoto ul').animate({marginTop :-(num)*ImgHeight},500);
+								$("#PhotoTime").val(data[num].stringcreatetime);
+							}
+						}
+						var nextImg=document.getElementById("nextImg");
+						nextImg.onclick=function(){
+							num++;
+							if (num >= data.length) {
+								//alert("最后一张");
+								$("#prevImg").css("display","block");
+								$("#nextImg").css("display","none");
+								num=data.length-1;
+							} else {
+								//在最后面加入一张和第一张相同的图片，如果播放到最后一张，继续往下播，悄悄回到第一张(肉眼看不见)，从第一张播放到第二张
+								//console.log(num);
+								$("#prevImg").css("display","block");
+								$("#nextImg").css("display","block");
+								$('#CheckPhoto ul').animate({marginTop : -num * ImgHeight},500);
+								$("#PhotoTime").val(data[num].stringcreatetime);
+							}
+						}
+					}
+				else{
+					$("#CheckPhoto ul").append("<li><img alt='没有相关图片'></li>");
+				}
+			}
+		});
+	},		
 	'click .RoleOfA' : function(e, value, row, index) {
 		/**
 		 * 查看搭挂线杆详情
@@ -410,13 +501,13 @@ window.operateEventspole = {
 		 * 修改搭挂线杆信息
 		 */
 		$("#HangPoleModal").modal("show");
-		$("#HangPoleOK").css("display","none");
-		$("#HangPoleModify").css("display","inline");
-		$("select").attr("disabled",false);
-		var hanglineModify=document.getElementById("HangPoleModify");
-		hanglineModify.onclick=function(){
-			var modifypoleinfo=InsertHangPoleArr();
-			modifypoleinfo["handdetailid"]=row.handdetailid;
+		$("#HangPoleOK").css("display", "none");
+		$("#HangPoleModify").css("display", "inline");
+		$("select").attr("disabled", false);
+		var hanglineModify = document.getElementById("HangPoleModify");
+		hanglineModify.onclick = function() {
+			var modifypoleinfo = InsertHangPoleArr();
+			modifypoleinfo["handdetailid"] = row.handdetailid;
 			$.ajax({
 				type : "post",
 				url : "DGXLGL/modifyHangPole.spring",
@@ -426,11 +517,9 @@ window.operateEventspole = {
 				success : function(data) {
 					$("#HangPoleModal").modal("hide");
 					$("#TS_Modal").modal("show");
-					if(data)
-						{
-							$(".TS_Modal h4").text("修改搭挂线杆成功");
-						}
-					else{
+					if (data) {
+						$(".TS_Modal h4").text("修改搭挂线杆成功");
+					} else {
 						$(".TS_Modal h4").text("修改搭挂线杆失败");
 					}
 				}
@@ -445,17 +534,15 @@ window.operateEventspole = {
 			type : "post",
 			url : "DGXLGL/delHangPole.spring",
 			data : {
-				handdetailid:row.handdetailid
+				handdetailid : row.handdetailid
 			},
 			datatype : "json",
 			success : function(data) {
 				$("#TS_Modal").modal("show");
-				if(data)
-					{
-						$(".TS_Modal h4").text("删除搭挂线杆成功");
-						$('#poleInfoTable').bootstrapTable("refresh");
-					}
-				else{
+				if (data) {
+					$(".TS_Modal h4").text("删除搭挂线杆成功");
+					$('#poleInfoTable').bootstrapTable("refresh");
+				} else {
 					$(".TS_Modal h4").text("删除搭挂线杆失败");
 				}
 			}
@@ -463,8 +550,7 @@ window.operateEventspole = {
 	},
 };
 /**
- * 点击添加线路
- * 显示modal
+ * 点击添加线路 显示modal
  */
 $(".addLine").click(function(){
 	$("#HangLineModal").modal("show");
@@ -472,7 +558,7 @@ $(".addLine").click(function(){
 	$("#HangLineModify").css("display","none");
 	$("select").attr("disabled",false);
 	$("#HanglineTime").val(NowDate());
-	$("#HanglineCode").val("");
+	$("#HanglineCode").val(new Date().getTime());
 	$("#Hanglinename").val("");
 	$("#HanglineMemo").val("");
 })

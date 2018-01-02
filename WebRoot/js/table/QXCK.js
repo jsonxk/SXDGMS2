@@ -125,7 +125,7 @@ function faultInfoInit(){
 							align : "center",
 							valign : "middle",
 						},{
-							field : "memo",
+							field : "description",
 							title : "描述",
 							align : "center",
 							valign : "middle",
@@ -190,6 +190,11 @@ window.operateEvents = {
 		$("#FaultOfType").val(row.typename);
 		$("#FaultPoleStatus").val(row.statusname);
 		$("#FaultMemo").val(row.memo);
+		/**
+		 * 上下图片按钮
+		 */
+		$(".leftImg").css("display","block");
+		$(".rightImg").css("display","block");
 		/**
 		 * 错误图片信息
 		 */
@@ -284,7 +289,8 @@ function HandRepairAct(handtype){
 		success : function(data) {
 			$("#WarnModal").modal("hide");
 			faultinit.FaultInfoInit();
-			alert(data[0].msg);
+			$("#TS_Modal h4").text(data[0].msg);
+			$("#TS_Modal").modal("show");
 		}
 	});
 }
@@ -487,21 +493,27 @@ function getBeforeDate(n) {
 $('.rightImg').click(function() {
 	num++;
 	if (num >= ImgCount) {
-		alert("最后一张");
+		$(".leftImg").css("display","block");
+		$(".rightImg").css("display","none");
 		num=ImgCount-1;
 	} else {
 		//在最后面加入一张和第一张相同的图片，如果播放到最后一张，继续往下播，悄悄回到第一张(肉眼看不见)，从第一张播放到第二张
 		//console.log(num);
+		$(".leftImg").css("display","block");
+		$(".rightImg").css("display","block");
 			$('#FaultPhoto ul').animate({marginLeft : -num * ImgWidth},500);
 	}
 });
 $('.leftImg').click(function() {
 	if (num <=0) {
-		alert("第一张");
+		$(".leftImg").css("display","none");
+		$(".rightImg").css("display","block");
 		num=0;
 	} else {
 		//在最后面加入一张和第一张相同的图片，如果播放到最后一张，继续往下播，悄悄回到第一张(肉眼看不见)，从第一张播放到第二张
 		//console.log(num);
+		$(".leftImg").css("display","block");
+		$(".rightImg").css("display","block");
 		num--;
 		$('#FaultPhoto ul').animate({marginLeft :-(num)*ImgWidth},500);
 	}

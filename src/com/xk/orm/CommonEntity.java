@@ -107,7 +107,16 @@ public class CommonEntity {
 	private List<LineDetail> linedetailList;
 	private List<HangDetail > hangList;
 	private List<EasyPole> poleList;
+	private List<Photo> photoList;
 	
+	public List<Photo> getPhotoList() {
+		return photoList;
+	}
+
+	public void setPhotoList(List<Photo> photoList) {
+		this.photoList = photoList;
+	}
+
 	public List<EasyPole> getPoleList() {
 		return poleList;
 	}

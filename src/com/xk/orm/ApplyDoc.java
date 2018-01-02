@@ -2,7 +2,7 @@ package com.xk.orm;
 
 import java.util.Date;
 
-public class ApplyDoc {
+public class ApplyDoc{
     private Integer applydocid;
 
     private Integer doctypeid;
@@ -14,8 +14,17 @@ public class ApplyDoc {
     private String docname;
 
     private String docpath;
+    private String docnameInfo;
+    
+    public String getDocnameInfo() {
+		return docnameInfo;
+	}
 
-    public Integer getApplydocid() {
+	public void setDocnameInfo(String docnameInfo) {
+		this.docnameInfo = docnameInfo;
+	}
+
+	public Integer getApplydocid() {
         return applydocid;
     }
 

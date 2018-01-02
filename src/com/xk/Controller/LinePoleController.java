@@ -1,5 +1,7 @@
 package com.xk.Controller;
 
+import java.util.Map;
+
 import net.sf.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +44,8 @@ public class LinePoleController {
 	 * @return{pole}
 	 */
 	@RequestMapping(value="/selectpoleinfo",method=RequestMethod.POST)
-	public @ResponseBody JSONArray SelectPoleInfo(@RequestParam("lineid") int lineid){
-		return allservice.getLinePoleBLL().SelectPoleInfo(lineid);
+	public @ResponseBody JSONArray SelectPoleInfo(@RequestParam("lineid") int lineid,@RequestParam("poleid") int poleid){
+		return allservice.getLinePoleBLL().SelectPoleInfo(lineid,poleid);
 	}
 	/**
 	 * 添加线路信息 同时添加首杆尾杆信息
@@ -199,5 +201,15 @@ public class LinePoleController {
 	@RequestMapping(value="/selectPolePhoto",method=RequestMethod.POST)
 	public @ResponseBody JSONArray SelectPolePhoto(@RequestParam("poleid") int poleid){
 		return allservice.getLinePoleBLL().SelectPolePhoto(poleid);
+	}
+	/**
+	 * 修改线杆详情
+	 * @param reqMap
+	 * @return
+	 */
+	@RequestMapping(value="/modifyPoleDetail",method=RequestMethod.POST)
+	public @ResponseBody boolean ModifyPoleDetail(@RequestParam Map<String, Object> reqMap){
+		System.out.println(reqMap.get("poleid"));
+		return allservice.getLinePoleBLL().ModifyPoleDetail(reqMap);
 	}
 }

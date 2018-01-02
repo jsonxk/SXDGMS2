@@ -216,8 +216,11 @@
 	float: left;
 	margin-left: 2%;
 }
-
-.lineName {
+.lineUnitBtn{
+	background-color: #2B333E;
+	float: left;
+}
+.lineName,.lineUnitName {
 	width: 15%;
 	float: left;
 	margin-right: 2%;
@@ -268,16 +271,21 @@
 	float:left;
 	margin-left: 6%;
 }
-.LineTime{
+.LineCode{
 	margin-left: 6%;
 	float:left;
 	width:21%;
 }
-.LinePlace,.LineBtnLocation,.LineBtn,.LineCode{
+.Linetime{
+	float:left;
+	width:25%;
+	margin-left: 6%;
+}
+.LinePlace,.LineBtnLocation,.LineBtn{
 	margin-left:2%;
 	float:left;
 }
-.LinePlace,.LineCode{
+.LinePlace{
 	width: 21%;
 }
 .LineMemo{
@@ -523,5 +531,32 @@
 	background-color: rgba(0, 0, 0, 0.11);
 }
 .leftImg:hover,.rightImg:hover {
+	background-color: rgba(0, 0, 0, 0.31);
+}
+
+
+
+.ChkleftImg,.ChkrightImg{
+	width: 58px;
+	height:60px;
+	position: absolute;
+	top: 40%;
+	cursor: pointer;
+	border-radius: 5px;
+}
+.ChkleftImg{
+	left: 5%;
+	background: url('../images/left_right_small.png') no-repeat 0 0px;
+	background-color: rgba(0, 0, 0, 0.11);
+}
+textarea{
+	resize:none;	
+}
+.ChkrightImg{
+	left: 56%;
+	background: url('../images/left_right_small.png') no-repeat 0 -60px;
+	background-color: rgba(0, 0, 0, 0.11);
+}
+.ChkleftImg:hover,.ChkrightImg:hover {
 	background-color: rgba(0, 0, 0, 0.31);
 }

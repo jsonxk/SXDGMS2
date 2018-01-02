@@ -191,4 +191,12 @@ public class HangLineMapperImpl implements HangLineMapper,HangDetailMapper{
 	public int DelHangPole(int handdetailid) {
 		return hangDetail.DelHangPole(handdetailid);
 	}
+	/**
+	 * 根据poleid查找搭挂详情信息
+	 * @param poleid
+	 * @return
+	 */
+	public List<HangDetail> SelectHangDetailInfo(int poleid) {
+		return hangDetail.SelectHangDetailInfo(poleid);
+	}
 }

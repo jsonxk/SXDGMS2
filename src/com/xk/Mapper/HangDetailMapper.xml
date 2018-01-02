@@ -81,6 +81,10 @@
 		childmemo from hangline LEFT JOIN hangdetail on
 		hangline.HangLineId=hangdetail.HangLineId
 	</select>
+	<!-- 根据poleid查找搭挂详情信息 -->
+	<select id="SelectHangDetailInfo" resultType="com.xk.orm.HangDetail" parameterType="java.lang.Integer">
+		SELECT hangdetail.* from hangdetail WHERE hangdetail.PoleId=#{poleid}
+	</select>
 	<!-- 电脑端根据hanglineid查找相关线杆信息包括状态 -->
 	<select id="SelectHangDetailPole" resultMap="hangdetailPole"
 		parameterType="java.lang.Integer">

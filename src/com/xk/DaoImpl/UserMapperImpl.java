@@ -46,4 +46,28 @@ public class UserMapperImpl {
 		}
 		return null;
 	}
+	/**
+	 * 查找用户信息
+	 * @param uid
+	 * @return
+	 */
+	public List<User> selectUserInfo(int uid) {
+		return userMapper.selectUserInfo(uid);
+	}
+	/**
+	 * 修改用户信息
+	 * @param user
+	 * @return
+	 */
+	public int ModifyUserInfo(User user) {
+		return userMapper.ModifyUserInfo(user);
+	}
+	/**
+	 * 添加用户信息
+	 * @param user
+	 * @return
+	 */
+	public int AddUserInfo(User user) {
+		return userMapper.AddUserInfo(user);
+	}
 }

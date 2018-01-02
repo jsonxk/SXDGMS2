@@ -27,8 +27,8 @@ LineInit.prototype = {
 	/**
 	 * 线路信息初始化
 	 */
-	LineInfoInit : function() {
-		lineinfoinit();
+	LineInfoInit : function(lineid) {
+		lineinfoinit(lineid);
 	},
 	/**
 	 * 加载单位
@@ -62,8 +62,8 @@ PoleInit.prototype = {
 	 * 
 	 * @param lineId{线路id}
 	 */
-	PoleInfoInit : function(lineId) {
-		poleinfoinit(lineId);
+	PoleInfoInit : function(lineId,poleid) {
+		poleinfoinit(lineId,poleid);
 	},
 	/**
 	 * 添加线杆信息
@@ -87,6 +87,12 @@ PoleInit.prototype = {
 		selectAllPole(index);
 	}
 }
+function GetQueryString(name)
+{
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
 // 线路实例化
 var lineinit = new LineInit();
 // 线杆初始化
@@ -94,26 +100,35 @@ var poleinit = new PoleInit();
 //表格偏移量
 var fset=0;
 $(function() {
-	lineinit.LineInfoInit();
-	poleinit.PoleInfoInit(0);
+	var DTlineid=GetQueryString("lineid");
+	var DTpoleid=GetQueryString("poleid");
+	if(DTlineid!=null&&DTlineid!=""&&DTpoleid!=null&&DTpoleid!="")
+		{
+			lineinit.LineInfoInit(DTlineid);
+			poleinit.PoleInfoInit(DTlineid,DTpoleid);
+		}
+	else{
+		lineinit.LineInfoInit(0);
+		poleinit.PoleInfoInit(0,0);
+	}
 	lineinit.LineUnitInfo("正常");
 	lineinit.LineTypeInfo("线路类别");
 	lineinit.LineTypeInfo("线路状态");
 	lineinit.LineTypeInfo("线杆类别");
 	lineinit.LineTypeInfo("线杆状态");
-	poleinit.SelectAllPole(LineId);
+	poleinit.SelectAllPole(0);
 	lineinit.SelectAllLineName(0);
 });
 /**
  * 查找线路按钮
  */
 $("#lineSearchBtn").click(function(){
-	lineinit.LineInfoInit();
+	$('#lineInfoTable').bootstrapTable("refresh");
 })
 /**
  * 加载线路信息
  */
-function lineinfoinit() {
+function lineinfoinit(lineid) {
 	$('#lineInfoTable').bootstrapTable("destroy");
 	$('#lineInfoTable')
 			.bootstrapTable(
@@ -134,6 +149,7 @@ function lineinfoinit() {
 								offset : params.offset,
 								"unitid":Number(unitid),
 								"name":$(".lineName").val()+"",
+								"lineid":lineid
 							};
 							/*for ( var key in serarchInfo) {
 								param[key] = serarchInfo[key]
@@ -187,7 +203,7 @@ function lineinfoinit() {
 							// 点击加载某角色的功能
 							// td父节点的兄弟节点的子节点颜色
 							LineId=row.lineid;
-							poleinit.PoleInfoInit(row.lineid);
+							poleinit.PoleInfoInit(row.lineid,0);
 							$($element).parent().siblings().children().css(
 									"background-color", "inherit");
 							// 设置本节点和兄弟节点颜色
@@ -321,7 +337,7 @@ function selectAllLineName(index){
  * 加载线杆信息
  * @param lineid{线路id}
  */
-function poleinfoinit(lineid){
+function poleinfoinit(lineid,poleid){
 	$('#poleInfoTable').bootstrapTable("destroy");
 	if(lineid==0)
 		{
@@ -341,6 +357,7 @@ function poleinfoinit(lineid){
 			queryParams: function paramsfunc(){
 				var param={
 					"lineid":lineid,
+					"poleid":poleid,
 				}
 				return param;
 			},
@@ -399,6 +416,7 @@ function operateFormatterpole(value, row, index) {
 // 表格操作的按钮事件
 window.operateEventspole = {
 	'click .PoleModify' : function(e, value, row, index) {
+		$("#addPoleBtn").css("display","none");
 		/**
 		 * 修改线杆信息
 		 */
@@ -410,7 +428,50 @@ window.operateEventspole = {
 		$("#PoleTime").val(NowDate());
 		$("#PoleLon").val(row.longtitude);
 		$("#PoleLat").val(row.latitude);
-		countNum=row.linedetailList.length-1;
+		//alert(row.linedetailList[0].linedetailid);
+		var PolePre=document.getElementById("PolePre");
+		var PoleForLine=document.getElementById("PoleForLine0");
+		for (var i = 0; i < PolePre.options.length; i++) {
+			if (PolePre.options[i].value == row.linedetailList[0].prepoleid) {
+				PolePre.options[i].selected = true;
+			}
+		}
+		for (var i = 0; i < PoleForLine.options.length; i++) {
+			if (PoleForLine.options[i].value == row.linedetailList[0].lineid) {
+				PoleForLine.options[i].selected = true;
+			}
+		}
+		$(".thirdLayer0 .PoleCode").val(row.linedetailList[0].code);
+		var OkModifyPole=document.getElementById("OkModifyPole");
+		OkModifyPole.onclick=function(){
+			$.ajax({
+				type:"post",
+				data:{
+					linedetailid:row.linedetailList[0].linedetailid,
+					prepoleid:$("#PolePre").val(),
+					lineid:$("#PoleForLine0").val(),
+					code:$(".thirdLayer0 .PoleCode").val(),
+				},
+				url:"LinePole/modifyPoleDetail.spring",
+				datatype:"json",
+				success:function(data)
+				{
+					$("#AddPoleModal").modal("hide");
+					$("#TS_Modal").modal("show");
+					if(data)
+						{
+							$(".TS_Modal h4").text("修改成功");
+						}
+					else{
+						$(".TS_Modal h4").text("修改失败");
+					}
+				}
+			});
+		}
+		/**
+		 * 根据lineid和poleid修改线杆信息
+		 */
+		/*countNum=row.linedetailList.length-1;
 		for(var i=0;i<row.linedetailList.length;i++)
 			{
 				
@@ -431,7 +492,7 @@ window.operateEventspole = {
 				else{
 					$(".thirdLayer0 .PoleCode").val(row.linedetailList[0].code);
 				}
-			}
+			}*/
 	},
 	'click .PoleDetail' : function(e, value, row, index) {
 		/**
@@ -495,7 +556,7 @@ window.operateEventspole = {
 					$("#DelRtnModal").modal("hide");
 					$("#TS_Modal").modal("show");
 					$(".TS_Modal h4").text(data[0].msg);
-					poleinit.PoleInfoInit(LineId);
+					poleinit.PoleInfoInit(LineId,0);
 				}
 			});
 		}
@@ -523,6 +584,8 @@ window.operateEventspole = {
 			success:function(data)
 			{
 				$("#CheckPhoto ul").text("");
+				$("#prevImg").css("display","block");
+				$("#nextImg").css("display","block");
 				if(data.length>0)
 					{
 					$("#PhotoTime").val(data[0].stringcreatetime);
@@ -531,17 +594,22 @@ window.operateEventspole = {
 							$("#CheckPhoto ul").append("<li><img src='"+data[i].photopath+"'></li>");
 						}
 						var num=0;
+						$('#CheckPhoto ul').animate({marginTop :-(num)*ImgHeight},200);
 						var prevImg=document.getElementById("prevImg");
 						/**
 						 * 上一张下一张照片
 						 */
 						prevImg.onclick=function(){
 							if (num <=0) {
-								alert("第一张");
+								//alert("第一张");
+								$("#prevImg").css("display","none");
+								$("#nextImg").css("display","block");
 								num=0;
 							} else {
 								//在最后面加入一张和第一张相同的图片，如果播放到最后一张，继续往下播，悄悄回到第一张(肉眼看不见)，从第一张播放到第二张
 								//console.log(num);
+								$("#prevImg").css("display","block");
+								$("#nextImg").css("display","block");
 								num--;
 								$('#CheckPhoto ul').animate({marginTop :-(num)*ImgHeight},500);
 								$("#PhotoTime").val(data[num].stringcreatetime);
@@ -551,13 +619,16 @@ window.operateEventspole = {
 						nextImg.onclick=function(){
 							num++;
 							if (num >= data.length) {
-								alert("最后一张");
+								//alert("最后一张");
+								$("#nextImg").css("display","none");
 								num=data.length-1;
 							} else {
 								//在最后面加入一张和第一张相同的图片，如果播放到最后一张，继续往下播，悄悄回到第一张(肉眼看不见)，从第一张播放到第二张
 								//console.log(num);
-									$('#CheckPhoto ul').animate({marginTop : -num * ImgHeight},500);
-									$("#PhotoTime").val(data[num].stringcreatetime);
+								$("#prevImg").css("display","block");
+								$("#nextImg").css("display","block");	
+								$('#CheckPhoto ul').animate({marginTop : -num * ImgHeight},500);
+								$("#PhotoTime").val(data[num].stringcreatetime);
 							}
 						}
 					}
@@ -682,6 +753,7 @@ $(".addLine").click(function(){
  * 点击添加线杆
  */
 $(".addPole").click(function(){
+	$("#addPoleBtn").css("display","inline");
 	$("#AddPoleModal").modal("show");
 	$(".OkModifyPole").css("display","none");
 	$(".OkPole").css("display","inline");
@@ -748,7 +820,10 @@ function lineInsertInfo(){
 		datatype : "json",
 		contentType : 'application/json',
 		success : function(data) {
-			$("#AddLineModal").modal("show");
+			$("#AddLineModal").modal("hide");
+			$("#LineForm input").val("");
+			$("#LineMemo").val("");
+			$("#TS_Modal").modal("show");
 			if(data!=null&& data!="")
 				{
 					$(".TS_Modal h4").text("添加线路成功");

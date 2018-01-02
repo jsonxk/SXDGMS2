@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.xk.DaoImpl.AllDao;
+import com.xk.orm.HangDetail;
 import com.xk.orm.HangLine;
 import com.xk.orm.LineDetail;
 import com.xk.orm.LineDetailList;
@@ -63,8 +64,8 @@ public class LinePoleBLL {
 	 * @param lineid
 	 * @return
 	 */
-	public JSONArray SelectPoleInfo(int lineid) {
-		List<Pole> poleinfo=allDao.getLinePoleMapperImpl().SelectPoleInfo(lineid);
+	public JSONArray SelectPoleInfo(int lineid,int poleid) {
+		List<Pole> poleinfo=allDao.getLinePoleMapperImpl().SelectPoleInfo(lineid,poleid);
 		return JSONArray.fromObject(poleinfo);
 	}
 	/**
@@ -152,7 +153,7 @@ public class LinePoleBLL {
 	 * @return
 	 */
 	public JSONArray selectAllPole() {
-		List<Pole> listPole=allDao.getLinePoleMapperImpl().SelectPoleInfo(0);
+		List<Pole> listPole=allDao.getLinePoleMapperImpl().SelectPoleInfo(0,0);
 		return JSONArray.fromObject(listPole);
 	}
 	/**
@@ -219,7 +220,7 @@ public class LinePoleBLL {
 	 */
 	public JSONArray SelectPoleInfoByPoleid(int poleid) {
 		List<Pole> poleinfo=allDao.getLinePoleMapperImpl().SelectPoleInfoByPoleId(poleid);
-		List<Pole> listPole=allDao.getLinePoleMapperImpl().SelectPoleInfo(0);
+		List<Pole> listPole=allDao.getLinePoleMapperImpl().SelectPoleInfo(0,0);
 		System.out.println(JSONArray.fromObject(listPole));
 		SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:MM:SS");
 		for(Pole pole:poleinfo)
@@ -305,22 +306,28 @@ public class LinePoleBLL {
 		/**
 		 * 查询当前线杆是否有所属的搭挂线路
 		 */
-		
-		/**
-		 * 删除线杆并删除相关的搭挂详情和线路详情
-		 */
-		int i=allDao.getLinePoleMapperImpl().DelPoleByPoleId(poleid);
-		if(i>0)
+		List<HangDetail> hangdetailList=allDao.getHangLineMapperImpl().SelectHangDetailInfo(poleid);
+		if(hangdetailList.size()>0)
 		{
-			/**
-			 * 修改hangdetail中所有prevpoleid为空
-			 * linedetail
-			 */
-			allDao.getLinePoleMapperImpl().ModifyPrevPoleIdByPoleId(poleid);
-			return JSONArray.fromObject("[{'msg':'删除线杆成功'}]");
+			return JSONArray.fromObject("[{'msg':'无法删除有搭挂线路的线杆'}]");
 		}
 		else{
-			return JSONArray.fromObject("[{'msg':'删除线杆失败'}]");
+			/**
+			 * 删除线杆并删除相关的搭挂详情和线路详情
+			 */
+			int i=allDao.getLinePoleMapperImpl().DelPoleByPoleId(poleid);
+			if(i>0)
+			{
+				/**
+				 * 修改hangdetail中所有prevpoleid为空
+				 * linedetail
+				 */
+				allDao.getLinePoleMapperImpl().ModifyPrevPoleIdByPoleId(poleid);
+				return JSONArray.fromObject("[{'msg':'删除线杆成功'}]");
+			}
+			else{
+				return JSONArray.fromObject("[{'msg':'删除线杆失败'}]");
+			}
 		}
 	}
 	/**
@@ -438,5 +445,20 @@ public class LinePoleBLL {
 			p.setStringcreatetime(format.format(p.getCreatetime()));
 		}
 		return JSONArray.fromObject(photoList);
+	}
+	/**
+	 * 修改线杆详情
+	 * @param reqMap
+	 * @return
+	 */
+	
+	public boolean ModifyPoleDetail(Map<String, Object> reqMap) {
+		int i=allDao.getLinePoleMapperImpl().ModifyPoleDetail(reqMap);
+		if(i>0)
+		{
+			return true;
+		}
+		else
+			return false;
 	}
 }

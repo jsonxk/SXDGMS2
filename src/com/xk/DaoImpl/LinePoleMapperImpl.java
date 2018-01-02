@@ -1,6 +1,7 @@
 package com.xk.DaoImpl;
 
 import java.util.List;
+import java.util.Map;
 
 import net.sf.json.JSONArray;
 
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.xk.Dao.LineDetailMapper;
 import com.xk.Dao.PoleMapper;
 import com.xk.Dao.PowerLineMapper;
+import com.xk.orm.HangDetail;
 import com.xk.orm.HangLine;
 import com.xk.orm.LineDetail;
 import com.xk.orm.LineDetailList;
@@ -49,8 +51,8 @@ public class LinePoleMapperImpl implements PowerLineMapper,PoleMapper{
 	 * @param lineid
 	 * @return
 	 */
-	public List<Pole> SelectPoleInfo(int lineid) {
-		return poleMapper.SelectPoleInfo(lineid);
+	public List<Pole> SelectPoleInfo(int lineid,int poleid) {
+		return poleMapper.SelectPoleInfo(lineid,poleid);
 	}
 	/**
 	 * 添加线路信息
@@ -214,6 +216,14 @@ public class LinePoleMapperImpl implements PowerLineMapper,PoleMapper{
 	 */
 	public int DelLineInfo(int lineid) {
 		return powerLineMapper.DelLineInfo(lineid);
+	}
+	/**
+	 * 修改线杆详情
+	 * @param reqMap
+	 * @return
+	 */
+	public int ModifyPoleDetail(Map<String, Object> reqMap) {
+		return lineDetailMapper.ModifyPoleDetail(reqMap);
 	}
 	
 }

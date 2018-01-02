@@ -10,7 +10,7 @@ var LocationMarker;
 map = new AMap.Map("allmap", {
 	resizeEnable : true,
 	center : [ 121.611746, 29.911096 ],
-	zoom : 15,
+	zoom : 18,
 	doubleClickZoom : false,
 });
 (function($) {
@@ -19,6 +19,7 @@ map = new AMap.Map("allmap", {
 	 * 加载所有线杆 并添加地图marker
 	 */
 	SelectAllPole(0);
+	SelectAllMarker();
 	/**
 	 * 加载搭挂线路
 	 */
@@ -83,34 +84,39 @@ function SelectAllPole(index) {
 		datatype : "json",
 		// contentType:"application/json;charset=UTF-8",
 		success : function(data) {
-			/**
-			 * 加载添加线杆时的默认第一个
-			 */
-			if (index == 0) {
 				for (var i = 0; i < data.length; i++) {
 					/**
 					 * 地图添加marker
 					 */
 					// AutoAddMarker([ data[i].longtitude, data[i].latitude ],
 					// data[i].poleid, i);
-					AutoAddMarker(data[i]);
+					//AutoAddMarker(data[i]);
 					// polemarkers.push([data[i].longtitude,data[i].latitude]);
 					/**
 					 * 添加所属线路
 					 */
 					$(".thirdLayer" + index + " " + ".PolePre").append(
 							"<option value='" + data[i].poleid + "'>"
-									+ data[i].name + "</option>");
+									+ data[i].linedetailList[0].name + "</option>");
 				}
-			} else {
-				for (var i = 0; i < data.length; i++) {
-					$(".thirdLayer" + index + " " + ".PolePre").append(
-							"<option value='" + data[i].poleid + "'>"
-									+ data[i].name + "</option>");
-				}
-			}
 		},
 	});
+}
+/**
+ * 加载suoyoumarker点
+ */
+function SelectAllMarker(){
+	$.ajax({
+		type : "post",
+		url : "LinePole/selectAllPole.spring",
+		datatype : "json",
+		// contentType:"application/json;charset=UTF-8",
+		success : function(data) {
+			for (var i = 0; i < data.length; i++) {
+				AutoAddMarker(data[i]);
+			}
+		}
+	})
 }
 /**
  * 地图所有的poleid添加覆盖物
@@ -189,7 +195,7 @@ function SelectHangLineByPoleid(thismarker, thisevent) {
 
 							$(".markercontent").append(
 									"<div>(" + num + ")" + data[i].hangname
-											+ "<a href=''>详情</a></div>");
+											+ "<a href='jsp/DGXLGL.jsp?hanglineid="+data[i].hanglineid+"'>详情</a></div>");
 							/*
 							 * for(var j=0;j<data[i].hangList.length;j++) {
 							 * $(".hangname").append(data[i].hangList[j].name +
@@ -241,7 +247,7 @@ function SelectHangLineByPoleid(thismarker, thisevent) {
 																	+ data[i].longtitude
 																	+ "</br><span>纬度：</span>"
 																	+ data[i].latitude
-																	+ "</br><a href=''>跳转到线杆管理界面</a>"
+																	+ "</br><a href='jsp/XLXGGL.jsp?poleid="+data[i].poleid+"&lineid="+data[i].linedetailList[0].lineid+"'>跳转到线杆管理界面</a>"
 																	+ "</div>");
 										}
 									},
@@ -434,16 +440,21 @@ function DelPoleMarker(countnum) {
  */
 var MarkerClickDelFunc = function(e) {
 	var NowPoleid = this.getExtData().poleid;
+	var thismarker=this;
 	$("#DelPoleModal").modal("show");
 	var poleElement = document.getElementById("DelPoleOk");
 	poleElement.onclick = function() {
-		DelNowPoleId(NowPoleid);
+		DelNowPoleId(NowPoleid,thismarker);
+		var markerArr=new Array();
+		markerArr.push(this);
+		console.log(markerArr);
+		map.remove(markerArr);
 	};
 }
 /**
  * 执行删除操作 1删除线杆，2删除线路细节中包含此杆，3删除搭挂细节中包含此杆
  */
-function DelNowPoleId(poleid) {
+function DelNowPoleId(poleid,thismarker) {
 	$.ajax({
 		type : "post",
 		url : "LinePole/delPoleByPoleId.spring",
@@ -454,8 +465,20 @@ function DelNowPoleId(poleid) {
 		// contentType:"application/json;charset=UTF-8",
 		success : function(data) {
 			if (data[0].msg == "删除线杆成功") {
-				window.location.reload();
+				//window.location.reload();
+				$("#DelPoleModal").modal("hide");
+				$(".delInfo h4").text(data[0].msg);
+				$("#DelRtnModal").modal("show");
+				/**
+				 * 隐藏删除marker
+				 */
+				thismarker.hide();
+				/**
+				 * 关闭信息窗体
+				 */
+				infowindow.close();
 			} else {
+				$("#DelPoleModal").modal("hide");
 				$(".delInfo h4").text(data[0].msg);
 				$("#DelRtnModal").modal("show");
 			}
@@ -519,6 +542,8 @@ function InsertPoleToDB() {
 				for (var i = 0; i < childDiv; i++) {
 					InsertLineDetailToDB(i, data[0].poleid);
 				}
+				 //window.location.reload();
+				
 			} else {
 				alert("添加线杆信息失败");
 			}
@@ -537,7 +562,10 @@ function InsertLineDetailToDB(index, poleid) {
 		contentType : 'application/json',
 		success : function(data) {
 			if (data) {
-
+				$(".PolePre").text("");
+				$(".thirdLayer1").remove();
+				$(".thirdLayer2").remove();
+				SelectAllPole(0);
 			} else {
 				alert("添加线路明细失败!");
 			}
@@ -559,7 +587,6 @@ function LinePoleDetailObject(index, poleid) {
 	dataDetail["prepoleid"] = Number(prepoleinfo);
 	dataDetail["code"] = Number(code);
 	dataDetail["name"] = $("#PoleNameInput").val();
-	;
 	console.log(dataDetail);
 	return dataDetail;
 }
@@ -945,9 +972,15 @@ function SaveLineBtn(){
 				if(data!=null&& data!="")
 					{
 						$(".delInfo h4").text(data[0].msg);
+						$("#AddLineModal").modal("hide");
+						//window.location.reload();
+						map.remove(polemarkers);
+						polemarkers=[];
+						SelectAllMarker();
 					}
 				else{
 					$(".delInfo h4").text("添加线路失败,请重新添加");
+					$("#AddLineModal").modal("hide");
 				}
 			}
 		});

@@ -1,123 +1,151 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.xk.Dao.ApplyDocMapper" >
-  <resultMap id="BaseResultMap" type="com.xk.orm.ApplyDoc" >
-    <id column="ApplyDocId" property="applydocid" jdbcType="INTEGER" />
-    <result column="DocTypeId" property="doctypeid" jdbcType="INTEGER" />
-    <result column="ApplyId" property="applyid" jdbcType="INTEGER" />
-    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
-    <result column="DocName" property="docname" jdbcType="VARCHAR" />
-    <result column="DocPath" property="docpath" jdbcType="VARCHAR" />
-  </resultMap>
-  <select id="SelectDocByApplyId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select * from applydoc
-    where ApplyDoc.ApplyId = #{applyid,jdbcType=INTEGER}
-  </select>
-  <!-- 判断申请文件是否存在 -->
-  <select id="SelectApplyDoc" parameterType="com.xk.orm.ApplyDocTime" resultMap="BaseResultMap">
-  	select * from applydoc where applydoc.DocTypeId=#{doctype} and applydoc.ApplyId=#{applyid}
-  </select>
-  <!-- 添加文件信息 -->
-  <insert id="InsertApplydoc" parameterType="com.xk.orm.ApplyDocTime">
-  	insert into applydoc (DocTypeId, ApplyId, 
-      CreateTime, DocName, DocPath
-      )
-    values (#{doctypeid,jdbcType=INTEGER}, #{applyid,jdbcType=INTEGER}, 
-      #{doctime,jdbcType=TIMESTAMP}, #{docname,jdbcType=VARCHAR}, #{docpath,jdbcType=VARCHAR}
-      )
-  </insert>
-  <update id="ModifyApplyDoc" parameterType="com.xk.orm.ApplyDocTime">
-  	update applydoc
-    set DocTypeId = #{doctypeid,jdbcType=INTEGER},
-      ApplyId = #{applyid,jdbcType=INTEGER},
-      CreateTime = #{doctime,jdbcType=TIMESTAMP},
-      DocName = #{docname,jdbcType=VARCHAR},
-      DocPath = #{docpath,jdbcType=VARCHAR}
-    where ApplyDocId = #{applydocid,jdbcType=INTEGER}
-  </update>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from applydoc
-    where ApplyDocId = #{applydocid,jdbcType=INTEGER}
-  </delete>
-  <insert id="insert" parameterType="com.xk.orm.ApplyDoc" >
-    insert into applydoc (ApplyDocId, DocTypeId, ApplyId, 
-      CreateTime, DocName, DocPath
-      )
-    values (#{applydocid,jdbcType=INTEGER}, #{doctypeid,jdbcType=INTEGER}, #{applyid,jdbcType=INTEGER}, 
-      #{createtime,jdbcType=TIMESTAMP}, #{docname,jdbcType=VARCHAR}, #{docpath,jdbcType=VARCHAR}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.xk.orm.ApplyDoc" >
-    insert into applydoc
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="applydocid != null" >
-        ApplyDocId,
-      </if>
-      <if test="doctypeid != null" >
-        DocTypeId,
-      </if>
-      <if test="applyid != null" >
-        ApplyId,
-      </if>
-      <if test="createtime != null" >
-        CreateTime,
-      </if>
-      <if test="docname != null" >
-        DocName,
-      </if>
-      <if test="docpath != null" >
-        DocPath,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="applydocid != null" >
-        #{applydocid,jdbcType=INTEGER},
-      </if>
-      <if test="doctypeid != null" >
-        #{doctypeid,jdbcType=INTEGER},
-      </if>
-      <if test="applyid != null" >
-        #{applyid,jdbcType=INTEGER},
-      </if>
-      <if test="createtime != null" >
-        #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="docname != null" >
-        #{docname,jdbcType=VARCHAR},
-      </if>
-      <if test="docpath != null" >
-        #{docpath,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.xk.orm.ApplyDoc" >
-    update applydoc
-    <set >
-      <if test="doctypeid != null" >
-        DocTypeId = #{doctypeid,jdbcType=INTEGER},
-      </if>
-      <if test="applyid != null" >
-        ApplyId = #{applyid,jdbcType=INTEGER},
-      </if>
-      <if test="createtime != null" >
-        CreateTime = #{createtime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="docname != null" >
-        DocName = #{docname,jdbcType=VARCHAR},
-      </if>
-      <if test="docpath != null" >
-        DocPath = #{docpath,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where ApplyDocId = #{applydocid,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.xk.orm.ApplyDoc" >
-    update applydoc
-    set DocTypeId = #{doctypeid,jdbcType=INTEGER},
-      ApplyId = #{applyid,jdbcType=INTEGER},
-      CreateTime = #{createtime,jdbcType=TIMESTAMP},
-      DocName = #{docname,jdbcType=VARCHAR},
-      DocPath = #{docpath,jdbcType=VARCHAR}
-    where ApplyDocId = #{applydocid,jdbcType=INTEGER}
-  </update>
+<mapper namespace="com.xk.Dao.ApplyDocMapper">
+	<resultMap id="BaseResultMap" type="com.xk.orm.ApplyDoc">
+		<id column="ApplyDocId" property="applydocid" jdbcType="INTEGER" />
+		<result column="DocTypeId" property="doctypeid" jdbcType="INTEGER" />
+		<result column="ApplyId" property="applyid" jdbcType="INTEGER" />
+		<result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+		<result column="DocName" property="docname" jdbcType="VARCHAR" />
+		<result column="DocPath" property="docpath" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="SelectDocByApplyId" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select * from applydoc
+		where ApplyDoc.ApplyId =
+		#{applyid,jdbcType=INTEGER}
+	</select>
+	<!-- 判断申请文件是否存在 -->
+	<select id="SelectApplyDoc" parameterType="com.xk.orm.ApplyDocTime"
+		resultMap="BaseResultMap">
+		select * from applydoc where applydoc.DocTypeId=#{doctype}
+		and
+		applydoc.ApplyId=#{applyid}
+	</select>
+	<select id="SelectApplyDocInfo" parameterType="java.lang.Integer"
+		resultType="com.xk.orm.Doctype">
+		select
+		doctype.*,applydoc.ApplyDocId,applydoc.ApplyId,applydoc.CreateTime,applydoc.DocName
+		as docnameInfo,applydoc.DocPath from doctype LEFT JOIN applydoc on
+		applydoc.DocTypeId=doctype.DocTypeId WHERE applydoc.ApplyId=#{applyid}
+	</select>
+
+	<!-- 添加文件信息 -->
+	<insert id="InsertApplydoc" parameterType="com.xk.orm.ApplyDocTime">
+		insert into applydoc
+		(DocTypeId, ApplyId,
+		CreateTime, DocName, DocPath
+		)
+		values
+		(#{doctypeid,jdbcType=INTEGER}, #{applyid,jdbcType=INTEGER},
+		#{doctime,jdbcType=TIMESTAMP}, #{docname,jdbcType=VARCHAR},
+		#{docpath,jdbcType=VARCHAR}
+		)
+	</insert>
+	<update id="ModifyApplyDoc" parameterType="com.xk.orm.ApplyDocTime">
+		update applydoc
+		set
+		DocTypeId = #{doctypeid,jdbcType=INTEGER},
+		ApplyId =
+		#{applyid,jdbcType=INTEGER},
+		CreateTime =
+		#{doctime,jdbcType=TIMESTAMP},
+		DocName = #{docname,jdbcType=VARCHAR},
+		DocPath = #{docpath,jdbcType=VARCHAR}
+		where ApplyDocId =
+		#{applydocid,jdbcType=INTEGER}
+	</update>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from
+		applydoc
+		where ApplyDocId = #{applydocid,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.xk.orm.ApplyDoc">
+		insert into applydoc
+		(ApplyDocId, DocTypeId, ApplyId,
+		CreateTime, DocName, DocPath
+		)
+		values
+		(#{applydocid,jdbcType=INTEGER}, #{doctypeid,jdbcType=INTEGER},
+		#{applyid,jdbcType=INTEGER},
+		#{createtime,jdbcType=TIMESTAMP},
+		#{docname,jdbcType=VARCHAR}, #{docpath,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.xk.orm.ApplyDoc">
+		insert into applydoc
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="applydocid != null">
+				ApplyDocId,
+			</if>
+			<if test="doctypeid != null">
+				DocTypeId,
+			</if>
+			<if test="applyid != null">
+				ApplyId,
+			</if>
+			<if test="createtime != null">
+				CreateTime,
+			</if>
+			<if test="docname != null">
+				DocName,
+			</if>
+			<if test="docpath != null">
+				DocPath,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="applydocid != null">
+				#{applydocid,jdbcType=INTEGER},
+			</if>
+			<if test="doctypeid != null">
+				#{doctypeid,jdbcType=INTEGER},
+			</if>
+			<if test="applyid != null">
+				#{applyid,jdbcType=INTEGER},
+			</if>
+			<if test="createtime != null">
+				#{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="docname != null">
+				#{docname,jdbcType=VARCHAR},
+			</if>
+			<if test="docpath != null">
+				#{docpath,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.xk.orm.ApplyDoc">
+		update applydoc
+		<set>
+			<if test="doctypeid != null">
+				DocTypeId = #{doctypeid,jdbcType=INTEGER},
+			</if>
+			<if test="applyid != null">
+				ApplyId = #{applyid,jdbcType=INTEGER},
+			</if>
+			<if test="createtime != null">
+				CreateTime = #{createtime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="docname != null">
+				DocName = #{docname,jdbcType=VARCHAR},
+			</if>
+			<if test="docpath != null">
+				DocPath = #{docpath,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ApplyDocId = #{applydocid,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.xk.orm.ApplyDoc">
+		update applydoc
+		set DocTypeId = #{doctypeid,jdbcType=INTEGER},
+		ApplyId =
+		#{applyid,jdbcType=INTEGER},
+		CreateTime =
+		#{createtime,jdbcType=TIMESTAMP},
+		DocName =
+		#{docname,jdbcType=VARCHAR},
+		DocPath = #{docpath,jdbcType=VARCHAR}
+		where ApplyDocId = #{applydocid,jdbcType=INTEGER}
+	</update>
 </mapper>

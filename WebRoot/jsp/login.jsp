@@ -9,7 +9,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>My JSP 'index.jsp' starting page</title>
+    <title>登录界面</title>
+    
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -18,67 +19,120 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-	<!-- VENDOR CSS -->
-	<link rel="stylesheet" href="./assets/css/bootstrap.min.css">
-	<link rel="stylesheet" href="./assets/vendor/font-awesome/css/font-awesome.min.css">
-	<link rel="stylesheet" href="./assets/vendor/linearicons/style.css">
-	<!-- MAIN CSS -->
-	<link rel="stylesheet" href="./assets/css/main.css">
-	<!-- FOR DEMO PURPOSES ONLY. You should remove this in your project -->
-	<link rel="stylesheet" href="./assets/css/demo.css">
-	<!-- GOOGLE FONTS -->
-	<!-- <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700" rel="stylesheet"> -->
-	<!-- ICONS -->
 	<link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
 	<link rel="icon" type="image/png" sizes="96x96" href="./assets/img/favicon.png">
+	<script src="./assets/vendor/jquery/jquery.min.js"></script>
+<style type="text/css">
+	body {
+		padding:0px;
+		margin:0px;
+		background-image: url("images/login_back.jpg");
+		background-repeat: no-repeat;
+		background-size:100% 100%; 
+	}
+	@media screen and (min-width: 750px) { 
+		#loginDiv span{
+			width:54%;
+			display:block;
+			font-size: 30px;
+			padding:15px 0 20px 24%;
+			font-weight: 500;
+		} 
+	}
+	@media screen and (max-width: 750px) { 
+		#loginDiv span{
+			width:54%;
+			display:block;
+			font-size: 10px;
+			padding:15px 0 20px 24%;
+			font-weight: 500;
+		} 
+	}
+	#loginDiv{
+		width:30%;
+		height:280px;
+		background-color: rgba(255,255,255,0.3);
+		border-radius:5px;
+		margin: 17% auto; 
+	}
+	#loginDiv input{
+		width:60%;
+		height:13%;
+		border:1px solid gray;
+		border-radius:5px;
+		margin:10px 20%;
+	}
+	#loginDiv button{
+		width:60%;
+		border-radius:5px;
+		height:13%;
+		border:0px;
+		background-color: #2b333e;
+		margin:15px 20%;
+		color:#FFFFFF;
+		cursor: pointer;
+	}
+</style>	
   </head>
   
   <body>
-	<!-- WRAPPER -->
-	<div id="wrapper">
-		<div class="vertical-align-wrap">
-			<div class="vertical-align-middle">
-				<div class="auth-box ">
-					<div class="left">
-						<div class="content">
-							<div class="header">
-								<div class="logo text-center"><img src="assets/img/logo-dark.png" alt="Klorofil Logo"></div>
-								<p class="lead">Login to your account</p>
-							</div>
-							<form class="form-auth-small" action="Login/userLogin.spring" method="post">
-								<div class="form-group">
-									<label for="signin-email" class="control-label sr-only">Email</label>
-									<input type="text" class="form-control" id="signin-email" name="username" placeholder="用户名">
-								</div>
-								<div class="form-group">
-									<label for="signin-password" class="control-label sr-only">Password</label>
-									<input type="password" class="form-control" id="signin-password" name="password" placeholder="Password">
-								</div>
-								<div class="form-group clearfix">
-									<label class="fancy-checkbox element-left">
-										<input type="checkbox">
-										<span>Remember me</span>
-									</label>
-								</div>
-								<button type="submit" class="btn btn-primary btn-lg btn-block">LOGIN</button>
-								<div class="bottom">
-									<span class="helper-text"><i class="fa fa-lock"></i> <a href="#">Forgot password?</a></span>
-								</div>
-							</form>
-						</div>
-					</div>
-					<div class="right">
-						<div class="overlay"></div>
-						<div class="content text">
-							<h1 class="heading">Free Bootstrap dashboard template</h1>
-							<p>by The Develovers</p>
-						</div>
-					</div>
-					<div class="clearfix"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- END WRAPPER -->
-</body>
+    	<div id="loginDiv">
+    		<span>三线搭挂管理系统</span>
+    		<form action="Login/userLogin.spring" method="post">
+    			<input type="text" name="username" id="username"/>
+	    		<br>
+	    		<input type="password" name="password" id="password">
+				<br>
+				<button type="submit" id="loginBtn">LOGIN</button>
+    		</form>
+    	</div>
+	<script type="text/javascript">
+		$(function(){
+		var username=null;
+		var password=null;
+			$("#username").keydown(function(e){
+				if(e.keyCode==13)
+				{
+					username=$("#username").val();
+					password=$("#password").val();
+					if(username!=null&&username!=""&&password!=null&&password!="")
+					{
+						
+					}
+					else{
+						UserLogin(username,password);
+					}
+				}
+			})
+			$("#password").keydown(function(e){
+				if(e.keyCode==13)
+				{
+					username=$("#username").val();
+					password=$("#password").val();
+					if(username!=null&&username!=""&&password!=null&&password!="")
+					{
+						
+					}
+					else{
+						UserLogin(username,password);
+					}
+				}
+			})
+		})
+		function UserLogin(Uname,Pwd){
+			$.ajax({
+				type:"post",
+				data:{
+					"username":Uname,
+					"password":Pwd
+				},
+				url:"Login/userLogin.spring",
+				datatype:"json",
+				success:function(data){
+					
+				}
+			})
+		}
+	</script>
+  </body>
 </html>

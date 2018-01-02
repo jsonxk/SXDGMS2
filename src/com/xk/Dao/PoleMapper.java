@@ -15,7 +15,7 @@ public interface PoleMapper {
 	 * @param lineid
 	 * @return
 	 */
-	List<Pole> SelectPoleInfo(@Param("lineid")int lineid);
+	List<Pole> SelectPoleInfo(@Param("lineid")int lineid,@Param("poleid")int poleid);
 	/**
 	 * 根据lineid查找线杆数量
 	 * @param lineid

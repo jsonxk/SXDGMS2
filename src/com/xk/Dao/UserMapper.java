@@ -38,4 +38,22 @@ public interface UserMapper {
      * @return
      */
 	List<UserInfo> AppUserLogin(@Param("username")String username,@Param("password") String password);
+	/**
+	 * 查找用户信息
+	 * @param uid
+	 * @return
+	 */
+	List<User> selectUserInfo(@Param("userid")int userid);
+	/**
+	 * 修改用户信息
+	 * @param user
+	 * @return
+	 */
+	int ModifyUserInfo(User user);
+	/**
+	 * 添加用户
+	 * @param user
+	 * @return
+	 */
+	int AddUserInfo(User user);
 }

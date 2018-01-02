@@ -34,9 +34,12 @@
 		powerline LEFT JOIN dicitem d1 ON powerline.`Status`=d1.DicItemId LEFT
 		JOIN dicitem d2 ON powerline.Type=d2.DicItemId LEFT JOIN unit ON 
 		unit.UnitId=powerline.UnitId 
-		where
+		where 1=1
 		<if test="unitid!=0">
-			powerline.UnitId=#{unitid}
+			and powerline.UnitId=#{unitid}
+		</if>
+		<if test="lineid!=0">
+			and powerline.LineId=#{lineid}
 		</if>
 		<if test="name!=null and name!=''">
 			and powerline.Name like "%"#{name}"%"
@@ -45,9 +48,12 @@
 	</select>
 	<select id="SelectAllLineCount" parameterType="com.xk.orm.PublicEntity"
 		resultType="java.lang.Integer">
-		select COUNT(*) as count from powerline where
+		select COUNT(*) as count from powerline where 1=1 
 		<if test="unitid!=0">
-			powerline.UnitId=#{unitid}
+			and powerline.UnitId=#{unitid}
+		</if>
+		<if test="lineid!=0">
+			and powerline.LineId=#{lineid}
 		</if>
 		<if test="name!=null and name!=''">
 			and powerline.Name like "%"#{name}"%"

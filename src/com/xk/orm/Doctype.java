@@ -1,6 +1,6 @@
 package com.xk.orm;
 
-public class Doctype {
+public class Doctype  extends ApplyDoc{
     private Integer doctypeid;
 
     private String docname;

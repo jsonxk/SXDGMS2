@@ -216,6 +216,11 @@ public class ApplyMapperBLL {
 		 */
 		for(Task t:task){
 			Authentication.setAuthenticatedUserId(useridInfo);
+			/**
+			 * 添加一个处理结果
+			 */
+			taskService.addComment(t.getId(),processInstance.getId(),"1");
+			taskService.addComment(t.getId(),processInstance.getId(),apply.getMemo());
 			taskService.addComment(t.getId(),processInstance.getId(), format.format(nowdate));
 			taskService.complete(t.getId());
 		};

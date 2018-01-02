@@ -8,6 +8,7 @@ import net.sf.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xk.DaoImpl.AllDao;
 import com.xk.orm.User;
@@ -82,6 +83,45 @@ private AllDao allDao;
 			return true;
 		}
 		else 
+			return false;
+	}
+	/**
+	 * 查找用户信息
+	 * @param uid
+	 * @return
+	 */
+	public  JSONArray SelectUserInfo(int uid) {
+		List<User> userinfo=allDao.getuserMapperImpl().selectUserInfo(uid);
+		return JSONArray.fromObject(userinfo);
+	}
+	/**
+	 * 修改用户信息
+	 * @param user
+	 * @return
+	 */
+	public boolean ModifyUserInfo(User user) {
+		int i=allDao.getuserMapperImpl().ModifyUserInfo(user);
+		if(i>0)
+		{
+			return true;
+		}
+		else
+			return false;
+	}
+	/**
+	 * 添加用户信息
+	 * @param user
+	 * @return
+	 */
+	public boolean AddUserInfo(User user) {
+		user.setUsername(user.getName());
+		user.setPassword("123");
+		int i=allDao.getuserMapperImpl().AddUserInfo(user);
+		if(i>0)
+		{
+			return true;
+		}
+		else
 			return false;
 	}
 }

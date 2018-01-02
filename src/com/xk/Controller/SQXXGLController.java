@@ -1,5 +1,15 @@
 package com.xk.Controller;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import net.sf.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +62,8 @@ public class SQXXGLController {
 	 * @return
 	 */
 	@RequestMapping(value="/handerApply",method=RequestMethod.POST)
-	public @ResponseBody JSONArray HanderApply(@RequestParam("applyid") int applyid,@RequestParam("userid") int userid,@RequestParam("hanglineid") int hanglineid,@RequestParam("handtype") int handtype,@RequestParam("processid") int processid,@RequestParam("unitid") int unitid){
-		return allservice.getSqxxglBll().HanderApply(applyid,userid,hanglineid,handtype,processid,unitid);
+	public @ResponseBody JSONArray HanderApply(@RequestParam("handermemo") String handermemo,@RequestParam("applyid") int applyid,@RequestParam("userid") int userid,@RequestParam("hanglineid") int hanglineid,@RequestParam("handtype") int handtype,@RequestParam("processid") int processid,@RequestParam("unitid") int unitid){
+		return allservice.getSqxxglBll().HanderApply(handermemo,applyid,userid,hanglineid,handtype,processid,unitid);
 	}
 	/**
 	 * 查询流程历史处理信息
@@ -63,5 +73,76 @@ public class SQXXGLController {
 	@RequestMapping(value="/selectHistoryTask",method=RequestMethod.POST)
 	public @ResponseBody JSONArray SelectHistoryTask(@RequestParam("processid")int processid){
 		return allservice.getSqxxglBll().SelectHistoryTaskInfo(processid);
+	}
+	/**
+	 * 根据applyid查找查堪信息
+	 * @param applyid
+	 * @return
+	 */
+	@RequestMapping(value="/selectCheckInfo",method=RequestMethod.POST)
+	public @ResponseBody JSONArray SelectCheckInfo(@RequestParam("applyid")int applyid){
+		return allservice.getSqxxglBll().SelectCheckInfo(applyid);
+	}
+	/**
+	 * 根据applyid查找上传文件信息用于下载
+	 * @param applyid
+	 * @return
+	 */
+	@RequestMapping(value="/selectApplyDoc",method=RequestMethod.POST)
+	public @ResponseBody JSONArray SelectApplyDoc(@RequestParam("applyid")int applyid){
+		return allservice.getSqxxglBll().SelectApplyDoc(applyid);
+	}
+	/**
+	 * 下载申请文件
+	 * @param applyid
+	 * @return
+	 */
+	@RequestMapping(value="/downApplyDoc")
+	public String DownApplyDoc(@RequestParam Map<String,Object> reqMap,HttpServletRequest request,HttpServletResponse rep){
+		String directorypath=request.getServletContext().getRealPath("/images");
+		System.out.println(directorypath);
+		File file=new File(directorypath, "left_right.png");
+		if(file.exists())
+		{
+			rep.setContentType("application/png");
+			rep.addHeader("Content-Disposition", "attachment;filename=left_right.png");
+			byte[] buffer=new byte[1024];
+			FileInputStream fis=null;
+			BufferedInputStream bis=null;
+			try {
+				 fis=new FileInputStream(file);
+				 bis=new BufferedInputStream(fis);
+				 OutputStream os=rep.getOutputStream();
+				 int i=bis.read();
+				 while(i!=-1)
+				 {
+					 os.write(buffer,0,i);
+					 i=bis.read(buffer);
+				 }
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			finally{
+				if(bis!=null)
+				{
+					try {
+						bis.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				if(fis!=null)
+				{
+					try {
+						fis.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		return null;
 	}
 }

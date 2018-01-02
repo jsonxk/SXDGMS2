@@ -63,4 +63,10 @@ public interface HangDetailMapper {
 	 * @return
 	 */
 	int DelHangPole(@Param("handdetailid")int handdetailid);
+	/**
+	 * 根据poleid查找搭挂详情信息
+	 * @param poleid
+	 * @return
+	 */
+	List<HangDetail> SelectHangDetailInfo(@Param("poleid")int poleid);
 }

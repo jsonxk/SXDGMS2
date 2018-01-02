@@ -26,6 +26,8 @@ import org.springframework.stereotype.Service;
 import com.xk.DaoImpl.AllDao;
 import com.xk.orm.Apply;
 import com.xk.orm.ApplyMore;
+import com.xk.orm.CheckDetail;
+import com.xk.orm.Doctype;
 import com.xk.orm.PublicEntity;
 import com.xk.orm.Unit;
 import com.xk.orm.UserInfo;
@@ -127,7 +129,7 @@ public class SqxxglBLL {
 	 * @param  
 	 * @return
 	 */
-	public JSONArray HanderApply(int applyid,int userid, int hanglineid, int handtype,
+	public JSONArray HanderApply(String handermemo,int applyid,int userid, int hanglineid, int handtype,
 			int processid,int unitid) {
 		/**
 		 * 获取当前任务
@@ -141,6 +143,8 @@ public class SqxxglBLL {
 			Map<String , Object> map=new HashMap<String, Object>();
 			map.put("type", handtype);
 			Authentication.setAuthenticatedUserId(userid+"");
+			taskService.addComment(task.get(0).getId(), processid+"", handtype+"");
+			taskService.addComment(task.get(0).getId(), processid+"", handermemo);
 			taskService.addComment(task.get(0).getId(), processid+"", format.format(nowdate)+"");
 			taskService.setVariable(task.get(0).getId(),"unitid",unitid);
 			taskService.complete(task.get(0).getId(), map);
@@ -151,6 +155,9 @@ public class SqxxglBLL {
 			if(task.size()>0)
 			{
 				//System.out.println(task.get(0).getName());
+				/**
+				 * 下一个任务的名称
+				 */
 				List<dicitem> item=allDao.getdicitemMapperImpl().selectItemByName(task.get(0).getName());
 				Apply apply=new Apply();
 				apply.setApplyid(applyid);
@@ -160,6 +167,10 @@ public class SqxxglBLL {
 				/**
 				 * 根据applyid修改hanglineid和status
 				 */
+				/*if(item.get(0).getItem()=="申请受理")
+				{
+					apply.set
+				}*/
 				allDao.getApplyMapperImpl().ModifyProcessInstanceId(apply);
 			}
 			return JSONArray.fromObject("[{'msg':'处理成功'}]");
@@ -198,14 +209,39 @@ public class SqxxglBLL {
 				if(OneuserInfo.size()>0)
 				{
 					OneHanderInfo.put("handeruser",OneuserInfo.get(0).getName());
-					OneHanderInfo.put("handeruserPhone",OneuserInfo.get(0).getPhone());
+					//OneHanderInfo.put("handeruserPhone",OneuserInfo.get(0).getPhone());
 					OneHanderInfo.put("handertask", instance.getName());
 					OneHanderInfo.put("handertime", comment.get(0).getFullMessage());
-					OneHanderInfo.put("handerresult", "完成");
+					if(comment.get(2).getFullMessage().equals("1"))
+					{
+						OneHanderInfo.put("handerresult", "通过");
+					}
+					else{
+						OneHanderInfo.put("handerresult", "驳回");
+					}
+					OneHanderInfo.put("handerDes",comment.get(1).getFullMessage());
 					HanderInfo.add(OneHanderInfo);
 				}
 			}
 		}
 		return HanderInfo;
+	}
+	/**
+	 * 根据applyid查找搭挂线路查勘信息
+	 * @param applyid
+	 * @return
+	 */
+	public JSONArray SelectCheckInfo(int applyid) {
+		List<CheckDetail> ChkDtlList=allDao.getFaultMapperImpl().SelectCheckInfo(applyid);
+		return JSONArray.fromObject(ChkDtlList);
+	}
+	/**
+	 * 根据applyid查找申请文件信息
+	 * @param applyid
+	 * @return
+	 */
+	public JSONArray SelectApplyDoc(int applyid) {
+		List<Doctype> doctypeLiat=allDao.getApplyDocMapperImpl().SelectApplyDocInfo(applyid);
+		return JSONArray.fromObject(doctypeLiat);
 	}
 }

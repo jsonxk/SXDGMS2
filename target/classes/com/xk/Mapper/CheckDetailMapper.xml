@@ -13,15 +13,16 @@
 		<result column="Description" property="description" jdbcType="VARCHAR" />
 	</resultMap>
 	<resultMap id="noticeList" type="com.xk.orm.NoticeList">
-		   	<id column="NoticeId" property="noticeid" jdbcType="INTEGER" />
-		    <result column="FaultId" property="faultid" jdbcType="INTEGER" />
-		    <result column="UnitId" property="unitid" jdbcType="INTEGER" />
-		    <result column="ProccessId" property="proccessid" jdbcType="INTEGER" />
-		    <result column="Status" property="status" jdbcType="INTEGER" />
-		    <result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
-		    <result column="statusname" property="statusname" jdbcType="VARCHAR" />
-		    <result column="CorrentChkDtlId" property="correntchkdtlid" jdbcType="INTEGER" />
-		    <collection property="linedetailList" ofType="com.xk.orm.LineDetail"
+		<id column="NoticeId" property="noticeid" jdbcType="INTEGER" />
+		<result column="FaultId" property="faultid" jdbcType="INTEGER" />
+		<result column="UnitId" property="unitid" jdbcType="INTEGER" />
+		<result column="ProccessId" property="proccessid" jdbcType="INTEGER" />
+		<result column="Status" property="status" jdbcType="INTEGER" />
+		<result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+		<result column="statusname" property="statusname" jdbcType="VARCHAR" />
+		<result column="CorrentChkDtlId" property="correntchkdtlid"
+			jdbcType="INTEGER" />
+		<collection property="linedetailList" ofType="com.xk.orm.LineDetail"
 			column="LineDetailId" javaType="list">
 			<id column="LineDetailId" property="linedetailid" jdbcType="INTEGER" />
 			<result column="LineId" property="lineid" jdbcType="INTEGER" />
@@ -30,6 +31,34 @@
 			<result column="Code" property="code" jdbcType="VARCHAR" />
 			<result column="Name" property="name" jdbcType="VARCHAR" />
 			<result column="Memo" property="memo" jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+	<resultMap type="com.xk.orm.CheckDetail" id="CheckDetailPhoto">
+		<id column="CheckDetailId" property="checkdetailid" jdbcType="INTEGER" />
+		<result column="LineCheckId" property="linecheckid" jdbcType="INTEGER" />
+		<result column="CheckItemId" property="checkitemid" jdbcType="INTEGER" />
+		<result column="HangDetailId" property="hangdetailid" jdbcType="INTEGER" />
+		<result column="PoleId" property="poleid" jdbcType="INTEGER" />
+		<result column="CreateTime" property="createtime" jdbcType="TIMESTAMP" />
+		<result column="Status" property="status" jdbcType="INTEGER" />
+		<result column="FaultId" property="faultid" jdbcType="INTEGER" />
+		<result column="Description" property="description" jdbcType="VARCHAR" />
+		<collection property="photoList" ofType="com.xk.orm.Photo"
+			column="photoid" javaType="list">
+			<id column="PhotoId" property="photoid" jdbcType="INTEGER" />
+			<result column="photoCheckDetailId" property="checkdetailid"
+				jdbcType="INTEGER" />
+			<result column="photoCreateTime" property="createtime"
+				jdbcType="TIMESTAMP" />
+			<result column="photoDescription" property="description"
+				jdbcType="VARCHAR" />
+			<result column="PhotoPath" property="photopath" jdbcType="VARCHAR" />
+			<collection property="linedtlList" ofType="com.xk.orm.LineDetail"
+			column="linedetailid" javaType="list">
+				<id column="childlinedetailid" property="linedetailid" jdbcType="INTEGER" />
+				<result column="childPoleId" property="poleid" jdbcType="INTEGER" />
+				<result column="childName" property="name" jdbcType="VARCHAR" />
+			</collection>
 		</collection>
 	</resultMap>
 	<select id="SelectAllFaultInfo" parameterType="com.xk.orm.PublicEntity"
@@ -85,12 +114,26 @@
 		#{faultid,jdbcType=INTEGER},
 		#{chkDtlDescription,jdbcType=VARCHAR},#{taskid})
 	</insert>
+	<select id="SelectCheckInfo" parameterType="java.lang.Integer"
+		resultMap="CheckDetailPhoto">
+		SELECT checkdetail.*,linedetail.LineDetailId as
+		childinedetailid,linedetail.`Name` as childName,linedetail.PoleId as
+		childPoleId ,photo.PhotoId,photo.CheckDetailId as
+		photoCheckDetailId,photo.CreateTime as
+		photoCreateTime,photo.Description as photoDescription,photo.PhotoPath
+		from checkdetail,linecheck,photo,linedetail WHERE
+		checkdetail.PoleId=linedetail.PoleId and
+		photo.CheckDetailId=checkdetail.CheckDetailId and
+		checkdetail.LineCheckId=linecheck.LineCheckId and
+		linecheck.ApplyId=#{applyid}
+	</select>
 	<!-- 修改checkedtail中processid -->
 	<update id="ModifyCheckDtlProcess" parameterType="java.lang.Integer">
 		update
 		checkdetail
 		set ProcessId=#{processid,jdbcType=INTEGER}
-		where CheckDetailId = #{checkdetailid,jdbcType=INTEGER} and
+		where
+		CheckDetailId = #{checkdetailid,jdbcType=INTEGER} and
 		FaultId=#{faultid}
 	</update>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">

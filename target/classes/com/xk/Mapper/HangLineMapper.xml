@@ -32,11 +32,21 @@
 	<!-- 查找搭挂线路具体信息 -->
 	<select id="SelectAllHangLine" resultType="com.xk.orm.HangLine"
 		parameterType="com.xk.orm.PublicEntity">
-		select hangline.*,d1.Item as statusname,d2.Item as typename from
-		hangline LEFT JOIN dicitem d1 ON hangline.`Status`=d1.DicItemId LEFT
-		JOIN dicitem d2 ON hangline.Type=d2.DicItemId
+		select hangline.*,d1.Item as statusname,unit.UnitName as unitname,
+		d2.Item as typename from
+		hangline LEFT JOIN dicitem d1 ON
+		hangline.`Status`=d1.DicItemId LEFT
+		JOIN dicitem d2 ON
+		hangline.Type=d2.DicItemId LEFT JOIN unit ON
+		unit.UnitId=hangline.UnitId where 1=1
 		<if test="name!=null and name!=''">
-			where hangline.Name like "%"#{name}"%"
+			and hangline.HangName like "%"#{name}"%"
+		</if>
+		<if test="hanglineid!=null and hanglineid!='' and hanglineid!=0">
+			and hangline.HangLineId=#{hanglineid}
+		</if>
+		<if test="unitname!=null and unitname!=''">
+			and unit.UnitName like "%"#{unitname}"%"
 		</if>
 		LIMIT #{offset},#{pageSize}
 	</select>
@@ -47,12 +57,16 @@
 	</select>
 	<select id="SelectAllHangLineCount" parameterType="com.xk.orm.PublicEntity"
 		resultType="java.lang.Integer">
-		select COUNT(*) as count from hangline where
-		<if test="unitid!=0">
-			hangline.UnitId=#{unitid}
-		</if>
+		select COUNT(*) as count from hangline LEFT JOIN unit ON
+		hangline.UnitId=unit.UnitId where 1=1
 		<if test="name!=null and name!=''">
-			and hangline.Name like "%"#{name}"%"
+			and hangline.HangName like "%"#{name}"%"
+		</if>
+		<if test="hanglineid!=null and hanglineid!='' and hanglineid!=0">
+			and hangline.HangLineId=#{hanglineid}
+		</if>
+		<if test="unitname!=null and unitname!=''">
+			and unit.UnitName like "%"#{unitname}"%"
 		</if>
 	</select>
 	<!-- 根据poleid查找搭挂线路信息 -->

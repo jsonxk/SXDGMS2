@@ -45,12 +45,15 @@
 		dicitem d2 ON
 		pole.Type=d2.DicItemId LEFT JOIN linedetail ON
 		pole.PoleId=linedetail.PoleId
-		LEFT JOIN unit ON pole.UnitId=unit.UnitId
+		LEFT JOIN unit ON pole.UnitId=unit.UnitId WHERE 1=1
 		<if test="lineid!=null and lineid!=0">
-			WHERE pole.PoleId in (SELECT
+			and pole.PoleId in (SELECT
 			linedetail.PoleId
 			from
 			linedetail WHERE linedetail.LineId=#{lineid})
+		</if>
+		<if test="poleid!=null and poleid!=0">
+			and pole.PoleId=#{poleid}
 		</if>
 	</select>
 	<select id="SelectPoleCount" parameterType="java.lang.Integer"

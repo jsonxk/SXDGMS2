@@ -1,6 +1,7 @@
 package com.xk.orm;
 
 import java.util.Date;
+import java.util.List;
 
 public class Photo {
     private Integer photoid;
@@ -14,8 +15,17 @@ public class Photo {
     private String description;
 
     private String photopath;
+    private List<LineDetail> linedtlList;
+    
+    public List<LineDetail> getLinedtlList() {
+		return linedtlList;
+	}
 
-    public Integer getPhotoid() {
+	public void setLinedtlList(List<LineDetail> linedtlList) {
+		this.linedtlList = linedtlList;
+	}
+
+	public Integer getPhotoid() {
         return photoid;
     }
 

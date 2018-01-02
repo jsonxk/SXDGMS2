@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.xk.orm.ApplyDoc;
 import com.xk.orm.ApplyDocTime;
+import com.xk.orm.Doctype;
 
 
 public interface ApplyDocMapper {
@@ -33,4 +34,10 @@ public interface ApplyDocMapper {
      * @return
      */
 	int ModifyApplyDoc(ApplyDocTime appDocTime);
+	/**
+	 * 查找applyid申请文件信息
+	 * @param applyid
+	 * @return
+	 */
+	List<Doctype> SelectApplyDocInfo(int applyid);
 }

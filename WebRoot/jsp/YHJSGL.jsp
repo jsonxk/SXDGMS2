@@ -78,6 +78,19 @@
 .modal-dialog{
 	width:30%;
 }
+.M_name,.M_userunit,.M_username,.M_pwd,.M_userphone
+{
+	width:50%;
+	float:left;
+} 
+.M_usermemo{
+	width:100%;
+	float:left;
+}
+.usermodalBtn{
+	float:left;
+	width: 100%;
+}
 </style>
 </head>
 
@@ -97,19 +110,14 @@
 				</button>
 			</div>
 			<form class="navbar-form navbar-left">
-				<div class="input-group">
-					<input type="text" value="" class="form-control"
-						placeholder="Search dashboard..."> <span
-						class="input-group-btn"><button type="button"
-							class="btn btn-primary">Go</button></span>
-				</div>
+				
 			</form>
 			<div id="navbar-menu">
 				<ul class="nav navbar-nav navbar-right userOp">
 					<li class="dropdown">
 							<a class="dropdown-toggle dropdown userNameSpan" data-toggle="dropdown"><img src="assets/img/user.png" class="img-circle" alt="Avatar"> <span></span> <i class="icon-submenu lnr lnr-chevron-down"></i></a>
 							<ul class="dropdown-menu dropUserInfo">
-								<li><a href="#"><i class="lnr lnr-user"></i> <span>修改信息</span></a></li>
+								<li><a id="modifyuserInfo"><i class="lnr lnr-user"></i> <span>修改信息</span></a></li>
 								<li><a href="jsp/Quit.jsp"><i class="lnr lnr-exit"></i> <span>退出登录</span></a></li>
 							</ul>
 					</li>
@@ -203,6 +211,9 @@
 										</select>
 									</div>
 									<button class="btn btn-primary" type="button" onClick="Search()">查找</button>
+									<button class="btn btn-primary addUser" type="button" style="margin-left: 14%">
+											<i class="fa fa-plus-square"></i>&nbsp;添加用户
+									</button>
 								</div>
 								<!-- 表格信息主体 -->
 								<div class="panel-body content-body">
@@ -247,25 +258,26 @@
 							</select>				
 						</div>
 						<div class="input-group">
-							<span class="input-group-addon">状态</span>
-							<select class="form-control">
-								<option class="select" value="管理者">管理者</option>
-								<option value="员工">员工</option>
+							<span class="input-group-addon">类型</span>
+							<select class="form-control usertype">
+								<option class="select" value="37">管理者</option>
+								<option value="38">员工</option>
 							</select>	
 						</div>
 						<div class="input-group">
-							<span class="input-group-addon">类型</span>
-							<select class="form-control">
+							<span class="input-group-addon">状态</span>
+							<select class="form-control userstatus">
 								<option class="select" value="39">在岗</option>
 								<option value="40">离职</option>
 							</select>	
 						</div>
-						 <textarea class="form-control textarea1" rows="3" placeholder="备注"></textarea> 
+						 <textarea class="form-control textarea1 usermemo" rows="3" placeholder="备注"></textarea> 
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default"
 								data-dismiss="modal">关闭</button>
-							<button type="button" class="btn btn-primary">保存</button>
+							<button type="button" class="btn btn-primary" id="modifyUserInfo">修改</button>
+							<button type="button" class="btn btn-primary" id="addUserInfo">保存</button>
 						</div>
 					</div>
 					<!-- /.modal-content -->
@@ -294,7 +306,64 @@
 						</div>
 					</div>
 				</div>
-	</div>				
+	</div>	
+	<div class="modal fade " id="modifyUserInfoModal" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content" style="width:80%;height:480px">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="exampleModalLabel">个人信息</h4>
+				</div>
+				<div class="modal-body">
+					<form id="userinfoForm">
+						<div class="form-group M_name">
+							<label for="M_name" class="control-label">用户姓名:</label> <input
+								type="text" id="M_name" name="M_name"
+								class="form-control" placeholder="用户姓名" />
+						</div>
+						<div class="form-group M_userunit">
+							<label class="control-label">用户单位:</label> 
+							</br>
+							<select
+								class="form-control" id="M_userunit">
+
+							</select>
+						</div>
+						<div class="form-group M_username">
+							<label class="control-label" for="M_username">登录名:</label> <input
+								type="text" id="M_username" name="M_username"
+								class="form-control" />
+						</div>
+						<div class="form-group M_pwd">
+							<label class="control-label" for="M_pwd">密码:</label> <input
+								type="password" id=M_pwd name="M_pwd"
+								class="form-control" placeholder="密码" />
+						</div>
+						<div class="form-group M_userphone">
+							<label class="control-label" for="M_userphone">电话:</label> <input
+								type="text" id="M_userphone" name="M_userphone"
+								class="form-control" />
+						</div>
+						<div class="form-group M_usermemo">
+							<label for="M_usermemo" class="control-label">用户描述</label>
+							<textarea class="form-control textarea1" rows="3"
+								placeholder="用户描述" id="M_usermemo" name="M_usermemo"></textarea>
+						</div>
+						<div class="text-right usermodalBtn">
+							<span id="returnMessage" class="glyphicon"> </span>
+							<button type="button" class="btn btn-default right"
+								data-dismiss="modal">取消</button>
+							<button id="userModifyBtn" type="button" class="btn btn-primary">修改</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>			
 	<!-- END WRAPPER -->
 	<!-- Javascript -->
 	<script src="./assets/vendor/jquery/jquery.min.js"></script>

@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import com.xk.ActivitiUtil.EnumData;
 import com.xk.orm.CheckInfoCommon;
 import com.xk.orm.HistoryEmail;
 import com.xk.orm.LineCheck;
@@ -153,7 +154,7 @@ public class FaultController {
 						 * 文件保存数据库地址
 						 */
 						String localpath=request.getSession().getServletContext().getRealPath("")+"\\PhotoImg"+"\\"+fileName;
-						DBPath = "http://localhost:8080/SXDGMS2/PhotoImg/"
+						DBPath = "http://"+EnumData.ServerAddress+"/SXDGMS2/PhotoImg/"
 								+ fileName;
 						checkInfoCommon.setPhotopath(DBPath);
 						PhotoUploadRtn=allservice.getFaultBLL().InsertPhotoInfo(checkInfoCommon);
@@ -236,7 +237,7 @@ public class FaultController {
 						 */
 						String localpath=request.getSession().getServletContext().getRealPath("")+"\\EmailFile"+"\\"+fileName;
 						//String newpath=localpath.replaceAll("\\","\\\\");
-						DBPath = "http://localhost:8080/SXDGMS2/EmailFile/"
+						DBPath = "http://"+EnumData.ServerAddress+"/SXDGMS2/EmailFile/"
 								+ fileName;
 						//System.out.println(localpath);
 						historyEmail.setSenddocpath(DBPath);
